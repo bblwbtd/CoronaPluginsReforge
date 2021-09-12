@@ -22,3 +22,6 @@ fun ItemStack.getInt(key: String): Int? {
     return itemMeta?.persistentDataContainer?.get(getKey(key), PersistentDataType.INTEGER)
 }
 
+fun ItemStack.setName(name: String) {
+    itemMeta?.setDisplayName(name)
+}
