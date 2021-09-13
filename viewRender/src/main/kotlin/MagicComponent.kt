@@ -3,15 +3,19 @@ import org.bukkit.inventory.ItemStack
 
 class MagicComponent(
     val itemStack: ItemStack,
-    var clickable: Boolean = true
+    private var movable: Boolean = false
 ) {
 
-    var handleClick: ((event: InventoryClickEvent) -> Any)? = null
+    var clickHandler: ((event: InventoryClickEvent) -> Any)? = null
 
     fun onClick(handler: (event: InventoryClickEvent) -> Any): MagicComponent {
-        if (clickable) {
-            this.handleClick = handler
-        }
+        this.clickHandler = handler
         return this
     }
+
+    fun handleClick(event: InventoryClickEvent) {
+        if (!movable) event.isCancelled = true
+        clickHandler?.invoke(event)
+    }
+
 }

@@ -3,4 +3,6 @@ rootProject.name = "CoronaPlugins"
 
 include(":viewRender")
 include(":auth")
-include("command")
+include(":command")
+include(":i18n")
+include(":common")

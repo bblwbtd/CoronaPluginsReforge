@@ -34,7 +34,7 @@ open class MagicView(options: MagicViewOptions? = null) : InventoryHolder {
         val coordinate = layout.getCoordinate(x, y)
 
         val component = layout.components[coordinate]
-        component?.handleClick?.invoke(event)
+        component?.clickHandler?.invoke(event)
     }
 
     fun rerender() {
