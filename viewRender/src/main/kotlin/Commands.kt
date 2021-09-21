@@ -1,6 +1,13 @@
+import com.github.ajalt.clikt.core.subcommands
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+
+internal class ViewCommandExecutor : MagicCommandExecutor() {
+    override fun getCommand(): MagicCommand {
+        return ViewCommand().subcommands(SinglePageCommand(), MultiplePageCommand())
+    }
+}
 
 internal class ViewCommand : MagicCommand() {
     override fun run() {
@@ -8,7 +15,7 @@ internal class ViewCommand : MagicCommand() {
     }
 }
 
-internal class SinglePageCommand : MagicCommand() {
+internal class SinglePageCommand : MagicCommand(name = "single") {
     override fun run() {
         val view = MagicView()
         view.layout = MagicLayout().apply {
@@ -17,7 +24,7 @@ internal class SinglePageCommand : MagicCommand() {
     }
 }
 
-internal class MultiplePageCommand : MagicCommand() {
+internal class MultiplePageCommand : MagicCommand(name = "multiple") {
     override fun run() {
         if (sender == null || sender !is Player) {
             throw Error("invalid sender")
