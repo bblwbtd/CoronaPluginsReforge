@@ -1,3 +1,6 @@
 main: 'MagicViewPlugin'
 version: 0.0.1
 name: 'MagicView'
+commands:
+  view:
+    description: Only for view test.

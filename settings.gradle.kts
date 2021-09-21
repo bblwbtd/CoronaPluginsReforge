@@ -1,4 +1,4 @@
-rootProject.name = "CoronaPlugins"
+rootProject.name = "CoronaPluginsReforge"
 
 
 include(":viewRender")

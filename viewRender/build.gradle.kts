@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 group = "ldgame"
@@ -11,6 +12,15 @@ repositories {
 
 dependencies {
     implementation(project(":i18n"))
+    implementation(project(":common"))
 }
 
+
+tasks {
+    shadowJar {
+        manifest {
+            attributes(Pair("Main-Class", "MagicViewPlugin"))
+        }
+    }
+}
 

@@ -16,6 +16,9 @@ class MagicViewPlugin : JavaPlugin {
     )
 
     override fun onEnable() {
+        getCommand("")
         server.pluginManager.registerEvents(MagicViewListener(), this)
     }
+
+
 }
