@@ -24,7 +24,7 @@ class MagicViewTest : BaseTest() {
             setComponent(4, 4, MagicComponent(ItemStack(Material.STONE)))
         }
         val view = MagicView().apply {
-            layout = newLayout
+            currentLayout = newLayout
         }
 
         val player = server!!.addPlayer()

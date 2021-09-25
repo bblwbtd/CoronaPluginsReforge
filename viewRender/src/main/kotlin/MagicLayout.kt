@@ -4,6 +4,7 @@ class MagicLayout {
 
     val components = HashMap<String, MagicComponent>()
 
+
     fun render(inv: Inventory) {
         components.forEach { entry ->
             val slot = getSlot(entry.key)

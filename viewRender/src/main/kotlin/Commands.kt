@@ -29,9 +29,9 @@ internal class SinglePageCommand : CustomCommand(name = "single", help = "open a
         }
 
         val view = MagicView()
-        view.layout = MagicLayout().apply {
+        view.addLayout(MagicLayout().apply {
             setComponent(0, 0, MagicComponent(ItemStack(Material.STONE).setName("test1")))
-        }
+        })
         view.open(sender as Player)
     }
 }
@@ -48,7 +48,7 @@ internal class MultiplePageCommand : CustomCommand(name = "multiple", help = "op
         layout1.setComponent(0, 0, MagicComponent(ItemStack(Material.GLASS)))
         layout2.setComponent(0, 0, MagicComponent(ItemStack(Material.STONE)))
 
-        val view = MultiplePageView().apply {
+        val view = MagicView().apply {
             addLayout(layout1)
             addLayout(layout2)
         }
