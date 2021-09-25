@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack
 
 open class MagicView(options: MagicViewOptions? = null) : InventoryHolder {
 
-    private val inv = Bukkit.createInventory(null, options?.size ?: 54)
+    private val inv = Bukkit.createInventory(this, options?.size ?: 54)
     private var current = 0
     private val layouts = ArrayList<MagicLayout>()
     private val nextPageButton = MagicComponent(ItemStack(Material.STONE_BUTTON)).onClick {
@@ -63,26 +63,24 @@ open class MagicView(options: MagicViewOptions? = null) : InventoryHolder {
         inv.clear()
     }
 
-    open fun render() {
+    open fun render(lang: String = "en_us") {
         val currentLayout = layouts[current]
-        currentLayout.render(inv)
-
-        val player = inventory.viewers.first() as Player
 
         if (layouts.size > 1) {
             if (current > 0) {
                 currentLayout.setComponent(2, 5, lastPageButton.apply {
-                    itemStack.setName(getText("Last Page", player.locale))
+                    itemStack.setName(getText("Last Page", lang))
                 })
             }
 
             if (current < layouts.size - 1) {
                 currentLayout.setComponent(6, 5, nextPageButton.apply {
-                    itemStack.setName(getText("Next Page", player.locale))
+                    itemStack.setName(getText("Next Page", lang))
                 })
             }
         }
 
+        currentLayout.render(inv)
     }
 
     fun click(event: InventoryClickEvent) {
