@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.6.10"
 }
 
 group = "ldgame"
@@ -11,6 +11,8 @@ allprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
     repositories {
+        mavenCentral()
+
         maven {
             url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
 
@@ -22,13 +24,12 @@ allprojects {
             }
         }
 
-        mavenCentral()
     }
 
     dependencies {
         testImplementation(kotlin("test"))
         implementation(kotlin("stdlib-jdk8"))
-        compileOnly("org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT")
+        compileOnly("org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT")
         testImplementation("com.github.seeseemelk:MockBukkit-v1.17:1.7.0")
         testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
         implementation("com.github.ajalt.clikt:clikt:3.2.0")

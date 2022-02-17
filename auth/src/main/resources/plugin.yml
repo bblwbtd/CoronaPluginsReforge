@@ -1,0 +1,8 @@
+name: CoronaAuth
+main: Main
+version: 0.0.1
+authors:
+  - bblwbtd
+commands:
+  auth:
+    description: The CoronaAuth plugin's root command.

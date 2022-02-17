@@ -1,4 +1,8 @@
+package viewRender
+
 import com.github.ajalt.clikt.core.subcommands
+import command.MagicCommand
+import command.MagicCommandExecutor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack

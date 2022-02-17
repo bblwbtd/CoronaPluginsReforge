@@ -9,7 +9,7 @@ version = "0.0.1"
 
 dependencies {
     testImplementation(kotlin("test"))
-    project(":viewRender")
+    implementation(project(":common"))
     implementation(kotlin("stdlib-jdk8"))
 }
 
@@ -17,7 +17,7 @@ tasks.test {
     useJUnitPlatform()
 }
 
-tasks.withType<KotlinCompile>() {
+tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 repositories {

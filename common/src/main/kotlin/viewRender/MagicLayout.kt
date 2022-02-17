@@ -1,3 +1,5 @@
+package viewRender
+
 import org.bukkit.inventory.Inventory
 
 class MagicLayout {
