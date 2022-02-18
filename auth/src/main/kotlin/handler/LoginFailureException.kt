@@ -1,4 +1,3 @@
 package handler
 
-class PasswordError {
-}
+class LoginFailureException : Exception("Fail to login.")

@@ -1,3 +1,5 @@
+package command
+
 import com.github.ajalt.clikt.core.CliktCommand
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender

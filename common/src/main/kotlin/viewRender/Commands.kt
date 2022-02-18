@@ -1,8 +1,6 @@
 package viewRender
 
 import com.github.ajalt.clikt.core.subcommands
-import command.MagicCommand
-import command.MagicCommandExecutor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -21,7 +19,7 @@ internal class ViewCommand : CustomCommand() {
     override fun run() {
         val subCommand = currentContext.invokedSubcommand
         if (subCommand == null) {
-            sender?.sendMessage(getFormattedHelp())
+            sender.sendMessage(getFormattedHelp())
         }
     }
 }

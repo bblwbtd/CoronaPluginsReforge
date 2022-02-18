@@ -1,5 +1,6 @@
 package viewRender
 
+import getText
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -10,7 +11,6 @@ import org.bukkit.inventory.ItemStack
 
 open class MagicView(options: MagicViewOptions? = null) : InventoryHolder {
 
-    private val inv = Bukkit.createInventory(null, options?.size ?: 54)
     open var layout = options?.layout
     private val inv = Bukkit.createInventory(this, options?.size ?: 54)
     private var current = 0

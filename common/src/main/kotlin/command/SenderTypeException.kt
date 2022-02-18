@@ -1,3 +1,3 @@
 package command
 
-class SenderTypeError: Exception("Invalid sender type.")
+class SenderTypeException : Exception("Invalid sender type.")
