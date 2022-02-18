@@ -18,7 +18,10 @@ class MagicViewPlugin : JavaPlugin {
     )
 
     override fun onEnable() {
-        getCommand("view")?.setExecutor(ViewCommandExecutor())
+        getCommand("view")?.apply {
+            setExecutor(ViewCommandExecutor())
+            tabCompleter = CommandCompleter(generateCommand())
+        }
         server.pluginManager.registerEvents(MagicViewListener(), this)
     }
 
