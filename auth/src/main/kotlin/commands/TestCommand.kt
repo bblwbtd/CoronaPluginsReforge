@@ -2,6 +2,8 @@ package commands
 
 import command.MagicCommand
 import command.PrivilegeError
+import org.bukkit.entity.Player
+import pages.LoginPage
 
 class TestCommand : MagicCommand() {
     override fun run() {
@@ -9,6 +11,6 @@ class TestCommand : MagicCommand() {
             throw PrivilegeError(sender)
         }
 
-
+        LoginPage().open(sender as Player)
     }
 }

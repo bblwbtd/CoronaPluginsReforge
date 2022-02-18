@@ -1,7 +1,8 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     kotlin("jvm")
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 group = "ldgame"
@@ -13,21 +14,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-}
-repositories {
-    mavenCentral()
-}
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
-}
-val compileTestKotlin: KotlinCompile by tasks
-compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+tasks.withType<ShadowJar> {
+    archiveBaseName.set("CoronaAuth")
+    archiveClassifier.set("")
 }
