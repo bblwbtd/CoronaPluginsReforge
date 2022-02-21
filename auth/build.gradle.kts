@@ -12,6 +12,7 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation(project(":common"))
     implementation(kotlin("stdlib-jdk8"))
+    implementation("org.ktorm:ktorm-core:3.4.1")
 }
 
 tasks.withType<ShadowJar> {

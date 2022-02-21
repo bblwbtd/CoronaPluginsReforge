@@ -31,7 +31,7 @@ allprojects {
         implementation(kotlin("stdlib-jdk8"))
         compileOnly("org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT")
         testImplementation("com.github.seeseemelk:MockBukkit-v1.17:1.7.0")
-        testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+        testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
         implementation("com.github.ajalt.clikt:clikt:3.2.0")
     }
 

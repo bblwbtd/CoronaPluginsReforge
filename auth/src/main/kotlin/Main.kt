@@ -1,6 +1,7 @@
 import command.CommandCompleter
-import commands.AuthCommand
 import commands.Executor
+import database.connectDB
+import database.db
 import org.bukkit.plugin.java.JavaPlugin
 import utils.info
 import utils.warn
@@ -20,6 +21,8 @@ class Main : JavaPlugin() {
                 tabCompleter = CommandCompleter(it.getCommand())
             }
         }
+
+        db = connectDB()
     }
 
     override fun onDisable() {
