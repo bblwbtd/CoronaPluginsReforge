@@ -1,7 +1,7 @@
 package command
 
 import com.github.ajalt.clikt.core.PrintMessage
-import getText
+import i18n.getText
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 

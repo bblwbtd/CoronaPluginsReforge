@@ -3,8 +3,8 @@ package commands
 import com.github.ajalt.clikt.parameters.arguments.argument
 import command.MagicCommand
 import command.SenderTypeException
-import getText
 import handler.login
+import i18n.getText
 import org.bukkit.entity.Player
 
 class LoginCommand : MagicCommand() {
