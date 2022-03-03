@@ -1,9 +1,7 @@
 package handler
 
 import Main
-import database.db
-import database.entities.User
-import database.users
+import entities.User
 import i18n.getText
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -12,23 +10,22 @@ import org.ktorm.entity.add
 import org.ktorm.entity.find
 import utils.getString
 import utils.setString
+import java.io.File
+import java.nio.file.Paths
 import java.security.MessageDigest
 
+fun fetchUser(username: String): User? {
+    val userDir = File(Paths.get(Main.plugin.dataFolder.path, "users", "${username}.json").toUri())
+    if (!userDir.exists()) {
+        userDir.mkdir()
+        return null
+    }
+
+    return null
+}
 
 fun login(username: String, password: String) {
-    Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, Runnable {
-        if (password.isEmpty()) return@Runnable
-        val player = Bukkit.getPlayer(username) ?: return@Runnable
-        val user = db.users.find { it.username eq username } ?: return@Runnable
-        val hash = digestPassword(password)
 
-        if (user.password == hash) {
-            player.loadData()
-            player.setString(Main.plugin, "state", PlayerState.AUTHENTICATED.name)
-        } else {
-            player.sendMessage(getText("Password doesn't match", player.locale))
-        }
-    })
 }
 
 fun register(username: String, password: String) {
@@ -36,12 +33,7 @@ fun register(username: String, password: String) {
         throw InvalidPasswordException()
     }
 
-    Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, Runnable {
-        db.users.add(User {
-            this.username = username
-            this.password = digestPassword(password)
-        })
-    })
+
 }
 
 fun digestPassword(password: String): String {
@@ -53,7 +45,7 @@ fun digestPassword(password: String): String {
 }
 
 fun hasRegistered(username: String): Boolean {
-    return db.users.find { it.username eq username } != null
+    return false
 }
 
 fun Player.isAuthenticated(): Boolean {

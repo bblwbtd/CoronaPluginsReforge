@@ -1,7 +1,5 @@
 import command.CommandCompleter
 import commands.Executor
-import database.connectDB
-import database.db
 import listener.PlayerListener
 import org.bukkit.plugin.java.JavaPlugin
 import utils.info
@@ -25,8 +23,6 @@ class Main : JavaPlugin() {
         }
 
         registerListeners()
-
-        db = connectDB()
     }
 
     private fun registerListeners() {
