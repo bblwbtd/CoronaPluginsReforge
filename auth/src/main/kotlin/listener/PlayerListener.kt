@@ -18,7 +18,10 @@ import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
 import pages.LoginPage
-import utils.*
+import utils.getDouble
+import utils.getString
+import utils.isAuthenticated
+import utils.setDouble
 import viewRender.MagicViewOptions
 import viewRender.setName
 import viewRender.setString
@@ -47,7 +50,7 @@ class PlayerListener : Listener {
     fun onPlayerJoin(event: PlayerJoinEvent) {
         event.player.run {
             saveData()
-            setString(Main.plugin, "state", PlayerState.UNAUTHENTICATED.name)
+            PlayerState.UNAUTHENTICATED.setState(this)
             savePlayerLocation(this)
 
             inventory.clear()
