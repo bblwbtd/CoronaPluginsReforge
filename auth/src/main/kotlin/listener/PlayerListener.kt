@@ -1,9 +1,8 @@
 package listener
 
 import Main
+import handler.AuthHandler
 import handler.PlayerState
-import handler.hasRegistered
-import handler.isAuthenticated
 import i18n.color
 import i18n.getText
 import org.bukkit.ChatColor
@@ -19,15 +18,14 @@ import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
 import pages.LoginPage
-import utils.getDouble
-import utils.getString
-import utils.setDouble
-import utils.setString
+import utils.*
 import viewRender.MagicViewOptions
 import viewRender.setName
 import viewRender.setString
 
 class PlayerListener : Listener {
+
+    val authHandler = AuthHandler()
 
     private val loginEntry = ItemStack(Material.EMERALD_BLOCK).apply {
         setString("type", "login")
@@ -53,7 +51,7 @@ class PlayerListener : Listener {
             savePlayerLocation(this)
 
             inventory.clear()
-            inventory.addItem(if (hasRegistered(name)) loginEntry.apply {
+            inventory.addItem(if (authHandler.hasRegistered(name)) loginEntry.apply {
                 setName(getText("Login Entrance", locale))
             } else registryEntry.apply {
                 setName(getText("Register Entrance", locale))
