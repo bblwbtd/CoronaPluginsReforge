@@ -7,6 +7,10 @@ import org.bukkit.entity.Player
 import utils.plus
 import java.util.*
 
+fun String.locale(locale: CommandSender? = null): String {
+    return getText(this, locale)
+}
+
 fun getText(rawText: String, locale: String? = "en_us"): String {
     return rawText
 }

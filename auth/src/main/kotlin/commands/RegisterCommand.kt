@@ -1,22 +1,22 @@
 package commands
 
-import Main
 import com.github.ajalt.clikt.parameters.arguments.argument
 import command.InvalidSenderException
 import command.MagicCommand
 import handler.AuthHandler
+import handler.DuplicatedUserException
 import handler.InvalidPasswordException
-import handler.NoUserException
 import handler.PlayerState
 import i18n.color
 import i18n.locale
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
-import utils.getString
 
-class LoginCommand : MagicCommand() {
+class RegisterCommand : MagicCommand() {
     private val password by argument()
-
+    private val handler = AuthHandler()
+    override val commandHelp: String
+        get() = "Password's length must be longer than 6.".locale(sender)
 
     override fun run() {
         if (sender !is Player) {
@@ -24,23 +24,15 @@ class LoginCommand : MagicCommand() {
         }
 
         val player = sender as Player
-
-        if (PlayerState.AUTHENTICATED.name == player.getString(Main.plugin, "state")) {
-            throw AuthenticatedException("You have already login".locale(sender).color(ChatColor.RED))
-        }
-
-        val username = player.name
-        val handler = AuthHandler()
-
         try {
-            handler.login(username, password)
+            handler.register(player.name, password)
+            player.sendMessage("Register successfully.".locale(sender).color(ChatColor.GREEN))
             player.loadData()
             PlayerState.AUTHENTICATED.setState(player)
-            player.sendMessage("Login successfully!".locale(sender).color(ChatColor.GREEN))
         } catch (e: InvalidPasswordException) {
-            player.sendMessage("Wrong password".locale(sender).color(ChatColor.RED))
-        } catch (e: NoUserException) {
-            player.sendMessage("You need to register first.".locale(sender).color(ChatColor.RED))
+            player.sendMessage("Invalid password.".locale(sender).color(ChatColor.RED))
+        } catch (e: DuplicatedUserException) {
+            player.sendMessage("This user has already registered.".locale(sender).color(ChatColor.RED))
         }
     }
 }

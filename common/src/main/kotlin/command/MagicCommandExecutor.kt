@@ -11,6 +11,7 @@ abstract class MagicCommandExecutor : CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         val magicCommand = getCommand()
+        magicCommand.sender = sender
         magicCommand.passSender()
         try {
             magicCommand.parse(args)
@@ -19,7 +20,8 @@ abstract class MagicCommandExecutor : CommandExecutor {
             sender.sendMessage(message)
             return true
         } catch (e: Exception) {
-            e.printStackTrace()
+//            e.printStackTrace()
+//            sender.sendMessage(e.message)
             return false
         }
         return true

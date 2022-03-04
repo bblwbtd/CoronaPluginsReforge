@@ -7,8 +7,9 @@ import command.MagicCommandExecutor
 class Executor : MagicCommandExecutor() {
     override fun getCommand(): MagicCommand {
         return AuthCommand().subcommands(
-            TestCommand(),
-            LoginCommand()
+            LoginCommand(),
+            RegisterCommand(),
+            UpdateCommand()
         )
     }
 }

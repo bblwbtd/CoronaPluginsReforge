@@ -17,7 +17,7 @@ class AuthHandler(private val userDir: String = Paths.get(Main.plugin.dataFolder
     fun fetchUser(username: String): User? {
         val file = fetchUserFile(username)
         if (!file.parentFile.exists()) {
-            file.mkdirs()
+            file.parentFile.mkdirs()
             return null
         }
 
@@ -35,9 +35,7 @@ class AuthHandler(private val userDir: String = Paths.get(Main.plugin.dataFolder
     }
 
     fun register(username: String, password: String): User {
-        if (password.length < 6) {
-            throw InvalidPasswordException()
-        }
+        validatePassword(password)
 
         if (hasRegistered(username)) {
             throw DuplicatedUserException()
@@ -48,6 +46,20 @@ class AuthHandler(private val userDir: String = Paths.get(Main.plugin.dataFolder
 
         mapper.writeValue(file, user)
         return user
+    }
+
+    fun update(username: String, password: String) {
+        validatePassword(password)
+
+        val file = fetchUserFile(username)
+
+        mapper.writeValue(file, User(username, md5(password)))
+    }
+
+    fun validatePassword(password: String) {
+        if (password.length < 6) {
+            throw InvalidPasswordException()
+        }
     }
 
     fun hasRegistered(username: String): Boolean {

@@ -5,7 +5,7 @@ import command.MagicCommand
 class AuthCommand : MagicCommand() {
 
     override fun run() {
-        sender?.sendMessage(getFormattedHelp())
+
     }
 
     override fun aliases(): Map<String, List<String>> {

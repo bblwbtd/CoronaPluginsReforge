@@ -12,6 +12,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityPickupItemEvent
@@ -19,7 +20,6 @@ import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
 import pages.LoginPage
 import utils.getDouble
-import utils.getString
 import utils.isAuthenticated
 import utils.setDouble
 import viewRender.MagicViewOptions
@@ -28,7 +28,7 @@ import viewRender.setString
 
 class PlayerListener : Listener {
 
-    val authHandler = AuthHandler()
+    private val authHandler = AuthHandler()
 
     private val loginEntry = ItemStack(Material.EMERALD_BLOCK).apply {
         setString("type", "login")
@@ -70,13 +70,22 @@ class PlayerListener : Listener {
     }
 
     @EventHandler
+    fun onPlayerQuit(event: PlayerQuitEvent) {
+        event.player.run {
+            if (!isAuthenticated()) {
+                loadData()
+            }
+        }
+    }
+
+    @EventHandler
     fun preventPlayerMove(event: PlayerMoveEvent) {
         event.player.run {
-            if (getString(Main.plugin, "state")?.equals(PlayerState.AUTHENTICATED.name) == true) return
+            if (isAuthenticated()) return
 
-            if (getDouble(Main.plugin, "x") != location.x ||
-                getDouble(Main.plugin, "y") != location.y ||
-                getDouble(Main.plugin, "z") != location.z
+            if (getDouble(Main.plugin, "x") != event.to?.x ||
+                getDouble(Main.plugin, "y") != event.to?.y ||
+                getDouble(Main.plugin, "z") != event.to?.z
             ) {
                 event.isCancelled = true
             }
@@ -131,7 +140,7 @@ class PlayerListener : Listener {
     @EventHandler
     fun openLoginPage(event: PlayerInteractEvent) {
         event.player.run {
-            if (!isAuthenticated()) return
+            if (isAuthenticated()) return
 
             when (inventory.itemInMainHand) {
                 loginEntry -> LoginPage(MagicViewOptions(name = getText("Login Page", this.locale)))
@@ -140,5 +149,10 @@ class PlayerListener : Listener {
 
             event.isCancelled = true
         }
+    }
+
+    @EventHandler
+    fun preventPlaceBlock(event: BlockPlaceEvent) {
+        if (!event.player.isAuthenticated()) event.isCancelled = true
     }
 }
