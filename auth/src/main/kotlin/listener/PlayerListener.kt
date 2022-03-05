@@ -18,11 +18,11 @@ import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
-import pages.LoginPage
+import pages.showLoginPage
+import pages.showRegisterPage
 import utils.getDouble
 import utils.isAuthenticated
 import utils.setDouble
-import viewRender.MagicViewOptions
 import viewRender.setName
 import viewRender.setString
 
@@ -143,8 +143,8 @@ class PlayerListener : Listener {
             if (isAuthenticated()) return
 
             when (inventory.itemInMainHand) {
-                loginEntry -> LoginPage(MagicViewOptions(name = getText("Login Page", this.locale)))
-                registryEntry -> TODO()
+                loginEntry -> showLoginPage(this)
+                registryEntry -> showRegisterPage(this)
             }
 
             event.isCancelled = true
