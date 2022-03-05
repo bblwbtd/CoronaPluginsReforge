@@ -16,6 +16,7 @@ import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityPickupItemEvent
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
 import pages.showLoginPage
@@ -154,5 +155,20 @@ class PlayerListener : Listener {
     @EventHandler
     fun preventPlaceBlock(event: BlockPlaceEvent) {
         if (!event.player.isAuthenticated()) event.isCancelled = true
+    }
+
+    @EventHandler
+    fun preventCommand(event: PlayerCommandPreprocessEvent) {
+        if (!event.player.isAuthenticated() && event.message.split(" ").first() != "/auth") {
+            event.isCancelled = true
+        }
+    }
+
+    @EventHandler
+    fun preventBeingTargeted(event: EntityTargetLivingEntityEvent) {
+        if (event.target !is Player) return
+
+        val player = event.target as Player
+        if (!player.isAuthenticated()) event.isCancelled = true
     }
 }
