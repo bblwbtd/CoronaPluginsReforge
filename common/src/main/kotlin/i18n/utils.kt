@@ -31,3 +31,7 @@ fun getText(rawText: String, sender: CommandSender? = null): String {
 fun String.color(color: ChatColor): String {
     return color + this
 }
+
+fun String.send(sender: CommandSender) {
+    sender.sendMessage(this)
+}

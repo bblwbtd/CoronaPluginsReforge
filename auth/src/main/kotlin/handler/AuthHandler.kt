@@ -1,9 +1,8 @@
 package handler
 
 import Main
-import com.fasterxml.jackson.module.kotlin.readValue
 import entities.User
-import entities.mapper
+import utils.mapper
 import utils.md5
 import java.io.File
 import java.nio.file.Paths

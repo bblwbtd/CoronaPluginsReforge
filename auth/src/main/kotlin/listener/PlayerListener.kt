@@ -24,11 +24,7 @@ import org.bukkit.inventory.ItemStack
 import org.spigotmc.event.entity.EntityMountEvent
 import pages.showLoginPage
 import pages.showRegisterPage
-import utils.getDouble
-import utils.isAuthenticated
-import utils.setDouble
-import viewRender.setName
-import viewRender.setString
+import utils.*
 
 class PlayerListener : Listener {
 
