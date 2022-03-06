@@ -5,4 +5,4 @@ authors:
   - bblwbtd
 commands:
   auth:
-    description: The CoronaAuth plugin's root command.
+    description: The CoronaAuth plugin's command.

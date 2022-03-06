@@ -19,6 +19,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
+import org.spigotmc.event.entity.EntityMountEvent
 import pages.showLoginPage
 import pages.showRegisterPage
 import utils.getDouble
@@ -169,6 +170,13 @@ class PlayerListener : Listener {
         if (event.target !is Player) return
 
         val player = event.target as Player
+        if (!player.isAuthenticated()) event.isCancelled = true
+    }
+
+    @EventHandler
+    fun preventPlayerMount(event: EntityMountEvent) {
+        if (event.entity !is Player) return
+        val player = event.entity as Player
         if (!player.isAuthenticated()) event.isCancelled = true
     }
 }
