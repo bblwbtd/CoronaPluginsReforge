@@ -20,6 +20,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.ktorm:ktorm-core:3.4.1")
     implementation("net.wesjd:anvilgui:1.5.3-SNAPSHOT")
+
 }
 
 tasks.withType<ShadowJar> {

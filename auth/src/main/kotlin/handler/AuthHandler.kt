@@ -24,7 +24,7 @@ class AuthHandler(private val userDir: String = Paths.get(Main.plugin.dataFolder
             return null
         }
 
-        return mapper.readValue<User>(file)
+        return mapper.readValue(file, User::class.java)
     }
 
     fun login(username: String, password: String) {
