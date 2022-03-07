@@ -2,11 +2,10 @@ package utils
 
 
 import listener.KeyListListener
-import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 
-class setKeyList: JavaPlugin(), Listener {
+class KeyList: JavaPlugin(), Listener {
     private val myConfig =  getConfig()
     private val myKeys = listOf("DIAMOND","REDSTONE")
 
