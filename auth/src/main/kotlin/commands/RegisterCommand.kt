@@ -2,10 +2,7 @@ package commands
 
 import com.github.ajalt.clikt.parameters.arguments.argument
 import command.MagicCommand
-import handler.AuthHandler
-import handler.DuplicatedUserException
-import handler.InvalidPasswordException
-import handler.PlayerState
+import handler.*
 import i18n.color
 import i18n.locale
 import i18n.send
@@ -28,7 +25,7 @@ class RegisterCommand : MagicCommand() {
         try {
             handler.register(player.name, password)
             "Register successfully.".locale(sender).color(ChatColor.GREEN).send(player)
-            player.loadData()
+            loadInventory(player)
             PlayerState.AUTHENTICATED.setState(player)
         } catch (e: InvalidPasswordException) {
             "Invalid password.".locale(sender).color(ChatColor.RED).send(player)
