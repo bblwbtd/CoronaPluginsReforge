@@ -16,8 +16,8 @@ class KeyList: JavaPlugin(), Listener {
         getServer().getPluginManager().registerEvents(KeyListListener(), this)
     }
 
-    fun getKeyList(): List<String>? {
-        val keyList: List<String>? = config.getList("keys") as? List<String>
+    fun getKeyList(): List<String> {
+        val keyList: List<String> = config.getList("keys") as List<String>
         return keyList
     }
 
