@@ -12,4 +12,5 @@ fun save(player: Player) {
 fun loadAndDelete(player: Player) {
     player.inventory.contents = store[player.name] ?: arrayOf()
     store.remove(player.name)
+    player.updateInventory()
 }
