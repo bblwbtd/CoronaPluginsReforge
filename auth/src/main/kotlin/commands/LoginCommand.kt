@@ -1,32 +1,29 @@
 package commands
 
-import Main
 import com.github.ajalt.clikt.parameters.arguments.argument
-import command.InvalidSenderException
 import command.MagicCommand
-import handler.AuthHandler
-import handler.InvalidPasswordException
-import handler.NoUserException
-import handler.PlayerState
+import handler.*
 import i18n.color
 import i18n.locale
+import i18n.send
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
-import utils.getString
+import utils.isAuthenticated
 
 class LoginCommand : MagicCommand() {
     private val password by argument()
 
-
     override fun run() {
         if (sender !is Player) {
-            throw InvalidSenderException("Invalid sender type.".locale(sender).color(ChatColor.RED))
+            "Invalid sender type.".locale(sender).color(ChatColor.RED).send(sender!!)
+            return
         }
 
         val player = sender as Player
 
-        if (PlayerState.AUTHENTICATED.name == player.getString(Main.plugin, "state")) {
-            throw AuthenticatedException("You have already login".locale(sender).color(ChatColor.RED))
+        if (player.isAuthenticated()) {
+            "You have already login".locale(sender).color(ChatColor.RED).send(player)
+            return
         }
 
         val username = player.name
@@ -34,13 +31,13 @@ class LoginCommand : MagicCommand() {
 
         try {
             handler.login(username, password)
-            player.loadData()
+            loadAndDelete(player)
             PlayerState.AUTHENTICATED.setState(player)
-            player.sendMessage("Login successfully!".locale(sender).color(ChatColor.GREEN))
+            "Login successfully!".locale(sender).color(ChatColor.GREEN).send(player)
         } catch (e: InvalidPasswordException) {
-            player.sendMessage("Wrong password".locale(sender).color(ChatColor.RED))
+            "Wrong password".locale(sender).color(ChatColor.RED).send(player)
         } catch (e: NoUserException) {
-            player.sendMessage("You need to register first.".locale(sender).color(ChatColor.RED))
+            "You need to register first.".locale(sender).color(ChatColor.RED).send(player)
         }
     }
 }

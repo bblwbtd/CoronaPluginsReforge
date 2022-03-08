@@ -1,9 +1,8 @@
 package handler
 
 import Main
-import com.fasterxml.jackson.module.kotlin.readValue
 import entities.User
-import entities.mapper
+import utils.mapper
 import utils.md5
 import java.io.File
 import java.nio.file.Paths
@@ -25,7 +24,7 @@ class AuthHandler(private val userDir: String = Paths.get(Main.plugin.dataFolder
             return null
         }
 
-        return mapper.readValue<User>(file)
+        return mapper.readValue(file, User::class.java)
     }
 
     fun login(username: String, password: String) {

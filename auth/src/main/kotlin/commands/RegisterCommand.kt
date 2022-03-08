@@ -1,7 +1,6 @@
 package commands
 
 import com.github.ajalt.clikt.parameters.arguments.argument
-import command.InvalidSenderException
 import command.MagicCommand
 import handler.AuthHandler
 import handler.DuplicatedUserException
@@ -9,6 +8,7 @@ import handler.InvalidPasswordException
 import handler.PlayerState
 import i18n.color
 import i18n.locale
+import i18n.send
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 
@@ -20,19 +20,20 @@ class RegisterCommand : MagicCommand() {
 
     override fun run() {
         if (sender !is Player) {
-            throw InvalidSenderException("Invalid sender type.".locale(sender).color(ChatColor.RED))
+            "Invalid sender type.".locale(sender).color(ChatColor.RED).send(sender!!)
+            return
         }
 
         val player = sender as Player
         try {
             handler.register(player.name, password)
-            player.sendMessage("Register successfully.".locale(sender).color(ChatColor.GREEN))
+            "Register successfully.".locale(sender).color(ChatColor.GREEN).send(player)
             player.loadData()
             PlayerState.AUTHENTICATED.setState(player)
         } catch (e: InvalidPasswordException) {
-            player.sendMessage("Invalid password.".locale(sender).color(ChatColor.RED))
+            "Invalid password.".locale(sender).color(ChatColor.RED).send(player)
         } catch (e: DuplicatedUserException) {
-            player.sendMessage("This user has already registered.".locale(sender).color(ChatColor.RED))
+            "This user has already registered.".locale(sender).color(ChatColor.RED).send(player)
         }
     }
 }

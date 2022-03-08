@@ -19,8 +19,8 @@ dependencies {
     implementation(project(":common"))
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.ktorm:ktorm-core:3.4.1")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.+")
     implementation("net.wesjd:anvilgui:1.5.3-SNAPSHOT")
+
 }
 
 tasks.withType<ShadowJar> {

@@ -1,10 +1,7 @@
 package pages
 
 import Main
-import handler.AuthHandler
-import handler.DuplicatedUserException
-import handler.InvalidPasswordException
-import handler.PlayerState
+import handler.*
 import i18n.color
 import i18n.locale
 import net.wesjd.anvilgui.AnvilGUI
@@ -17,7 +14,7 @@ fun showRegisterPage(p: Player) {
     AnvilGUI.Builder().onComplete { player, text ->
         try {
             AuthHandler().register(p.name, text.trim())
-            player.loadData()
+            loadAndDelete(player)
             PlayerState.AUTHENTICATED.setState(player)
             player.sendMessage("Register successfully!".locale(player).color(ChatColor.GREEN))
             AnvilGUI.Response.close()

@@ -33,6 +33,7 @@ allprojects {
         testImplementation("com.github.seeseemelk:MockBukkit-v1.17:1.7.0")
         testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
         implementation("com.github.ajalt.clikt:clikt:3.2.0")
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.+")
     }
 
     tasks.test {

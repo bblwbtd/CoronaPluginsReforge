@@ -6,6 +6,7 @@ import command.MagicCommandExecutor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import utils.setName
 
 fun generateCommand(): MagicCommand {
     return ViewCommand().subcommands(SinglePageCommand(), MultiplePageCommand())

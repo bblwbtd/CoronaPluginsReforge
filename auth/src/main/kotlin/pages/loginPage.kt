@@ -1,10 +1,7 @@
 package pages
 
 import Main
-import handler.AuthHandler
-import handler.InvalidPasswordException
-import handler.NoUserException
-import handler.PlayerState
+import handler.*
 import i18n.color
 import i18n.locale
 import net.wesjd.anvilgui.AnvilGUI
@@ -18,7 +15,7 @@ fun showLoginPage(p: Player) {
     AnvilGUI.Builder().onComplete { player, text ->
         try {
             AuthHandler().login(p.name, text.trim())
-            player.loadData()
+            loadAndDelete(player)
             PlayerState.AUTHENTICATED.setState(player)
             player.sendMessage("Login successfully!".locale(player).color(ChatColor.GREEN))
             AnvilGUI.Response.close()

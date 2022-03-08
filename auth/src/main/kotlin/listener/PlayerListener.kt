@@ -3,6 +3,8 @@ package listener
 import Main
 import handler.AuthHandler
 import handler.PlayerState
+import handler.loadAndDelete
+import handler.save
 import i18n.color
 import i18n.getText
 import org.bukkit.ChatColor
@@ -19,13 +21,10 @@ import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
+import org.spigotmc.event.entity.EntityMountEvent
 import pages.showLoginPage
 import pages.showRegisterPage
-import utils.getDouble
-import utils.isAuthenticated
-import utils.setDouble
-import viewRender.setName
-import viewRender.setString
+import utils.*
 
 class PlayerListener : Listener {
 
@@ -50,7 +49,7 @@ class PlayerListener : Listener {
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
         event.player.run {
-            saveData()
+            save(this)
             PlayerState.UNAUTHENTICATED.setState(this)
             savePlayerLocation(this)
 
@@ -74,7 +73,7 @@ class PlayerListener : Listener {
     fun onPlayerQuit(event: PlayerQuitEvent) {
         event.player.run {
             if (!isAuthenticated()) {
-                loadData()
+                loadAndDelete(this)
             }
         }
     }
@@ -169,6 +168,13 @@ class PlayerListener : Listener {
         if (event.target !is Player) return
 
         val player = event.target as Player
+        if (!player.isAuthenticated()) event.isCancelled = true
+    }
+
+    @EventHandler
+    fun preventPlayerMount(event: EntityMountEvent) {
+        if (event.entity !is Player) return
+        val player = event.entity as Player
         if (!player.isAuthenticated()) event.isCancelled = true
     }
 }
