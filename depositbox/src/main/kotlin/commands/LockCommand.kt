@@ -9,8 +9,7 @@ import org.bukkit.ChatColor
 import org.bukkit.block.DoubleChest
 import org.bukkit.block.Chest
 import org.bukkit.entity.Player
-import java.io.File
-import java.nio.file.Paths
+
 
 class LockCommand : MagicCommand() {
 

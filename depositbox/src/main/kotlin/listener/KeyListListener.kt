@@ -1,6 +1,7 @@
 package listener
 
 
+import handler.DepositBoxHandler
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
@@ -8,6 +9,8 @@ import org.bukkit.event.player.PlayerJoinEvent
 import utils.KeyList
 
 class KeyListListener: Listener {
+
+    private val depositBoxHandler = DepositBoxHandler()
 
     @EventHandler
     fun initKeyLists(event: PlayerJoinEvent){
