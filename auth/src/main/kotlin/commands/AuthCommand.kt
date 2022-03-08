@@ -4,10 +4,6 @@ import command.MagicCommand
 
 class AuthCommand : MagicCommand() {
 
-    override fun run() {
-
-    }
-
     override fun aliases(): Map<String, List<String>> {
         return mapOf(
             "l" to listOf("login"),
