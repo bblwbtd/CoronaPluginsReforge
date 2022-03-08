@@ -27,11 +27,9 @@ class CommandCompleter(private val customCommand: CliktCommand) : TabCompleter {
             }
         }
 
-        if (current != null) {
-            current?.registeredSubcommandNames()?.forEach {
-                if (it.contains(args.last())) {
-                    results.add(it)
-                }
+        current?.registeredSubcommandNames()?.forEach {
+            if (it.contains(args.last())) {
+                results.add(it)
             }
         }
 

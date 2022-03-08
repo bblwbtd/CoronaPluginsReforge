@@ -5,11 +5,11 @@ import org.bukkit.inventory.ItemStack
 
 val store = HashMap<String, Array<ItemStack>>()
 
-fun save(player: Player) {
+fun saveInventory(player: Player) {
     store[player.name] = player.inventory.contents.clone()
 }
 
-fun loadAndDelete(player: Player) {
+fun loadInventory(player: Player) {
     player.inventory.contents = store[player.name] ?: arrayOf()
     store.remove(player.name)
     player.updateInventory()

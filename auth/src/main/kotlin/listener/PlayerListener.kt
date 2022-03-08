@@ -3,8 +3,8 @@ package listener
 import Main
 import handler.AuthHandler
 import handler.PlayerState
-import handler.loadAndDelete
-import handler.save
+import handler.loadInventory
+import handler.saveInventory
 import i18n.color
 import i18n.getText
 import org.bukkit.ChatColor
@@ -49,7 +49,7 @@ class PlayerListener : Listener {
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
         event.player.run {
-            save(this)
+            saveInventory(this)
             PlayerState.UNAUTHENTICATED.setState(this)
             savePlayerLocation(this)
 
@@ -73,7 +73,7 @@ class PlayerListener : Listener {
     fun onPlayerQuit(event: PlayerQuitEvent) {
         event.player.run {
             if (!isAuthenticated()) {
-                loadAndDelete(this)
+                loadInventory(this)
             }
         }
     }
