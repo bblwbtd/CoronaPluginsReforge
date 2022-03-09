@@ -1,6 +1,7 @@
 import command.CommandCompleter
 import commands.Executor
 import listener.KeyListListener
+import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 import utils.info
 import utils.warn
@@ -14,12 +15,13 @@ class Main: JavaPlugin() {
     override fun onEnable() {
         info("CoronaDepositBox enabled")
         plugin = this
-        getCommand("getkeytype")!!.apply {
+        getCommand("lockbox")!!.apply {
             Executor().let {
                 setExecutor(it)
                 tabCompleter = CommandCompleter(it.getCommand())
             }
         }
+
 
         registerListeners()
     }
@@ -32,7 +34,7 @@ class Main: JavaPlugin() {
     }
 
     override fun onDisable() {
-        warn("CoronaAuth disabled")
+        warn("CoronaDepositBox disabled")
     }
 
 }

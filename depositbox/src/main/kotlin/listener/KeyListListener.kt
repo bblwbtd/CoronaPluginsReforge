@@ -2,27 +2,21 @@ package listener
 
 
 import handler.DepositBoxHandler
+import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.player.AsyncPlayerChatEvent
-import org.bukkit.event.player.PlayerJoinEvent
-import utils.KeyList
+import org.bukkit.event.player.PlayerCommandPreprocessEvent
 
-class KeyListListener: Listener {
+class KeyListListener(): Listener {
 
     private val depositBoxHandler = DepositBoxHandler()
 
-    @EventHandler
-    fun initKeyLists(event: PlayerJoinEvent){
-        event.player.run {
-            KeyList().generateKeyList()
-        }
-    }
+
 
     @EventHandler
-    fun getKeyListsbyCommand(event: AsyncPlayerChatEvent){
+    fun getKeyListsbyCommand(event: PlayerCommandPreprocessEvent){
         event.player.run {
-            KeyList().getKeyList()
+            depositBoxHandler.getValidKeyList()
         }
     }
 

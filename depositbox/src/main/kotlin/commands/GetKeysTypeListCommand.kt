@@ -7,18 +7,19 @@ import handler.DepositBoxHandler
 import handler.UnauthorizedException
 import i18n.color
 import i18n.locale
+import i18n.send
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import utils.isAuthenticated
 
 class GetKeysTypeListCommand: MagicCommand() {
-    private val getkeytype by argument()
 
     private val handler = DepositBoxHandler()
 
     override fun run() {
         if (sender !is Player) {
-            throw InvalidSenderException("Invalid sender type.".locale(sender).color(ChatColor.RED))
+            "Invalid sender type.".locale(sender).color(ChatColor.RED).send(sender!!)
+            return
         }
 
         val player = sender as Player
@@ -28,7 +29,7 @@ class GetKeysTypeListCommand: MagicCommand() {
                 val keyList = handler.getValidKeyList()
                 val resultList = ""
                 keyList.forEach{resultList+it}
-                player.sendMessage(resultList.locale(sender).color(ChatColor.YELLOW))
+                player.sendMessage(resultList+"sss".locale(sender).color(ChatColor.YELLOW))
             }
         }catch (exception: UnauthorizedException){
             player.sendMessage("Please login to confirm your identity!".locale(sender).color(ChatColor.RED))
