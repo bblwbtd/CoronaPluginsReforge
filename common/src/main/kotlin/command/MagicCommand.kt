@@ -6,6 +6,10 @@ import org.bukkit.command.CommandSender
 abstract class MagicCommand(var sender: CommandSender? = null, help: String = "", var name: String? = null) :
     CliktCommand(help = help, printHelpOnEmptyArgs = true, name = name) {
 
+    override fun run() {
+
+    }
+
     internal fun passSender() {
         registeredSubcommands().forEach {
             it as MagicCommand

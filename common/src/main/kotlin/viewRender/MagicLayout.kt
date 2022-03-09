@@ -25,6 +25,11 @@ class MagicLayout {
         return this
     }
 
+    fun setComponent(pos: Int, component: MagicComponent): MagicLayout {
+        components["${pos % 9},${pos / 9}"] = component
+        return this
+    }
+
     fun getComponent(x: Int, y: Int): MagicComponent? {
         return components[getCoordinate(x, y)]
     }

@@ -15,7 +15,7 @@ fun showLoginPage(p: Player) {
     AnvilGUI.Builder().onComplete { player, text ->
         try {
             AuthHandler().login(p.name, text.trim())
-            loadAndDelete(player)
+            loadInventory(player)
             PlayerState.AUTHENTICATED.setState(player)
             player.sendMessage("Login successfully!".locale(player).color(ChatColor.GREEN))
             AnvilGUI.Response.close()

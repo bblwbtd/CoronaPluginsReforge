@@ -31,7 +31,7 @@ class LoginCommand : MagicCommand() {
 
         try {
             handler.login(username, password)
-            loadAndDelete(player)
+            loadInventory(player)
             PlayerState.AUTHENTICATED.setState(player)
             "Login successfully!".locale(sender).color(ChatColor.GREEN).send(player)
         } catch (e: InvalidPasswordException) {
