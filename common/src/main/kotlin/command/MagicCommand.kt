@@ -7,8 +7,10 @@ import i18n.send
 import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 
-abstract class MagicCommand(var sender: CommandSender? = null, help: String = "", var name: String? = null) :
-    CliktCommand(help = help, printHelpOnEmptyArgs = true, name = name) {
+abstract class MagicCommand(help: String = "", var name: String? = null) :
+    CliktCommand(help = help, printHelpOnEmptyArgs = false, name = name) {
+
+    lateinit var sender: CommandSender
 
     override fun run() {
 
@@ -24,7 +26,7 @@ abstract class MagicCommand(var sender: CommandSender? = null, help: String = ""
 
     inline fun <reified T> checkSenderType() {
         if (sender !is T) {
-            "Invalid sender.".locale(sender).color(ChatColor.RED).send(sender!!)
+            "Invalid sender.".locale(sender).color(ChatColor.RED).send(sender)
             throw InvalidSenderException()
         }
     }
