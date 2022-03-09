@@ -12,12 +12,10 @@ class KeyListListener(): Listener {
 
 
     @EventHandler
-    fun getKeyListsbyCommand(event: PlayerCommandPreprocessEvent){
+    fun getKeyListsByCommand(event: PlayerCommandPreprocessEvent){
         event.player.run {
             depositBoxHandler.getValidKeyList()
         }
     }
-
-
 
 }

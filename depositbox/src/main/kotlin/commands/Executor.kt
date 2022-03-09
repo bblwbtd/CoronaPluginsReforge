@@ -6,8 +6,8 @@ import command.MagicCommandExecutor
 
 class Executor : MagicCommandExecutor() {
     override fun getCommand(): MagicCommand {
-        return DepositBoxCommand().subcommands(
-            GetKeysTypeListCommand()
+        return BoxCommand().subcommands(
+            KeysCommand()
         )
     }
 
