@@ -16,10 +16,7 @@ class RegisterCommand : MagicCommand() {
         get() = "Password's length must be longer than 6.".locale(sender)
 
     override fun run() {
-        if (sender !is Player) {
-            "Invalid sender type.".locale(sender).color(ChatColor.RED).send(sender!!)
-            return
-        }
+        checkSenderType<Player>()
 
         val player = sender as Player
         try {

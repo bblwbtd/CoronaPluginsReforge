@@ -3,12 +3,12 @@ package handler
 import Main
 import entities.Address
 import entities.AddressBook
-import org.bukkit.entity.Player
+import org.bukkit.entity.HumanEntity
 import utils.mapper
 import java.io.File
 import java.nio.file.Paths
 
-class LocationHandler(private val dataDir: String = Main.plugin.dataFolder.path, private val player: Player) {
+class LocationHandler(private val player: HumanEntity, private val dataDir: String = Main.plugin.dataFolder.path) {
 
     private fun getUserAddressBookFile(): File {
         return Paths.get(dataDir, player.name).toFile()
@@ -22,9 +22,9 @@ class LocationHandler(private val dataDir: String = Main.plugin.dataFolder.path,
         return mapper.readValue(file, AddressBook::class.java)
     }
 
-    fun savePlayerLocation() {
+    fun savePlayerLocation(name: String) {
         val location = player.location
-        val address = Address(location.x, location.y, location.z, location.world!!.name)
+        val address = Address(name, location.x, location.y, location.z, location.world!!.name)
         val book = getUserAddressBook() ?: AddressBook()
         book.address.add(address)
         mapper.writeValue(getUserAddressBookFile(), book)
