@@ -1,7 +1,6 @@
 package handler
 
-import org.bukkit.configuration.file.FileConfiguration
-import utils.KeyList
+import utils.getKeyList
 
 class DepositBoxHandler() {
 
