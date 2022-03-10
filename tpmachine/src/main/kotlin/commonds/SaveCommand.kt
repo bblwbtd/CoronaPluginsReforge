@@ -20,15 +20,13 @@ class SaveCommand : MagicCommand() {
 
     override fun run() {
         val player = checkSenderType<Player>()
-
-        val book = LocationHandler(player).getPlayerAddressBook() ?: AddressBook()
-
+        val handler = LocationHandler(player)
+        val book = handler.getPlayerAddressBook() ?: AddressBook()
         if (book.address.size >= book.limit) {
             "The maximum number of addresses has been reached".locale(sender).color(ChatColor.RED).send(sender)
             return
         }
-
-        book.add(locationName, player.location)
+        handler.savePlayerLocation(locationName)
         "New address saved: ".locale(player).plus(locationName).color(ChatColor.GREEN).send(player)
     }
 }
