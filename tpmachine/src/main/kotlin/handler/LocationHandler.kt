@@ -3,12 +3,20 @@ package handler
 import Main
 import entities.Address
 import entities.AddressBook
+import i18n.color
+import i18n.locale
+import i18n.send
+import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import utils.mapper
 import java.io.File
 import java.nio.file.Paths
 
 class LocationHandler(private val player: Player, private val dataDir: String = Main.plugin.dataFolder.path) {
+
+    private val file = getUserAddressBookFile()
+    private val book = getPlayerAddressBook() ?: AddressBook()
+    private val invalidAddressNameMessage = "Invalid address name.".locale(player).color(ChatColor.RED)
 
     private fun getUserAddressBookFile(): File {
         return Paths.get(dataDir, player.name).toFile()
@@ -23,10 +31,50 @@ class LocationHandler(private val player: Player, private val dataDir: String = 
     }
 
     fun savePlayerLocation(name: String) {
+        if (!validateAddressName(name)) {
+            invalidAddressNameMessage.send(player)
+            return
+        }
+
         val location = player.location
         val address = Address(name, location.x, location.y, location.z, location.world!!.name)
-        val book = getPlayerAddressBook() ?: AddressBook()
+
+        if (book.address.size >= book.limit) {
+            "Can't save address due to maximum limit.".locale(player).color(ChatColor.RED).send(player)
+            return
+        }
+
+        if (book.address.find { item -> item.name == name } != null) {
+            "Duplicated address name.".locale(player).color(ChatColor.RED).send(player)
+            return
+        }
+
         book.address.add(address)
-        mapper.writeValue(getUserAddressBookFile(), book)
+        mapper.writeValue(file, book)
+    }
+
+    fun renamePlayerLocation(oldName: String, newName: String) {
+        if (!validateAddressName(newName)) {
+            invalidAddressNameMessage.send(player)
+            return
+        }
+        val location = book.address.find { item -> item.name == oldName }
+
+        if (location == null) {
+            "Can't find the location with name ".locale(player).color(ChatColor.RED).send(player)
+            return
+        }
+        location.name = newName
+        mapper.writeValue(file, book)
+    }
+
+    fun validateAddressName(name: String): Boolean {
+        if (name.isBlank()) {
+            return false
+        } else if (name.length > 20) {
+            return false
+        }
+
+        return true
     }
 }
