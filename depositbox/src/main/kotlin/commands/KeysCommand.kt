@@ -7,7 +7,6 @@ import i18n.locale
 import i18n.send
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
-import utils.isAuthenticated
 
 class KeysCommand: MagicCommand() {
 

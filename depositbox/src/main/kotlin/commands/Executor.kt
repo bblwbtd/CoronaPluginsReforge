@@ -7,7 +7,8 @@ import command.MagicCommandExecutor
 class Executor : MagicCommandExecutor() {
     override fun getCommand(): MagicCommand {
         return BoxCommand().subcommands(
-            KeysCommand()
+            KeysCommand(),
+            LockboxCommand()
         )
     }
 
