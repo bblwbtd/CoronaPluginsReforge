@@ -24,10 +24,12 @@ abstract class MagicCommand(help: String = "", var name: String? = null) :
         }
     }
 
-    inline fun <reified T> checkSenderType() {
+    inline fun <reified T> checkSenderType(): T {
         if (sender !is T) {
             "Invalid sender.".locale(sender).color(ChatColor.RED).send(sender)
             throw InvalidSenderException()
         }
+
+        return sender as T
     }
 }

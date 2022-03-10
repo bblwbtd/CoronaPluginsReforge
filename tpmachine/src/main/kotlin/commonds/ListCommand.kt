@@ -13,33 +13,29 @@ import org.bukkit.entity.Player
 
 class ListCommand : MagicCommand() {
     private val page by argument(help = "Page number").int().default(1)
+    private val pageSize = 10
 
     override fun run() {
-        checkSenderType<Player>()
+        val player = checkSenderType<Player>()
 
         sender.sendMessage(page.toString())
 
-        val book = LocationHandler(sender as Player).getUserAddressBook()
+        val book = LocationHandler(player).getPlayerAddressBook()
 
         if (book == null) {
-            "You have no saved location.".locale(sender).send(sender)
+            "You have no saved location.".locale(sender).send(player)
             return
         }
 
         val limit = (book.address.size / 10) + 1
 
         if (page <= 0 || limit < page) {
-            "Nothing to display.".locale(sender).color(ChatColor.YELLOW).send(sender)
+            "Nothing to display.".locale(sender).color(ChatColor.YELLOW).send(player)
             return
         }
 
-        //
-//        book?.run {
-//            book.address.subList((page - 1) * ).map {
-//                "${it.name}: ${it.world},${it.x.toInt()},${it.y.toInt()},${it.z.toInt()}"
-//            }.joinToString("\n").plus("Page".locale(sender)).plus(": ${page}/${(book.address.size / 10) + 1}")
-//        }?.send(sender as Player)
-
-
+        book.address.subList((page - 1) * pageSize, page * pageSize).joinToString("\n") {
+            "${it.name}: ${it.world},${it.x.toInt()},${it.y.toInt()},${it.z.toInt()}"
+        }.send(sender)
     }
 }

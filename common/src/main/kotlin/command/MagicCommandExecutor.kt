@@ -20,8 +20,6 @@ abstract class MagicCommandExecutor : CommandExecutor {
             sender.sendMessage(message)
             return true
         } catch (e: Exception) {
-//            e.printStackTrace()
-//            sender.sendMessage(e.message)
             return false
         }
         return true

@@ -14,7 +14,7 @@ class LocationHandler(private val player: Player, private val dataDir: String = 
         return Paths.get(dataDir, player.name).toFile()
     }
 
-    fun getUserAddressBook(): AddressBook? {
+    fun getPlayerAddressBook(): AddressBook? {
         val file = getUserAddressBookFile()
         if (!file.exists()) {
             return null
@@ -25,7 +25,7 @@ class LocationHandler(private val player: Player, private val dataDir: String = 
     fun savePlayerLocation(name: String) {
         val location = player.location
         val address = Address(name, location.x, location.y, location.z, location.world!!.name)
-        val book = getUserAddressBook() ?: AddressBook()
+        val book = getPlayerAddressBook() ?: AddressBook()
         book.address.add(address)
         mapper.writeValue(getUserAddressBookFile(), book)
     }
