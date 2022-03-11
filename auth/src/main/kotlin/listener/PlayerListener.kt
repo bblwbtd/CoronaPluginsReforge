@@ -13,6 +13,7 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
@@ -141,13 +142,13 @@ class PlayerListener : Listener {
     fun openLoginPage(event: PlayerInteractEvent) {
         event.player.run {
             if (isAuthenticated()) return
-
-            when (inventory.itemInMainHand) {
-                loginEntry -> showLoginPage(this)
-                registryEntry -> showRegisterPage(this)
-            }
-
             event.isCancelled = true
+            if (event.action === Action.RIGHT_CLICK_BLOCK || event.action === Action.RIGHT_CLICK_AIR) {
+                when (inventory.itemInMainHand) {
+                    loginEntry -> showLoginPage(this)
+                    registryEntry -> showRegisterPage(this)
+                }
+            }
         }
     }
 
