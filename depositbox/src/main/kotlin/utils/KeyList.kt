@@ -1,9 +1,18 @@
 package utils
 
 
+import i18n.color
+import i18n.locale
+import i18n.send
+import org.bukkit.ChatColor
+import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.block.Block
+import org.bukkit.block.TileState
+import org.bukkit.command.CommandSender
 import org.bukkit.metadata.MetadataValue
 import org.bukkit.metadata.Metadatable
+import org.bukkit.persistence.PersistentDataType
 import java.io.ByteArrayOutputStream
 import java.security.PrivateKey
 import java.security.PublicKey
@@ -73,4 +82,42 @@ fun decodeByPrivateKey(ciphertext: String, privateKey: PrivateKey): String{
 
     return String(os.toByteArray())
 
+}
+
+fun setUUID(targetBlock: Block?, player: CommandSender, uuid: String) : Boolean{
+    if(targetBlock?.state is TileState){
+        val tileState = targetBlock.state as TileState
+        val container = tileState.persistentDataContainer
+
+        return if (container.has(NamespacedKey(Main.plugin,"ChestUUID"), PersistentDataType.STRING)){
+            false
+        }else {
+            container.set(NamespacedKey(Main.plugin,"ChestUUID"), PersistentDataType.STRING, uuid)
+            tileState.update(true)
+            true
+        }
+
+    } else{
+        "Not an avaliable Box!".locale(player).color(ChatColor.RED).send(player)
+        player.sendMessage()
+        return false
+    }
+}
+
+fun getUUID(targetBlock: Block?, player: CommandSender) : String? {
+    if(targetBlock?.state is TileState){
+        val tileState = targetBlock.state as TileState
+        val container = tileState.persistentDataContainer
+
+        if (container.has(NamespacedKey(Main.plugin,"ChestUUID"), PersistentDataType.STRING)){
+            return container.get(NamespacedKey(Main.plugin,"ChestUUID"), PersistentDataType.STRING)
+        }else {
+            return ""
+        }
+
+    } else{
+        "Not an avaliable Box!".locale(player).color(ChatColor.RED).send(player)
+        player.sendMessage()
+        return ""
+    }
 }

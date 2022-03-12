@@ -4,17 +4,22 @@ import command.InvalidSenderException
 import command.MagicCommand
 import i18n.color
 import i18n.locale
+import i18n.send
 import org.bukkit.ChatColor
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
+import org.bukkit.block.Chest
+import org.bukkit.block.TileState
 import org.bukkit.entity.Player
+import org.bukkit.inventory.DoubleChestInventory
 
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataHolder
-import utils.decodeByPrivateKey
-import utils.getKeyList
-import utils.entropyByPublicKey
+import org.bukkit.persistence.PersistentDataType
+import utils.*
 import java.security.KeyPairGenerator
 import java.security.PublicKey
+import java.util.UUID
 
 
 class LockboxCommand : MagicCommand() {
@@ -34,22 +39,41 @@ class LockboxCommand : MagicCommand() {
         }else{
             if (chestKey.type.toString() in getKeyList()){
                 //钥匙种类正确并且对准箱子
-//                player.sendMessage("ojbk!".locale(player).color(ChatColor.GREEN))
                 //检查箱子是否已经上锁
-                val generator=KeyPairGenerator.getInstance("RSA")
-                val keyPair=generator.genKeyPair()
-                val publicKey=keyPair.public    //public key
-                val privateKey=keyPair.private  //private key
-                val ciphertext = entropyByPublicKey(targetBlock.x,targetBlock.y,targetBlock.z,publicKey)    //ciphertext
 
-//                targetBlock.setMetadata("publickey", publicKey)
+                val chestState = targetBlock.state as Chest
+                if (chestState.inventory is DoubleChestInventory) {
+                    val inv = chestState.inventory as DoubleChestInventory
+                    val leftChest = inv.leftSide.location?.block
+                    val rightChest = inv.rightSide.location?.block
+                    val uuid = UUID.randomUUID().toString()
 
-//                player.sendMessage(ciphertext.locale(player).color(ChatColor.BLUE))
-//                val decodeResult = decodeByPrivateKey(ciphertext, privateKey)
-//                player.sendMessage(decodeResult.locale(player).color(ChatColor.YELLOW))
+                    if (getUUID(leftChest,player)=="" && getUUID(rightChest,player)==""){
+                        if (setUUID(leftChest,player,uuid) && setUUID(rightChest,player,uuid)){//第一次set
+                            "Lock successfully!".send(player)
+                        }
+                    }else{
+                        if (getUUID(leftChest,player)=="" || getUUID(rightChest,player)==""){//从一个depositbox拓展要再锁一次
+                            when (getUUID(leftChest,player)) {
+                                "" -> getUUID(rightChest,player)?.let { setUUID(leftChest,player, it) }
+                                else -> getUUID(leftChest,player)?.let { setUUID(rightChest,player, it) }
+                            }
+                            "Lock successfully!".send(player)
+                        }else {
+                            //已经set过了
 
+                        }
+                    }
 
+                }else {
+                    val uuid = UUID.randomUUID().toString()
+                    if (setUUID(targetBlock,player,uuid)){
+                        "Lock successfully!".send(player)
+                    }else{
+                        //已经set过了
 
+                    }
+                }
 
 
             }else{

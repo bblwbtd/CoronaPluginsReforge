@@ -9,9 +9,7 @@ class DepositBoxHandler() {
         return getKeyList()
     }
 
-    fun initPersistentData(){
 
-    }
 
 
 }
