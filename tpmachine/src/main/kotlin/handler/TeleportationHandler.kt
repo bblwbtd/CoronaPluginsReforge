@@ -14,7 +14,7 @@ import utils.getString
 import utils.setString
 import java.util.*
 
-class MachineHandler(private val player: Player) {
+class TeleportationHandler(private val player: Player) {
 
     fun spawnMachine(target: Location) {
 

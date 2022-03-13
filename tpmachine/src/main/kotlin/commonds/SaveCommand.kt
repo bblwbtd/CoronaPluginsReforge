@@ -16,7 +16,7 @@ class SaveCommand : MagicCommand() {
     private val locationName by argument(
         help = "The name of the location.",
         name = "name"
-    ).default("Location" + UUID.randomUUID().toString().substring(0, 4))
+    ).default(UUID.randomUUID().toString().substring(0, 4))
 
     override fun run() {
         val player = checkSenderType<Player>()
@@ -26,7 +26,8 @@ class SaveCommand : MagicCommand() {
             "The maximum number of addresses has been reached".locale(sender).color(ChatColor.RED).send(sender)
             return
         }
-        handler.savePlayerLocation(locationName)
-        "New address saved: ".locale(player).plus(locationName).color(ChatColor.GREEN).send(player)
+        if (handler.savePlayerLocation(locationName)) {
+            "New address saved: ".locale(player).plus(locationName).color(ChatColor.GREEN).send(player)
+        }
     }
 }

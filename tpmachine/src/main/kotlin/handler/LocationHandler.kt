@@ -19,7 +19,7 @@ class LocationHandler(private val player: Player, private val dataDir: String = 
     private val invalidAddressNameMessage = "Invalid address name.".locale(player).color(ChatColor.RED)
 
     private fun getUserAddressBookFile(): File {
-        return Paths.get(dataDir, player.name).toFile()
+        return Paths.get(dataDir, "${player.name}.json").toFile()
     }
 
     fun getPlayerAddressBook(): AddressBook? {
@@ -30,10 +30,10 @@ class LocationHandler(private val player: Player, private val dataDir: String = 
         return mapper.readValue(file, AddressBook::class.java)
     }
 
-    fun savePlayerLocation(name: String) {
+    fun savePlayerLocation(name: String): Boolean {
         if (!validateAddressName(name)) {
             invalidAddressNameMessage.send(player)
-            return
+            return false
         }
 
         val location = player.location
@@ -41,16 +41,17 @@ class LocationHandler(private val player: Player, private val dataDir: String = 
 
         if (book.address.size >= book.limit) {
             "Can't save address due to maximum limit.".locale(player).color(ChatColor.RED).send(player)
-            return
+            return false
         }
 
         if (book.address.find { item -> item.name == name } != null) {
             "Duplicated address name.".locale(player).color(ChatColor.RED).send(player)
-            return
+            return false
         }
 
         book.address.add(address)
         mapper.writeValue(file, book)
+        return true
     }
 
     fun renamePlayerLocation(oldName: String, newName: String) {

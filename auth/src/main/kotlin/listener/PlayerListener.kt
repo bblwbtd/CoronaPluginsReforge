@@ -7,7 +7,9 @@ import handler.loadInventory
 import handler.saveInventory
 import i18n.color
 import i18n.getText
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -39,21 +41,37 @@ class PlayerListener : Listener {
         setString("type", "register")
     }
 
-    private fun savePlayerLocation(player: Player) {
+    private fun savePlayerLocation(prefix: String, player: Player) {
         player.apply {
-            setDouble(Main.plugin, "x", location.x)
-            setDouble(Main.plugin, "y", location.y)
-            setDouble(Main.plugin, "z", location.z)
+            setDouble(Main.plugin, "${prefix}_x", location.x)
+            setDouble(Main.plugin, "${prefix}_y", location.y)
+            setDouble(Main.plugin, "${prefix}_z", location.z)
+            setString(Main.plugin, "${prefix}_world", location.world!!.name)
+        }
+    }
+
+    private fun loadSavedPlayerLocation(prefix: String, player: Player): Location? {
+        return player.run {
+            val world = getString(Main.plugin, "${prefix}_world") ?: return null
+            val x = getDouble(Main.plugin, "${prefix}_x") ?: return null
+            val y = getDouble(Main.plugin, "${prefix}_y") ?: return null
+            val z = getDouble(Main.plugin, "${prefix}_z") ?: return null
+
+            Location(
+                Bukkit.getWorld(world),
+                x, y, z
+            )
         }
     }
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
         event.player.run {
-            saveInventory(this)
             PlayerState.UNAUTHENTICATED.setState(this)
-            savePlayerLocation(this)
 
+            savePlayerLocation("original", this)
+
+            saveInventory(this)
             inventory.clear()
             inventory.addItem(if (authHandler.hasRegistered(name)) loginEntry.apply {
                 setName(getText("Login Entrance", locale))
