@@ -42,7 +42,7 @@ class ListCommand : MagicCommand() {
             "${
                 it.name.color(ChatColor.GREEN)
             }${ChatColor.WHITE}: ${it.world}, x: ${it.x.toInt()}, y: ${it.y.toInt()}, z: ${it.z.toInt()}".onClick {
-                ClickEvent(ClickEvent.Action.OPEN_URL, "https://google.com")
+                ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpm to ${it.name}")
             }.send(player)
         }
     }

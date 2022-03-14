@@ -24,6 +24,10 @@ abstract class MagicCommand(help: String = "", var name: String? = null) :
         }
     }
 
+    open fun getArgumentOptions(s: String): List<String> {
+        return emptyList()
+    }
+
     inline fun <reified T> checkSenderType(): T {
         if (sender !is T) {
             "Invalid sender.".locale(sender).color(ChatColor.RED).send(sender)

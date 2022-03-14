@@ -11,7 +11,8 @@ class Executor : MagicCommandExecutor() {
             RenameCommand(),
             SaveCommand(),
             UpdateCommand(),
-            RemoveCommand()
+            RemoveCommand(),
+            ToCommand(),
         )
     }
 }

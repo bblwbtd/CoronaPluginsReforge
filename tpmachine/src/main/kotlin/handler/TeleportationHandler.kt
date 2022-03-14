@@ -15,14 +15,15 @@ import utils.setString
 import java.util.*
 
 class TeleportationHandler(private val player: Player) {
+    private val machineKey = "last_machine"
 
     fun spawnMachine(target: Location) {
 
-        val lastEntityUUID = player.getString(Main.plugin, "last machine")
+        val lastEntityUUID = player.getString(Main.plugin, machineKey)
         if (lastEntityUUID != null) {
             Bukkit.getEntity(UUID.fromString(lastEntityUUID))?.apply {
                 if (!this.isDead) {
-                    "Your teleport machine is cooling down. Please try later.".locale(player).color(ChatColor.RED)
+                    "Your can not summon two teleportation machine.".locale(player).color(ChatColor.RED).send(player)
                     return
                 }
             }
@@ -32,20 +33,23 @@ class TeleportationHandler(private val player: Player) {
         machine?.apply {
             customName = "TP Machine".locale(player).color(ChatColor.RED)
             setString(Main.plugin, "target", "${target.x},${target.y},${target.z},${target.world}")
-            player.setString(Main.plugin, "last machine", machine.uniqueId.toString())
+            player.setString(Main.plugin, machineKey, machine.uniqueId.toString())
 
             var timeout = Main.plugin.config.getInt("timeout")
             customName = timeout.toString()
+            isCustomNameVisible = true
             Bukkit.getScheduler().runTaskTimer(Main.plugin, { task ->
                 if (timeout > 0) {
                     timeout -= 1
                 } else {
-                    remove()
+                    damage(1000.0)
                     task.cancel()
                 }
                 customName = timeout.toString()
             }, 0, 20L)
         }
+
+        "Teleportation machine has been created.".locale(player).color(ChatColor.GREEN).send(player)
     }
 
     fun mountMachine(machine: Chicken) {

@@ -48,3 +48,7 @@ fun String.onClick(handleClick: () -> ClickEvent): TextComponent {
 fun TextComponent.send(sender: CommandSender) {
     sender.spigot().sendMessage(this)
 }
+
+operator fun TextComponent.plus(s: String) {
+    addExtra(s)
+}
