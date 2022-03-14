@@ -7,6 +7,7 @@ import i18n.send
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Location
+import org.bukkit.Sound
 import org.bukkit.entity.Chicken
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -42,8 +43,9 @@ class TeleportationHandler(private val player: Player) {
                 if (timeout > 0) {
                     timeout -= 1
                 } else {
-                    damage(1000.0)
+                    remove()
                     task.cancel()
+                    location.world?.playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0f)
                 }
                 customName = timeout.toString()
             }, 0, 20L)
