@@ -8,6 +8,7 @@ import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Sound
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Chicken
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -32,49 +33,63 @@ class TeleportationHandler(private val player: Player) {
 
         val machine = player.location.world?.spawnEntity(player.location, EntityType.CHICKEN) as Chicken?
         machine?.apply {
-            customName = "TP Machine".locale(player).color(ChatColor.RED)
-            setString(Main.plugin, "target", "${target.x},${target.y},${target.z},${target.world}")
+
+            getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = 20.0
+            health = 20.0
+
+            customName = "TP Machine".locale(player).color(ChatColor.GREEN)
             player.setString(Main.plugin, machineKey, machine.uniqueId.toString())
 
-            var timeout = Main.plugin.config.getInt("timeout")
-            customName = timeout.toString()
-            isCustomNameVisible = true
-            Bukkit.getScheduler().runTaskTimer(Main.plugin, { task ->
-                if (timeout > 0) {
-                    timeout -= 1
-                } else {
-                    remove()
-                    task.cancel()
-                    location.world?.playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0f)
-                }
-                customName = timeout.toString()
-            }, 0, 20L)
+            setString(Main.plugin, "TP Machine", "true")
+
+            mountMachine(this, target)
         }
 
         "Teleportation machine has been created.".locale(player).color(ChatColor.GREEN).send(player)
     }
 
-    fun mountMachine(machine: Chicken) {
+    private fun disappearCountdown(machine: Chicken) {
+        var timeout = Main.plugin.config.getInt("timeout")
+        machine.apply {
+            Bukkit.getScheduler().runTaskTimer(Main.plugin, { task ->
+                if (timeout > 0) {
+                    timeout -= 1
+                } else {
+                    task.cancel()
+                    remove()
+                    if (!isDead) {
+                        location.world?.playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0f)
+                    }
+                }
+            }, 0, 20L)
+        }
+    }
+
+    private fun mountMachine(machine: Chicken, target: Location) {
         machine.run {
-            val location = getString(Main.plugin, "target")!!.split(",").run {
-                Location(Bukkit.getWorld(get(3)), get(0).toDouble(), get(1).toDouble(), get(2).toDouble())
-            }
             addPassenger(player)
-            if (machine.passengers.size == 1) {
-                var countDown = Main.plugin.config.getInt("delay")
-                Bukkit.getScheduler().runTaskTimerAsynchronously(Main.plugin, { task ->
-                    passengers.forEach { entity ->
-                        "Teleporting in ".locale(player).plus(countDown).color(ChatColor.RED).send(entity)
+            var countDown = Main.plugin.config.getInt("delay")
+            Bukkit.getScheduler().runTaskTimer(Main.plugin, { task ->
+                passengers.forEach { entity ->
+                    "Teleporting in ".locale(player).plus(countDown).color(ChatColor.RED).send(entity)
+                }
+                if (countDown > 0) {
+                    countDown -= 1
+                } else {
+                    task.cancel()
+                    val clonedPassages = passengers.slice(0 until passengers.size)
+                    clonedPassages.forEach { entity ->
+                        entity.teleport(target)
+                        entity.location.world?.playSound(entity, Sound.ENTITY_ENDERMAN_TELEPORT, 1f, 5f)
                     }
-                    if (countDown > 0) {
-                        countDown -= 1
-                    } else {
-                        task.cancel()
-                        teleport(location)
-//                        passengers.forEach { entity -> entity.teleport(location) }
+                    teleport(target)
+                    clonedPassages.forEach {
+                        "You have been teleported.".locale(it).color(ChatColor.GREEN).send(it)
                     }
-                }, 0, 20L)
-            }
+                    disappearCountdown(this)
+                }
+            }, 0, 20L)
+
         }
     }
 }

@@ -1,4 +1,4 @@
 maxAddress: 108
 initialAddressLimit: 45
 delay: 5
-timeout: 30
+timeout: 10
