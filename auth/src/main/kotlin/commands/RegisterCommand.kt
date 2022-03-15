@@ -24,7 +24,6 @@ class RegisterCommand : MagicCommand() {
             loadInventory(player)
             PlayerState.AUTHENTICATED.setState(player)
             "Register successfully.".locale(sender).color(ChatColor.GREEN).send(player)
-            throw Exception()
         } catch (e: InvalidPasswordException) {
             "Invalid password.".locale(sender).color(ChatColor.RED).send(player)
         } catch (e: DuplicatedUserException) {

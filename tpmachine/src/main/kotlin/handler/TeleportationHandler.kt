@@ -40,7 +40,7 @@ class TeleportationHandler(private val player: Player) {
             customName = "TP Machine".locale(player).color(ChatColor.GREEN)
             player.setString(Main.plugin, machineKey, machine.uniqueId.toString())
 
-            setString(Main.plugin, "TP Machine", "true")
+            setString(Main.plugin, machineKey, "true")
 
             mountMachine(this, target)
         }
@@ -83,9 +83,13 @@ class TeleportationHandler(private val player: Player) {
                         entity.location.world?.playSound(entity, Sound.ENTITY_ENDERMAN_TELEPORT, 1f, 5f)
                     }
                     teleport(target)
-                    clonedPassages.forEach {
-                        "You have been teleported.".locale(it).color(ChatColor.GREEN).send(it)
-                    }
+                    Bukkit.getScheduler().runTaskLater(Main.plugin, { _ ->
+                        clonedPassages.forEach {
+                            "You have been teleported.".locale(it).color(ChatColor.GREEN).send(it)
+                            addPassenger(it)
+                        }
+                    }, 10L)
+
                     disappearCountdown(this)
                 }
             }, 0, 20L)

@@ -15,17 +15,18 @@ import java.nio.file.Paths
 class LocationHandler(private val player: Player, private val dataDir: String = Main.plugin.dataFolder.path) {
 
     private val file = getUserAddressBookFile()
-    private val book = getPlayerAddressBook() ?: AddressBook()
+    private val book = getPlayerAddressBook()
     private val invalidAddressNameMessage = "Invalid address name.".locale(player).color(ChatColor.RED)
+
 
     private fun getUserAddressBookFile(): File {
         return Paths.get(dataDir, "${player.name}.json").toFile()
     }
 
-    fun getPlayerAddressBook(): AddressBook? {
+    fun getPlayerAddressBook(): AddressBook {
         val file = getUserAddressBookFile()
         if (!file.exists()) {
-            return null
+            return AddressBook()
         }
         return mapper.readValue(file, AddressBook::class.java)
     }
@@ -62,14 +63,15 @@ class LocationHandler(private val player: Player, private val dataDir: String = 
         val location = book.address.find { item -> item.name == oldName }
 
         if (location == null) {
-            "Can't find the location with name ".locale(player).color(ChatColor.RED).send(player)
+            "Can't find the address with name ".locale(player).plus(oldName).color(ChatColor.RED).send(player)
             return
         }
         location.name = newName
         mapper.writeValue(file, book)
+        "Address $oldName has been rename to $newName".locale(player).color(ChatColor.GREEN).send(player)
     }
 
-    fun validateAddressName(name: String): Boolean {
+    private fun validateAddressName(name: String): Boolean {
         if (name.isBlank()) {
             return false
         } else if (name.length > 20) {

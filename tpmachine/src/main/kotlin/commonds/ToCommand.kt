@@ -18,7 +18,7 @@ class ToCommand : MagicCommand(help = "Teleport to a address.") {
 
         val locationHandler = LocationHandler(player)
         val book = locationHandler.getPlayerAddressBook()
-        val address = book?.address?.find {
+        val address = book.address.find {
             it.name == addressName
         }
         if (address == null) {
@@ -28,13 +28,11 @@ class ToCommand : MagicCommand(help = "Teleport to a address.") {
 
         val teleportationHandler = TeleportationHandler(player)
         teleportationHandler.spawnMachine(address.toLocation())
-
     }
 
     override fun getArgumentOptions(s: String): List<String> {
         val player = checkSenderType<Player>()
         val locationHandler = LocationHandler(player)
-        return locationHandler.getPlayerAddressBook()?.address?.filter { it.name.contains(s) }?.map { it.name }
-            ?: emptyList()
+        return locationHandler.getPlayerAddressBook().address.filter { it.name.contains(s) }.map { it.name }
     }
 }

@@ -101,10 +101,10 @@ class PlayerListener : Listener {
     fun preventPlayerMove(event: PlayerMoveEvent) {
         event.player.run {
             if (isAuthenticated()) return
-
-            if (getDouble(Main.plugin, "x") != event.to?.x ||
-                getDouble(Main.plugin, "y") != event.to?.y ||
-                getDouble(Main.plugin, "z") != event.to?.z
+            val location = loadSavedPlayerLocation("original", event.player)
+            if (location?.x != event.to?.x ||
+                location?.y != event.to?.y ||
+                location?.z != event.to?.z
             ) {
                 event.isCancelled = true
             }

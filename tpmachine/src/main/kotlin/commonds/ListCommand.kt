@@ -23,11 +23,6 @@ class ListCommand : MagicCommand() {
 
         val book = LocationHandler(player).getPlayerAddressBook()
 
-        if (book == null) {
-            "You have no saved location.".locale(sender).send(player)
-            return
-        }
-
         val limit = (book.address.size / 10) + 1
 
         if (page <= 0 || limit < page) {
