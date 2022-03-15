@@ -1,15 +1,15 @@
 package listener
 
-import Main
 import handler.AuthHandler
 import handler.PlayerState
 import handler.loadInventory
 import handler.saveInventory
 import i18n.color
 import i18n.getText
+import i18n.locale
+import i18n.send
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -41,35 +41,15 @@ class PlayerListener : Listener {
         setString("type", "register")
     }
 
-    private fun savePlayerLocation(prefix: String, player: Player) {
-        player.apply {
-            setDouble(Main.plugin, "${prefix}_x", location.x)
-            setDouble(Main.plugin, "${prefix}_y", location.y)
-            setDouble(Main.plugin, "${prefix}_z", location.z)
-            setString(Main.plugin, "${prefix}_world", location.world!!.name)
-        }
-    }
-
-    private fun loadSavedPlayerLocation(prefix: String, player: Player): Location? {
-        return player.run {
-            val world = getString(Main.plugin, "${prefix}_world") ?: return null
-            val x = getDouble(Main.plugin, "${prefix}_x") ?: return null
-            val y = getDouble(Main.plugin, "${prefix}_y") ?: return null
-            val z = getDouble(Main.plugin, "${prefix}_z") ?: return null
-
-            Location(
-                Bukkit.getWorld(world),
-                x, y, z
-            )
-        }
-    }
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
         event.player.run {
             PlayerState.UNAUTHENTICATED.setState(this)
 
-            savePlayerLocation("original", this)
+            saveLocation("original")
+            teleport(Bukkit.getWorlds().first().spawnLocation)
+            saveLocation("current")
 
             saveInventory(this)
             inventory.clear()
@@ -89,6 +69,19 @@ class PlayerListener : Listener {
     }
 
     @EventHandler
+    fun onPlayerAuth(event: PlayerAuthEvent) {
+        event.player.apply {
+            val location = retrieveLocation("original")
+            println(location ?: "no location")
+            teleport(location!!)
+            loadInventory(this)
+            PlayerState.AUTHENTICATED.setState(this)
+            "Login successfully!".locale(this).color(ChatColor.GREEN).send(this)
+            retrieveLocation("current")
+        }
+    }
+
+    @EventHandler
     fun onPlayerQuit(event: PlayerQuitEvent) {
         event.player.run {
             if (!isAuthenticated()) {
@@ -101,7 +94,7 @@ class PlayerListener : Listener {
     fun preventPlayerMove(event: PlayerMoveEvent) {
         event.player.run {
             if (isAuthenticated()) return
-            val location = loadSavedPlayerLocation("original", event.player)
+            val location = loadLocation("current")
             if (location?.x != event.to?.x ||
                 location?.y != event.to?.y ||
                 location?.z != event.to?.z
