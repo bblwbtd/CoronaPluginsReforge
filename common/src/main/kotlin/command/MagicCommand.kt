@@ -7,21 +7,11 @@ import i18n.send
 import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 
-abstract class MagicCommand(help: String = "", var name: String? = null) :
-    CliktCommand(help = help, printHelpOnEmptyArgs = false, name = name) {
-
-    lateinit var sender: CommandSender
+abstract class MagicCommand(val sender: CommandSender, help: String = "", var name: String? = null) :
+    CliktCommand(help = help.locale(sender), printHelpOnEmptyArgs = false, name = name) {
 
     override fun run() {
 
-    }
-
-    internal fun passSender() {
-        registeredSubcommands().forEach {
-            it as MagicCommand
-            it.sender = sender
-            it.passSender()
-        }
     }
 
     open fun getArgumentOptions(s: String): List<String> {
@@ -34,6 +24,6 @@ abstract class MagicCommand(help: String = "", var name: String? = null) :
             throw InvalidSenderException()
         }
 
-        return sender as T
+        return sender
     }
 }

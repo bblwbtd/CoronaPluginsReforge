@@ -2,22 +2,23 @@ package commonds
 
 import com.github.ajalt.clikt.parameters.arguments.argument
 import command.MagicCommand
-import handler.LocationHandler
+import handler.AddressHandler
 import handler.TeleportationHandler
 import i18n.color
 import i18n.locale
 import i18n.send
 import org.bukkit.ChatColor
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class ToCommand : MagicCommand(help = "Teleport to a address.") {
+class ToCommand(sender: CommandSender) : MagicCommand(help = "Teleport to a address.", sender = sender) {
     private val addressName by argument()
 
     override fun run() {
         val player = checkSenderType<Player>()
 
-        val locationHandler = LocationHandler(player)
-        val book = locationHandler.getPlayerAddressBook()
+        val addressHandler = AddressHandler(player)
+        val book = addressHandler.getPlayerAddressBook()
         val address = book.address.find {
             it.name == addressName
         }
@@ -32,7 +33,7 @@ class ToCommand : MagicCommand(help = "Teleport to a address.") {
 
     override fun getArgumentOptions(s: String): List<String> {
         val player = checkSenderType<Player>()
-        val locationHandler = LocationHandler(player)
-        return locationHandler.getPlayerAddressBook().address.filter { it.name.contains(s) }.map { it.name }
+        val addressHandler = AddressHandler(player)
+        return addressHandler.getPlayerAddressBook().address.filter { it.name.contains(s) }.map { it.name }
     }
 }

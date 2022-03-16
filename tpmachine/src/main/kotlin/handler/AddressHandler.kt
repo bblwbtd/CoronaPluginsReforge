@@ -6,13 +6,14 @@ import entities.AddressBook
 import i18n.color
 import i18n.locale
 import i18n.send
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import utils.mapper
 import java.io.File
 import java.nio.file.Paths
 
-class LocationHandler(private val player: Player, private val dataDir: String = Main.plugin.dataFolder.path) {
+class AddressHandler(private val player: Player, private val dataDir: String = Main.plugin.dataFolder.path) {
 
     private val file = getUserAddressBookFile()
     private val book = getPlayerAddressBook()
@@ -51,7 +52,7 @@ class LocationHandler(private val player: Player, private val dataDir: String = 
         }
 
         book.address.add(address)
-        mapper.writeValue(file, book)
+        saveBook()
         return true
     }
 
@@ -67,7 +68,7 @@ class LocationHandler(private val player: Player, private val dataDir: String = 
             return
         }
         location.name = newName
-        mapper.writeValue(file, book)
+        saveBook()
         "Address $oldName has been rename to $newName".locale(player).color(ChatColor.GREEN).send(player)
     }
 
@@ -79,5 +80,11 @@ class LocationHandler(private val player: Player, private val dataDir: String = 
         }
 
         return true
+    }
+
+    fun saveBook() {
+        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, Runnable {
+            mapper.writeValue(file, book)
+        })
     }
 }

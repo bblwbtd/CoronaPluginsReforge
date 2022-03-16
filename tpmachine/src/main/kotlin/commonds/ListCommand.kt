@@ -4,24 +4,25 @@ import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.default
 import com.github.ajalt.clikt.parameters.types.int
 import command.MagicCommand
-import handler.LocationHandler
+import handler.AddressHandler
 import i18n.color
 import i18n.locale
 import i18n.onClick
 import i18n.send
 import net.md_5.bungee.api.chat.ClickEvent
 import org.bukkit.ChatColor
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import kotlin.math.min
 
-class ListCommand : MagicCommand() {
+class ListCommand(sender: CommandSender) : MagicCommand(sender) {
     private val page by argument(help = "Page number").int().default(1)
     private val pageSize = 10
 
     override fun run() {
         val player = checkSenderType<Player>()
 
-        val book = LocationHandler(player).getPlayerAddressBook()
+        val book = AddressHandler(player).getPlayerAddressBook()
 
         val limit = (book.address.size / 10) + 1
 
