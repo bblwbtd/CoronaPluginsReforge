@@ -5,5 +5,9 @@ import java.util.*
 
 data class AddressBook(
     var limit: Int = Main.plugin.config.getInt("initialAddressLimit"),
-    var address: LinkedList<Address> = LinkedList()
-)
+    var address: MutableList<Address> = LinkedList()
+) {
+    fun getAddressByName(name: String): Address? {
+        return address.find { it.name == name }
+    }
+}

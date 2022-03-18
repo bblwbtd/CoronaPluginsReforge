@@ -1,5 +1,6 @@
 package utils
 
+import org.bukkit.Location
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Entity
 import org.bukkit.persistence.PersistentDataType
@@ -27,4 +28,21 @@ fun Entity.setInt(plugin: Plugin, key: String, value: Int) {
 
 fun Entity.getInt(plugin: Plugin, key: String): Int? {
     return persistentDataContainer.get(NamespacedKey.fromString(key, plugin)!!, PersistentDataType.INTEGER)
+}
+
+private val locationStore = HashMap<String, Location>()
+
+fun Entity.saveLocation(prefix: String) {
+    locationStore["${prefix}_$name"] = location
+}
+
+fun Entity.retrieveLocation(prefix: String): Location? {
+    val key = "${prefix}_$name"
+    val l = locationStore[key]
+    locationStore.remove(key)
+    return l
+}
+
+fun Entity.loadLocation(prefix: String): Location? {
+    return locationStore["${prefix}_$name"]
 }

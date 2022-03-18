@@ -1,5 +1,8 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     kotlin("jvm")
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 group = "ldgame"
@@ -11,4 +14,9 @@ repositories {
 
 dependencies {
     implementation(project(":common"))
+}
+
+tasks.withType<ShadowJar> {
+    archiveBaseName.set("TP-Machine")
+    archiveClassifier.set("")
 }

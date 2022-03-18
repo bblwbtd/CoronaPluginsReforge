@@ -1,18 +1,21 @@
 package listener
 
-import Main
 import handler.AuthHandler
 import handler.PlayerState
 import handler.loadInventory
 import handler.saveInventory
 import i18n.color
 import i18n.getText
+import i18n.locale
+import i18n.send
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
@@ -38,21 +41,17 @@ class PlayerListener : Listener {
         setString("type", "register")
     }
 
-    private fun savePlayerLocation(player: Player) {
-        player.apply {
-            setDouble(Main.plugin, "x", location.x)
-            setDouble(Main.plugin, "y", location.y)
-            setDouble(Main.plugin, "z", location.z)
-        }
-    }
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
         event.player.run {
-            saveInventory(this)
             PlayerState.UNAUTHENTICATED.setState(this)
-            savePlayerLocation(this)
 
+            saveLocation("original")
+            teleport(Bukkit.getWorlds().first().spawnLocation)
+            saveLocation("current")
+
+            saveInventory(this)
             inventory.clear()
             inventory.addItem(if (authHandler.hasRegistered(name)) loginEntry.apply {
                 setName(getText("Login Entrance", locale))
@@ -70,6 +69,19 @@ class PlayerListener : Listener {
     }
 
     @EventHandler
+    fun onPlayerAuth(event: PlayerAuthEvent) {
+        event.player.apply {
+            val location = retrieveLocation("original")
+            println(location ?: "no location")
+            teleport(location!!)
+            loadInventory(this)
+            PlayerState.AUTHENTICATED.setState(this)
+            "Login successfully!".locale(this).color(ChatColor.GREEN).send(this)
+            retrieveLocation("current")
+        }
+    }
+
+    @EventHandler
     fun onPlayerQuit(event: PlayerQuitEvent) {
         event.player.run {
             if (!isAuthenticated()) {
@@ -82,10 +94,10 @@ class PlayerListener : Listener {
     fun preventPlayerMove(event: PlayerMoveEvent) {
         event.player.run {
             if (isAuthenticated()) return
-
-            if (getDouble(Main.plugin, "x") != event.to?.x ||
-                getDouble(Main.plugin, "y") != event.to?.y ||
-                getDouble(Main.plugin, "z") != event.to?.z
+            val location = loadLocation("current")
+            if (location?.x != event.to?.x ||
+                location?.y != event.to?.y ||
+                location?.z != event.to?.z
             ) {
                 event.isCancelled = true
             }
@@ -141,13 +153,13 @@ class PlayerListener : Listener {
     fun openLoginPage(event: PlayerInteractEvent) {
         event.player.run {
             if (isAuthenticated()) return
-
-            when (inventory.itemInMainHand) {
-                loginEntry -> showLoginPage(this)
-                registryEntry -> showRegisterPage(this)
-            }
-
             event.isCancelled = true
+            if (event.action === Action.RIGHT_CLICK_BLOCK || event.action === Action.RIGHT_CLICK_AIR) {
+                when (inventory.itemInMainHand) {
+                    loginEntry -> showLoginPage(this)
+                    registryEntry -> showRegisterPage(this)
+                }
+            }
         }
     }
 

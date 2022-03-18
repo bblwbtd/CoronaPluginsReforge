@@ -7,10 +7,11 @@ import i18n.color
 import i18n.locale
 import i18n.send
 import org.bukkit.ChatColor
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import utils.isAuthenticated
 
-class UpdateCommand : MagicCommand() {
+class UpdateCommand(sender: CommandSender) : MagicCommand(sender) {
     private val newPassword by argument()
 
     override fun run() {

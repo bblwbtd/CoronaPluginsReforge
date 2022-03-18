@@ -2,14 +2,19 @@ package commands
 
 import com.github.ajalt.clikt.parameters.arguments.argument
 import command.MagicCommand
-import handler.*
+import handler.AuthHandler
+import handler.DuplicatedUserException
+import handler.InvalidPasswordException
 import i18n.color
 import i18n.locale
 import i18n.send
+import listener.PlayerAuthEvent
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class RegisterCommand : MagicCommand() {
+class RegisterCommand(sender: CommandSender) : MagicCommand(sender) {
     private val password by argument()
     private val handler = AuthHandler()
     override val commandHelp: String
@@ -21,9 +26,7 @@ class RegisterCommand : MagicCommand() {
         val player = sender as Player
         try {
             handler.register(player.name, password)
-            "Register successfully.".locale(sender).color(ChatColor.GREEN).send(player)
-            loadInventory(player)
-            PlayerState.AUTHENTICATED.setState(player)
+            Bukkit.getPluginManager().callEvent(PlayerAuthEvent(player))
         } catch (e: InvalidPasswordException) {
             "Invalid password.".locale(sender).color(ChatColor.RED).send(player)
         } catch (e: DuplicatedUserException) {

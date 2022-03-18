@@ -1,6 +1,6 @@
 name: TP-Machine
 main: Main
 version: 0.0.1
-command:
+commands:
   tpm:
     description: The tp machine command.
