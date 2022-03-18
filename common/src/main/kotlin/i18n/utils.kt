@@ -34,8 +34,8 @@ fun String.color(color: ChatColor): String {
     return color + this
 }
 
-fun String.send(sender: CommandSender) {
-    sender.sendMessage(this)
+fun String.send(sender: CommandSender?) {
+    sender?.sendMessage(this)
 }
 
 fun String.onClick(handleClick: () -> ClickEvent): TextComponent {

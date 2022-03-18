@@ -82,9 +82,32 @@ class AddressHandler(private val player: Player, private val dataDir: String = M
         return true
     }
 
-    fun saveBook() {
+    private fun saveBook() {
         Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, Runnable {
             mapper.writeValue(file, book)
         })
+    }
+
+    fun removeAddress(addressName: String) {
+        book.address.removeIf { it.name == addressName }
+        saveBook()
+        "Address has been removed".locale(player).color(ChatColor.GREEN).send(player)
+    }
+
+    fun updateAddress(addressName: String) {
+        val address = book.getAddressByName(addressName)
+        if (address == null) {
+            "No address with name".locale(player).plus(": $addressName").send(player)
+            return
+        }
+
+        player.location.apply {
+            address.x = x
+            address.y = y
+            address.z = z
+        }
+
+        saveBook()
+        "Address has benn updated".locale(player).color(ChatColor.GREEN).send(player)
     }
 }

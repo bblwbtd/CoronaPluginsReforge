@@ -12,7 +12,7 @@ import org.bukkit.command.CommandSender
 
 abstract class MagicCommandExecutor : CommandExecutor {
 
-    abstract fun getCommand(sender: CommandSender): MagicCommand
+    abstract fun getCommand(sender: CommandSender? = null): MagicCommand
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         val magicCommand = getCommand(sender)

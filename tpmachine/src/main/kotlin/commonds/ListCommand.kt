@@ -15,7 +15,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import kotlin.math.min
 
-class ListCommand(sender: CommandSender) : MagicCommand(sender) {
+class ListCommand(sender: CommandSender?) : MagicCommand(sender) {
     private val page by argument(help = "Page number").int().default(1)
     private val pageSize = 10
 

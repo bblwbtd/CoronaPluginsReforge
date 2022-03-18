@@ -14,7 +14,7 @@ import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class RegisterCommand(sender: CommandSender) : MagicCommand(sender) {
+class RegisterCommand(sender: CommandSender?) : MagicCommand(sender) {
     private val password by argument()
     private val handler = AuthHandler()
     override val commandHelp: String

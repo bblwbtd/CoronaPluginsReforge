@@ -40,7 +40,7 @@ class TeleportationHandler(private val player: Player) {
             customName = "TP Machine".locale(player).color(ChatColor.GREEN)
             player.setString(Main.plugin, machineKey, machine.uniqueId.toString())
 
-            setString(Main.plugin, machineKey, "true")
+            setString(Main.plugin, "machine", "true")
 
             mountMachine(this, target)
         }

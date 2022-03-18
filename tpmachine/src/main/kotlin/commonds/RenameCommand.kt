@@ -6,7 +6,7 @@ import handler.AddressHandler
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class RenameCommand(sender: CommandSender) : MagicCommand(help = "Rename a address.", sender = sender) {
+class RenameCommand(sender: CommandSender?) : MagicCommand(help = "Rename a address.", sender = sender) {
     private val oldName by argument()
     private val newName by argument()
 

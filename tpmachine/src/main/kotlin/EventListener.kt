@@ -1,25 +1,28 @@
-import org.bukkit.block.Chest
+import org.bukkit.entity.Chicken
+import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.inventory.DoubleChestInventory
-import org.spigotmc.event.entity.EntityMountEvent
+import org.bukkit.event.entity.EntityDamageEvent
+import org.bukkit.event.entity.EntityDeathEvent
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
+import utils.getString
 
 class EventListener : Listener {
 
-    fun onMount(event: EntityMountEvent) {
+    @EventHandler
+    fun preventDrop(event: EntityDeathEvent) {
+        if (event.entity.getString(Main.plugin, "machine") != null) {
+            event.drops.clear()
+            event.droppedExp = 0
+        }
 
     }
 
-    fun test(event: PlayerInteractEvent) {
-        val block = event.clickedBlock
-        if (block?.state is Chest) {
-            val chest = block.state as Chest
-            if (chest.inventory is DoubleChestInventory) {
-                val inv = chest.inventory as DoubleChestInventory
-                val leftChest = inv.leftSide.location?.block
-                val rightChest = inv.rightSide.location?.block
-            }
+    @EventHandler
+    fun onDamage(event: EntityDamageEvent) {
+        if (event.entity.getString(Main.plugin, "machine") != null) {
+            val chicken = event.entity as Chicken
+            chicken.addPotionEffect(PotionEffect(PotionEffectType.SPEED, 10, 10))
         }
     }
-
 }
