@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import utils.isAuthenticated
 
-class UpdateCommand(sender: CommandSender) : MagicCommand(sender) {
+class UpdateCommand(sender: CommandSender?) : MagicCommand(sender) {
     private val newPassword by argument()
 
     override fun run() {

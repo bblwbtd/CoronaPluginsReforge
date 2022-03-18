@@ -11,7 +11,7 @@ import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class ToCommand(sender: CommandSender) : MagicCommand(help = "Teleport to a address.", sender = sender) {
+class ToCommand(sender: CommandSender?) : MagicCommand(help = "Teleport to a address.", sender = sender) {
     private val addressName by argument()
 
     override fun run() {

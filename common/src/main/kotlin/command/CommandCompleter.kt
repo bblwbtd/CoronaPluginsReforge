@@ -17,10 +17,8 @@ class CommandCompleter(private val customCommand: MagicCommand) : TabCompleter {
         val results = LinkedList<String>()
         var current: MagicCommand? = customCommand
 
-        current?.sender = sender
-        current?.passSender()
-
         args.forEach { arg ->
+            current?.sender = sender
             val nextCommand = current?.registeredSubcommands()?.find {
                 it.commandName == arg
             }
