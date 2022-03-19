@@ -1,5 +1,6 @@
 package listener
 
+import Main
 import handler.AuthHandler
 import handler.PlayerState
 import handler.loadInventory
@@ -24,7 +25,6 @@ import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
-import org.spigotmc.event.entity.EntityMountEvent
 import pages.showLoginPage
 import pages.showRegisterPage
 import utils.*
@@ -41,14 +41,16 @@ class PlayerListener : Listener {
         setString("type", "register")
     }
 
-
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
         event.player.run {
             PlayerState.UNAUTHENTICATED.setState(this)
 
             saveLocation("original")
-            teleport(Bukkit.getWorlds().first().spawnLocation)
+            Bukkit.getScheduler().runTask(Main.plugin) { _ ->
+                vehicle?.eject()
+                teleport(Bukkit.getWorlds().first().spawnLocation, PlayerTeleportEvent.TeleportCause.COMMAND)
+            }
             saveLocation("current")
 
             saveInventory(this)
@@ -72,7 +74,6 @@ class PlayerListener : Listener {
     fun onPlayerAuth(event: PlayerAuthEvent) {
         event.player.apply {
             val location = retrieveLocation("original")
-            println(location ?: "no location")
             teleport(location!!)
             loadInventory(this)
             PlayerState.AUTHENTICATED.setState(this)
@@ -183,10 +184,4 @@ class PlayerListener : Listener {
         if (!player.isAuthenticated()) event.isCancelled = true
     }
 
-    @EventHandler
-    fun preventPlayerMount(event: EntityMountEvent) {
-        if (event.entity !is Player) return
-        val player = event.entity as Player
-        if (!player.isAuthenticated()) event.isCancelled = true
-    }
 }
