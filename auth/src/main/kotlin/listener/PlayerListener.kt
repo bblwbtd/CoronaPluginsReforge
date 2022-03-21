@@ -46,20 +46,21 @@ class PlayerListener : Listener {
         event.player.run {
             PlayerState.UNAUTHENTICATED.setState(this)
 
-            saveLocation("original")
             Bukkit.getScheduler().runTask(Main.plugin) { _ ->
+                if (loadLocation("original") == null) {
+                    saveLocation("original")
+                }
                 vehicle?.eject()
-                teleport(Bukkit.getWorlds().first().spawnLocation, PlayerTeleportEvent.TeleportCause.COMMAND)
+                safeRandomTP(7.0)
+                saveLocation("current")
+                saveInventory(this)
+                inventory.clear()
+                inventory.addItem(if (authHandler.hasRegistered(name)) loginEntry.apply {
+                    setName(getText("Login Entrance", locale))
+                } else registryEntry.apply {
+                    setName(getText("Register Entrance", locale))
+                })
             }
-            saveLocation("current")
-
-            saveInventory(this)
-            inventory.clear()
-            inventory.addItem(if (authHandler.hasRegistered(name)) loginEntry.apply {
-                setName(getText("Login Entrance", locale))
-            } else registryEntry.apply {
-                setName(getText("Register Entrance", locale))
-            })
 
             sendMessage(
                 getText(
@@ -79,6 +80,7 @@ class PlayerListener : Listener {
             PlayerState.AUTHENTICATED.setState(this)
             "Login successfully!".locale(this).color(ChatColor.GREEN).send(this)
             retrieveLocation("current")
+            retrieveLocation("original")
         }
     }
 

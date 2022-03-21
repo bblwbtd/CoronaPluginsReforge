@@ -1,10 +1,12 @@
 package utils
 
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Entity
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.Plugin
+import kotlin.random.Random
 
 fun Entity.setString(plugin: Plugin, key: String, value: String) {
     persistentDataContainer.set(NamespacedKey.fromString(key, plugin)!!, PersistentDataType.STRING, value)
@@ -45,4 +47,36 @@ fun Entity.retrieveLocation(prefix: String): Location? {
 
 fun Entity.loadLocation(prefix: String): Location? {
     return locationStore["${prefix}_$name"]
+}
+
+fun Entity.safeRandomTP(radius: Double): Location {
+    val originalLocation = location
+
+
+    out@ while (true) {
+        val x = Random.nextDouble(radius)
+        val z = Random.nextDouble(radius)
+
+        val newLocation = Location(
+            originalLocation.world, originalLocation.x + x,
+            originalLocation.y, originalLocation.z + z
+        )
+        if (newLocation.distance(originalLocation) > radius) {
+            continue
+        }
+        newLocation.y = newLocation.world!!.maxHeight.toDouble()
+
+        while (newLocation.block.type === Material.AIR) {
+            newLocation.add(0.0, -1.0, 0.0)
+            if (newLocation.y <= location.world!!.minHeight) {
+                continue@out
+            }
+        }
+
+        newLocation.add(0.0, 1.0, 0.0)
+        teleport(newLocation)
+        break
+    }
+
+    return location
 }
