@@ -10,6 +10,8 @@ import org.bukkit.NamespacedKey
 import org.bukkit.block.Block
 import org.bukkit.block.TileState
 import org.bukkit.command.CommandSender
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.metadata.MetadataValue
 import org.bukkit.metadata.Metadatable
 import org.bukkit.persistence.PersistentDataType
@@ -98,7 +100,7 @@ fun setUUID(targetBlock: Block?, player: CommandSender, uuid: String) : Boolean{
         }
 
     } else{
-        "Not an avaliable Box!".locale(player).color(ChatColor.RED).send(player)
+        "Not an available Box!".locale(player).color(ChatColor.RED).send(player)
         player.sendMessage()
         return false
     }
@@ -116,7 +118,43 @@ fun getUUID(targetBlock: Block?, player: CommandSender) : String? {
         }
 
     } else{
-        "Not an avaliable Box!".locale(player).color(ChatColor.RED).send(player)
+        "Not an available Box!".locale(player).color(ChatColor.RED).send(player)
+        player.sendMessage()
+        return ""
+    }
+}
+
+fun setKey(meta: ItemStack?, player: CommandSender, uuid: String) : Boolean{
+    if (meta?.itemMeta is ItemMeta){
+        val metaKey = meta.itemMeta as ItemMeta
+        val container = metaKey.persistentDataContainer
+        if(container.has(NamespacedKey(Main.plugin,"KeyUUID"), PersistentDataType.STRING)){
+            return false
+        }else{
+            container.set(NamespacedKey(Main.plugin,"KeyUUID"), PersistentDataType.STRING, uuid)
+            meta.setItemMeta(metaKey)
+            return true
+        }
+    }else{
+        "Not an available Key!".locale(player).color(ChatColor.RED).send(player)
+        player.sendMessage()
+        return false
+    }
+
+
+}
+
+fun getKey(meta: ItemStack?, player: CommandSender) : String? {
+    if (meta?.itemMeta is ItemMeta){
+        val metaKey = meta.itemMeta as ItemMeta
+        val container = metaKey.persistentDataContainer
+        if(container.has(NamespacedKey(Main.plugin,"KeyUUID"), PersistentDataType.STRING)){
+            return container.get(NamespacedKey(Main.plugin,"KeyUUID"), PersistentDataType.STRING)
+        }else{
+            return ""
+        }
+    }else{
+        "Not an available Key!".locale(player).color(ChatColor.RED).send(player)
         player.sendMessage()
         return ""
     }

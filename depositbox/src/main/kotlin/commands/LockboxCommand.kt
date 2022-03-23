@@ -40,16 +40,16 @@ class LockboxCommand : MagicCommand() {
             if (chestKey.type.toString() in getKeyList()){
                 //钥匙种类正确并且对准箱子
                 //检查箱子是否已经上锁
-
                 val chestState = targetBlock.state as Chest
+                val uuid = UUID.randomUUID().toString()
                 if (chestState.inventory is DoubleChestInventory) {
                     val inv = chestState.inventory as DoubleChestInventory
                     val leftChest = inv.leftSide.location?.block
                     val rightChest = inv.rightSide.location?.block
-                    val uuid = UUID.randomUUID().toString()
 
                     if (getUUID(leftChest,player)=="" && getUUID(rightChest,player)==""){
                         if (setUUID(leftChest,player,uuid) && setUUID(rightChest,player,uuid)){//第一次set
+                            setKey(chestKey, player, uuid)
                             "Lock successfully!".send(player)
                         }
                     }else{
@@ -61,17 +61,21 @@ class LockboxCommand : MagicCommand() {
                             "Lock successfully!".send(player)
                         }else {
                             //已经set过了
-
+                            if (getUUID(targetBlock,player) == getKey(chestKey,player)){
+                                "Already locked!".send(player)
+                            }
                         }
                     }
 
                 }else {
-                    val uuid = UUID.randomUUID().toString()
                     if (setUUID(targetBlock,player,uuid)){
+                        setKey(chestKey, player, uuid)
                         "Lock successfully!".send(player)
                     }else{
                         //已经set过了
-
+                        if (getUUID(targetBlock,player) == getKey(chestKey,player)){
+                            "Already locked!".send(player)
+                        }
                     }
                 }
 
