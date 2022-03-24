@@ -1,7 +1,6 @@
 package utils
 
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Entity
 import org.bukkit.persistence.PersistentDataType
@@ -66,7 +65,7 @@ fun Entity.safeRandomTP(radius: Double): Location {
         }
         newLocation.y = newLocation.world!!.maxHeight.toDouble()
 
-        while (newLocation.block.type === Material.AIR) {
+        while (newLocation.block.isPassable) {
             newLocation.add(0.0, -1.0, 0.0)
             if (newLocation.y <= location.world!!.minHeight) {
                 continue@out

@@ -1,10 +1,7 @@
 package listener
 
 import Main
-import handler.AuthHandler
-import handler.PlayerState
-import handler.loadInventory
-import handler.saveInventory
+import handler.*
 import i18n.color
 import i18n.getText
 import i18n.locale
@@ -53,7 +50,9 @@ class PlayerListener : Listener {
                 vehicle?.eject()
                 safeRandomTP(7.0)
                 saveLocation("current")
-                saveInventory(this)
+                if (getStorageFile(name).readText().isEmpty()) {
+                    saveInventory(this)
+                }
                 inventory.clear()
                 inventory.addItem(if (authHandler.hasRegistered(name)) loginEntry.apply {
                     setName(getText("Login Entrance", locale))
@@ -84,14 +83,14 @@ class PlayerListener : Listener {
         }
     }
 
-    @EventHandler
-    fun onPlayerQuit(event: PlayerQuitEvent) {
-        event.player.run {
-            if (!isAuthenticated()) {
-                loadInventory(this)
-            }
-        }
-    }
+//    @EventHandler
+//    fun onPlayerQuit(event: PlayerQuitEvent) {
+//        event.player.run {
+//            if (!isAuthenticated()) {
+//                loadInventory(this)
+//            }
+//        }
+//    }
 
     @EventHandler
     fun preventPlayerMove(event: PlayerMoveEvent) {
