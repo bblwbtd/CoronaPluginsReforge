@@ -86,7 +86,7 @@ fun decodeByPrivateKey(ciphertext: String, privateKey: PrivateKey): String{
 
 }
 
-fun setUUID(targetBlock: Block?, player: CommandSender, uuid: String) : Boolean{
+fun setUUID(targetBlock: Block?, uuid: String) : Boolean{
     if(targetBlock?.state is TileState){
         val tileState = targetBlock.state as TileState
         val container = tileState.persistentDataContainer
@@ -99,14 +99,12 @@ fun setUUID(targetBlock: Block?, player: CommandSender, uuid: String) : Boolean{
             true
         }
 
-    } else{
-        "Not an available Box!".locale(player).color(ChatColor.RED).send(player)
-        player.sendMessage()
+    }else {
         return false
     }
 }
 
-fun getUUID(targetBlock: Block?, player: CommandSender) : String? {
+fun getUUID(targetBlock: Block?) : String? {
     if(targetBlock?.state is TileState){
         val tileState = targetBlock.state as TileState
         val container = tileState.persistentDataContainer
@@ -118,13 +116,11 @@ fun getUUID(targetBlock: Block?, player: CommandSender) : String? {
         }
 
     } else{
-        "Not an available Box!".locale(player).color(ChatColor.RED).send(player)
-        player.sendMessage()
         return ""
     }
 }
 
-fun setKey(meta: ItemStack?, player: CommandSender, uuid: String) : Boolean{
+fun setKey(meta: ItemStack?, uuid: String) : Boolean{
     if (meta?.itemMeta is ItemMeta){
         val metaKey = meta.itemMeta as ItemMeta
         val container = metaKey.persistentDataContainer
@@ -132,19 +128,17 @@ fun setKey(meta: ItemStack?, player: CommandSender, uuid: String) : Boolean{
             return false
         }else{
             container.set(NamespacedKey(Main.plugin,"KeyUUID"), PersistentDataType.STRING, uuid)
-            meta.setItemMeta(metaKey)
+            meta.itemMeta = metaKey
+
             return true
         }
     }else{
-        "Not an available Key!".locale(player).color(ChatColor.RED).send(player)
-        player.sendMessage()
         return false
     }
 
-
 }
 
-fun getKey(meta: ItemStack?, player: CommandSender) : String? {
+fun getKey(meta: ItemStack?) : String? {
     if (meta?.itemMeta is ItemMeta){
         val metaKey = meta.itemMeta as ItemMeta
         val container = metaKey.persistentDataContainer
@@ -154,8 +148,19 @@ fun getKey(meta: ItemStack?, player: CommandSender) : String? {
             return ""
         }
     }else{
-        "Not an available Key!".locale(player).color(ChatColor.RED).send(player)
-        player.sendMessage()
+
         return ""
     }
+}
+
+fun keyCheck(chestKey: ItemStack?, targetChest: Block?): Boolean{
+    return getKey(chestKey) == getUUID(targetChest)
+}
+
+fun clearKeyUUID(meta: ItemStack){
+    val metaKey = meta.itemMeta as ItemMeta
+    val container = metaKey.persistentDataContainer
+    container.remove(NamespacedKey(Main.plugin,"KeyUUID"))
+    meta.itemMeta = metaKey
+
 }

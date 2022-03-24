@@ -37,6 +37,13 @@ class LockboxCommand : MagicCommand() {
             //没对准箱子
             player.sendMessage("Please aim at a Box!".locale(player).color(ChatColor.RED))
         }else{
+
+            //key不可用(key和chest存储字符串不一致)
+            if (!keyCheck(chestKey,targetBlock)){
+                "This key has been use, please change another available key".color(ChatColor.BLUE).send(player)
+                return
+            }
+            //key可以用
             if (chestKey.type.toString() in getKeyList()){
                 //钥匙种类正确并且对准箱子
                 //检查箱子是否已经上锁
@@ -47,33 +54,33 @@ class LockboxCommand : MagicCommand() {
                     val leftChest = inv.leftSide.location?.block
                     val rightChest = inv.rightSide.location?.block
 
-                    if (getUUID(leftChest,player)=="" && getUUID(rightChest,player)==""){
-                        if (setUUID(leftChest,player,uuid) && setUUID(rightChest,player,uuid)){//第一次set
-                            setKey(chestKey, player, uuid)
+                    if (getUUID(leftChest)=="" && getUUID(rightChest)==""){
+                        if (setUUID(leftChest,uuid) && setUUID(rightChest,uuid)){//第一次set
+                            setKey(chestKey, uuid)
                             "Lock successfully!".send(player)
                         }
                     }else{
-                        if (getUUID(leftChest,player)=="" || getUUID(rightChest,player)==""){//从一个depositbox拓展要再锁一次
-                            when (getUUID(leftChest,player)) {
-                                "" -> getUUID(rightChest,player)?.let { setUUID(leftChest,player, it) }
-                                else -> getUUID(leftChest,player)?.let { setUUID(rightChest,player, it) }
+                        if (getUUID(leftChest)=="" || getUUID(rightChest)==""){//从一个depositbox拓展要再锁一次
+                            when (getUUID(leftChest)) {
+                                "" -> getUUID(rightChest)?.let { setUUID(leftChest, it) }
+                                else -> getUUID(leftChest)?.let { setUUID(rightChest, it) }
                             }
                             "Lock successfully!".send(player)
                         }else {
                             //已经set过了
-                            if (getUUID(targetBlock,player) == getKey(chestKey,player)){
-                                "Already locked!".send(player)
+                            if (getUUID(targetBlock) == getKey(chestKey)){
+                                "Already locked!".color(ChatColor.YELLOW).send(player)
                             }
                         }
                     }
 
                 }else {
-                    if (setUUID(targetBlock,player,uuid)){
-                        setKey(chestKey, player, uuid)
+                    if (setUUID(targetBlock,uuid)){
+                        setKey(chestKey, uuid)
                         "Lock successfully!".send(player)
                     }else{
                         //已经set过了
-                        if (getUUID(targetBlock,player) == getKey(chestKey,player)){
+                        if (getUUID(targetBlock) == getKey(chestKey)){
                             "Already locked!".send(player)
                         }
                     }
