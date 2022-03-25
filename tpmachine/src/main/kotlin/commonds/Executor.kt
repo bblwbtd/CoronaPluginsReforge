@@ -1,4 +1,4 @@
-package commands
+package commonds
 
 import com.github.ajalt.clikt.core.subcommands
 import command.MagicCommand
@@ -7,10 +7,13 @@ import org.bukkit.command.CommandSender
 
 class Executor : MagicCommandExecutor() {
     override fun getCommand(sender: CommandSender?): MagicCommand {
-        return AuthCommand(sender).subcommands(
-            LoginCommand(sender),
-            RegisterCommand(sender),
-            UpdateCommand(sender)
+        return TPMCommand(sender).subcommands(
+            ListCommand(sender),
+            RenameCommand(sender),
+            SaveCommand(sender),
+            UpdateCommand(sender),
+            RemoveCommand(sender),
+            ToCommand(sender),
         )
     }
 }

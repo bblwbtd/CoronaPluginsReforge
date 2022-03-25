@@ -1,4 +1,4 @@
-package entities
+package utils
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
