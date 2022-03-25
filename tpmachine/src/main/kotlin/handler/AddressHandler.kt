@@ -89,15 +89,27 @@ class AddressHandler(private val player: Player, private val dataDir: String = M
     }
 
     fun removeAddress(addressName: String) {
-        book.address.removeIf { it.name == addressName }
-        saveBook()
-        "Address has been removed".locale(player).color(ChatColor.GREEN).send(player)
+        val r = Regex(addressName)
+        var count = 0
+        book.address.removeAll {
+            if (r.matches(it.name)) {
+                count += 1
+                return@removeAll true
+            }
+            return@removeAll false
+        }
+        if (count > 0) {
+            saveBook()
+            "$count addresses have been removed.".locale(player).color(ChatColor.GREEN).send(player)
+            return
+        }
+        "No address fond.".locale(player).color(ChatColor.RED).send(player)
     }
 
     fun updateAddress(addressName: String) {
         val address = book.getAddressByName(addressName)
         if (address == null) {
-            "No address with name".locale(player).plus(": $addressName").send(player)
+            "No address with name.".locale(player).plus(": $addressName").send(player)
             return
         }
 
@@ -108,6 +120,6 @@ class AddressHandler(private val player: Player, private val dataDir: String = M
         }
 
         saveBook()
-        "Address has benn updated".locale(player).color(ChatColor.GREEN).send(player)
+        "Address has benn updated.".locale(player).color(ChatColor.GREEN).send(player)
     }
 }
