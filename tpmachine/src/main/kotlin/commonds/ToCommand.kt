@@ -12,7 +12,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 class ToCommand(sender: CommandSender?) : MagicCommand(help = "Teleport to an address.", sender = sender) {
-    private val addressName by argument(help = "The name of the address you want to go.".locale(sender))
+    private val addressName by argument(help = "The name of the address you want to go.".locale(sender), name = "name")
 
     override fun run() {
         val player = checkSenderType<Player>()

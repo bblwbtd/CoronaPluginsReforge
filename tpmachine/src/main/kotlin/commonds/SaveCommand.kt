@@ -12,9 +12,10 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.util.*
 
-class SaveCommand(sender: CommandSender?) : MagicCommand(sender, help = "Save a location") {
-    private val locationName by argument(
+class SaveCommand(sender: CommandSender?) : MagicCommand(sender, help = "Save a location.") {
+    private val addressName by argument(
         help = "The name of the address (optional).".locale(sender),
+        name = "name"
     ).default(UUID.randomUUID().toString().substring(0, 4))
 
     override fun run() {
@@ -25,8 +26,8 @@ class SaveCommand(sender: CommandSender?) : MagicCommand(sender, help = "Save a 
             "The maximum number of addresses has been reached".locale(sender).color(ChatColor.RED).send(sender)
             return
         }
-        if (handler.savePlayerLocation(locationName)) {
-            "New address saved: ".locale(player).plus(locationName).color(ChatColor.GREEN).send(player)
+        if (handler.savePlayerLocation(addressName)) {
+            "New address saved: ".locale(player).plus(addressName).color(ChatColor.GREEN).send(player)
         }
     }
 }

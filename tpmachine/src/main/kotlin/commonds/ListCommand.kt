@@ -17,14 +17,17 @@ import kotlin.math.min
 
 class ListCommand(sender: CommandSender?) : MagicCommand(sender, help = "List all saved addresses.") {
     private val page by argument(help = "Page number".locale(sender)).int().default(1)
-    private val pageSize = 10
+    private val pageSize = 9
 
     override fun run() {
         val player = checkSenderType<Player>()
 
         val book = AddressHandler(player).getPlayerAddressBook()
 
-        val limit = (book.address.size / 10) + 1
+        var limit = book.address.size / pageSize
+        if (book.address.size % pageSize > 0) {
+            limit += 1
+        }
 
         if (page <= 0 || limit < page) {
             "Nothing to display.".locale(sender).color(ChatColor.YELLOW).send(player)
@@ -42,4 +45,6 @@ class ListCommand(sender: CommandSender?) : MagicCommand(sender, help = "List al
             }.send(player)
         }
     }
+
+
 }
