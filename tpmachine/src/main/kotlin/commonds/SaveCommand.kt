@@ -12,10 +12,9 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.util.*
 
-class SaveCommand(sender: CommandSender?) : MagicCommand(sender) {
+class SaveCommand(sender: CommandSender?) : MagicCommand(sender, help = "Save a location") {
     private val locationName by argument(
-        help = "The name of the location.",
-        name = "name"
+        help = "The name of the address (optional).".locale(sender),
     ).default(UUID.randomUUID().toString().substring(0, 4))
 
     override fun run() {
