@@ -1,9 +1,7 @@
 package listener
 
-import handler.AuthHandler
-import handler.PlayerState
-import handler.loadInventory
-import handler.saveInventory
+import Main
+import handler.*
 import i18n.color
 import i18n.getText
 import i18n.locale
@@ -24,7 +22,6 @@ import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
-import org.spigotmc.event.entity.EntityMountEvent
 import pages.showLoginPage
 import pages.showRegisterPage
 import utils.*
@@ -41,23 +38,28 @@ class PlayerListener : Listener {
         setString("type", "register")
     }
 
-
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
         event.player.run {
             PlayerState.UNAUTHENTICATED.setState(this)
 
-            saveLocation("original")
-            teleport(Bukkit.getWorlds().first().spawnLocation)
-            saveLocation("current")
-
-            saveInventory(this)
-            inventory.clear()
-            inventory.addItem(if (authHandler.hasRegistered(name)) loginEntry.apply {
-                setName(getText("Login Entrance", locale))
-            } else registryEntry.apply {
-                setName(getText("Register Entrance", locale))
-            })
+            Bukkit.getScheduler().runTask(Main.plugin) { _ ->
+                if (loadLocation("original") == null) {
+                    saveLocation("original")
+                }
+                vehicle?.eject()
+                safeRandomTP(7.0)
+                saveLocation("current")
+                if (getStorageFile(name).readText().isEmpty()) {
+                    saveInventory(this)
+                }
+                inventory.clear()
+                inventory.addItem(if (authHandler.hasRegistered(name)) loginEntry.apply {
+                    setName(getText("Login Entrance", locale))
+                } else registryEntry.apply {
+                    setName(getText("Register Entrance", locale))
+                })
+            }
 
             sendMessage(
                 getText(
@@ -72,23 +74,23 @@ class PlayerListener : Listener {
     fun onPlayerAuth(event: PlayerAuthEvent) {
         event.player.apply {
             val location = retrieveLocation("original")
-            println(location ?: "no location")
             teleport(location!!)
             loadInventory(this)
             PlayerState.AUTHENTICATED.setState(this)
             "Login successfully!".locale(this).color(ChatColor.GREEN).send(this)
             retrieveLocation("current")
+            retrieveLocation("original")
         }
     }
 
-    @EventHandler
-    fun onPlayerQuit(event: PlayerQuitEvent) {
-        event.player.run {
-            if (!isAuthenticated()) {
-                loadInventory(this)
-            }
-        }
-    }
+//    @EventHandler
+//    fun onPlayerQuit(event: PlayerQuitEvent) {
+//        event.player.run {
+//            if (!isAuthenticated()) {
+//                loadInventory(this)
+//            }
+//        }
+//    }
 
     @EventHandler
     fun preventPlayerMove(event: PlayerMoveEvent) {
@@ -183,10 +185,4 @@ class PlayerListener : Listener {
         if (!player.isAuthenticated()) event.isCancelled = true
     }
 
-    @EventHandler
-    fun preventPlayerMount(event: EntityMountEvent) {
-        if (event.entity !is Player) return
-        val player = event.entity as Player
-        if (!player.isAuthenticated()) event.isCancelled = true
-    }
 }
