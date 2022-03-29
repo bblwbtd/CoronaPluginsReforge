@@ -12,7 +12,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.util.*
 
-class SaveCommand(sender: CommandSender?) : MagicCommand(sender, help = "Save a location.") {
+class SaveCommand(sender: CommandSender?) : MagicCommand(sender, help = "Save an address.") {
     private val addressName by argument(
         help = "The name of the address (optional).".locale(sender),
         name = "name"
