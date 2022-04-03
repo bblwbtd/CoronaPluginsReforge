@@ -12,12 +12,18 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Chicken
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 import utils.getString
+import utils.removeValue
 import utils.setString
 import java.util.*
 
 class TeleportationHandler(private val player: Player) {
-    private val machineKey = "last_machine"
+    companion object {
+        val machineKey = "last_machine"
+    }
+
 
     fun spawnMachine(target: Location) {
 
@@ -34,8 +40,11 @@ class TeleportationHandler(private val player: Player) {
         val machine = player.location.world?.spawnEntity(player.location, EntityType.CHICKEN) as Chicken?
         machine?.apply {
 
-            getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = 20.0
-            health = 20.0
+            getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = 80.0
+            getAttribute(Attribute.GENERIC_FLYING_SPEED)?.baseValue = 1.0
+            getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue = 1.0
+            addPotionEffect(PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 5))
+            health = 80.0
 
             customName = "TP Machine".locale(player).color(ChatColor.GREEN)
             player.setString(Main.plugin, machineKey, machine.uniqueId.toString())
@@ -56,10 +65,13 @@ class TeleportationHandler(private val player: Player) {
                     timeout -= 1
                 } else {
                     task.cancel()
-                    remove()
+                    player.removeValue(Main.plugin, machineKey)
+                    customName = null
                     if (!isDead) {
                         location.world?.playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0f)
                     }
+                    teleport(location.add(0.0, -999.9, 0.0))
+                    remove()
                 }
             }, 0, 20L)
         }
