@@ -15,6 +15,15 @@ fun Entity.getString(plugin: Plugin, key: String): String? {
     return persistentDataContainer.get(NamespacedKey.fromString(key, plugin)!!, PersistentDataType.STRING)
 }
 
+fun Entity.getLong(plugin: Plugin, key: String): Long? {
+    return persistentDataContainer.get(NamespacedKey.fromString(key, plugin)!!, PersistentDataType.LONG)
+}
+
+fun Entity.setLong(plugin: Plugin, key: String, value: Long) {
+    persistentDataContainer.set(NamespacedKey.fromString(key, plugin)!!, PersistentDataType.LONG, value)
+}
+
+
 fun Entity.setDouble(plugin: Plugin, key: String, value: Double) {
     persistentDataContainer.set(NamespacedKey.fromString(key, plugin)!!, PersistentDataType.DOUBLE, value)
 }
@@ -29,6 +38,10 @@ fun Entity.setInt(plugin: Plugin, key: String, value: Int) {
 
 fun Entity.getInt(plugin: Plugin, key: String): Int? {
     return persistentDataContainer.get(NamespacedKey.fromString(key, plugin)!!, PersistentDataType.INTEGER)
+}
+
+fun Entity.removeValue(plugin: Plugin, key: String) {
+    persistentDataContainer.remove(NamespacedKey.fromString(key, plugin)!!)
 }
 
 private val locationStore = HashMap<String, Location>()
