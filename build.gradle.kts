@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.6.10"
+    id("com.github.johnrengelman.shadow") version ("7.1.2")
 }
 
 group = "ldgame"
@@ -9,6 +10,7 @@ version = "0.0.1"
 
 allprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "com.github.johnrengelman.shadow")
 
     repositories {
         mavenCentral()
@@ -41,7 +43,7 @@ allprojects {
     }
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = "16"
     }
     val compileKotlin: KotlinCompile by tasks
     compileKotlin.kotlinOptions {

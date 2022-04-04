@@ -8,7 +8,7 @@ import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 
 abstract class MagicCommand(var sender: CommandSender?, help: String = "", var name: String? = null) :
-    CliktCommand(help = help.locale(sender), printHelpOnEmptyArgs = false, name = name) {
+    CliktCommand(help = help.locale(sender), printHelpOnEmptyArgs = false, name = name?.locale(sender)) {
 
     override fun run() {
 
