@@ -1,3 +1,8 @@
 name: CoronaFriends
 main: Main
 version: 0.0.1
+commands:
+  friend:
+    description: The tool for relation management.
+    aliases:
+      - fri

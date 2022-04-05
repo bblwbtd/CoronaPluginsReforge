@@ -40,7 +40,7 @@ fun String.send(vararg sender: CommandSender?) {
     }
 }
 
-fun String.onClick(handleClick: () -> ClickEvent): TextComponent {
+fun String.onClick(handleClick: () -> ClickEvent?): TextComponent {
     val event = handleClick()
     val textComponent = TextComponent(this)
     textComponent.clickEvent = event

@@ -12,7 +12,9 @@ class Executor : MagicCommandExecutor() {
             AcceptCommand(sender),
             DeclineCommand(sender),
             FriendCommand(sender),
-            RemoveCommand(sender)
+            RemoveCommand(sender),
+            ListCommand(sender),
+            PendingCommand(sender)
         )
     }
 }

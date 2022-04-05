@@ -1,3 +1,7 @@
+package handlers
+
+import CommonMain
+import Friend
 import i18n.color
 import i18n.locale
 import i18n.send
@@ -7,6 +11,7 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.*
 
 
 class RelationHandler(
@@ -25,13 +30,17 @@ class RelationHandler(
         }
     }
 
+    fun getPendingInvitation(): LinkedList<Player> {
+        return getAllInvitations(player)
+    }
+
     fun getFriends(): MutableList<Friend> {
         return record.getMapList("friends").map {
             Friend(it["name"] as String, it["createAt"] as Long)
         }.toMutableList()
     }
 
-    private fun addFriend(player: Player) {
+    fun addFriend(player: Player) {
         if (player.name == this.player.name) {
             "You can not make friend with yourself".color(ChatColor.RED).send(player)
             return
@@ -62,12 +71,12 @@ class RelationHandler(
             return
         }
 
-        sendRequest(player, target)
+        sendInvitation(player, target)
         "Invitation sent.".locale(player).color(ChatColor.GREEN).send(player)
     }
 
     fun acceptInvitation(from: Player?) {
-        val invitation = from ?: popNextRequest(player)
+        val invitation = from ?: popNextInvitation(player)
         if (invitation == null) {
             "No invitation found.".locale(player).color(ChatColor.RED).send(player)
             return
@@ -78,13 +87,13 @@ class RelationHandler(
     fun declineInvitation(from: Player?) {
         var invitation = from
         if (invitation == null) {
-            invitation = popNextRequest(player)
+            invitation = popNextInvitation(player)
             if (invitation == null) {
                 "No invitation found.".locale(player).color(ChatColor.RED).send(player)
             }
             return
         }
-        removeRequest(invitation, player)
+        removeInvitation(invitation, player)
         "Invitation declined.".locale(player).color(ChatColor.RED).send(player, invitation)
     }
 }

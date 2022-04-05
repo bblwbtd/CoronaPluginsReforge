@@ -14,6 +14,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(":common"))
+    implementation(project(":tpmachine"))
 }
 
 tasks.withType<ShadowJar> {

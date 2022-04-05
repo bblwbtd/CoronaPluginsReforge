@@ -1,8 +1,8 @@
 package commands
 
-import RelationHandler
 import com.github.ajalt.clikt.parameters.arguments.argument
 import command.MagicCommand
+import handlers.RelationHandler
 import i18n.locale
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
