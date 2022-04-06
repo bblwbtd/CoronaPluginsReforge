@@ -1,10 +1,12 @@
 package utils
 
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Entity
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.Plugin
+import kotlin.math.ceil
 import kotlin.random.Random
 
 fun Entity.setString(plugin: Plugin, key: String, value: String) {
@@ -64,31 +66,42 @@ fun Entity.loadLocation(prefix: String): Location? {
 fun Entity.safeRandomTP(radius: Double): Location {
     val originalLocation = location
 
-
-    out@ while (true) {
+    for (i in 1..10) {
         val x = Random.nextDouble(radius)
         val z = Random.nextDouble(radius)
 
         val newLocation = Location(
-            originalLocation.world, originalLocation.x + x,
-            originalLocation.y, originalLocation.z + z
+            originalLocation.world, ceil(originalLocation.x + x) + 0.5,
+            originalLocation.y, ceil(originalLocation.z + z) + 0.5
         )
-        if (newLocation.distance(originalLocation) > radius) {
-            continue
-        }
-        newLocation.y = newLocation.world!!.maxHeight.toDouble()
 
-        while (newLocation.block.isPassable) {
-            newLocation.add(0.0, -1.0, 0.0)
-            if (newLocation.y <= location.world!!.minHeight) {
-                continue@out
+        var pointer = newLocation.clone()
+        for (height in newLocation.y.toInt()..newLocation.world!!.maxHeight) {
+            pointer.y = height.toDouble()
+            val firstBlock = pointer.block.isPassable
+            val secondBlock = pointer.add(0.0, 1.0, 0.0).block.isPassable
+            val thirdBlock = pointer.add(0.0, 2.0, 0.0).block.isPassable
+
+            if (!firstBlock && secondBlock && thirdBlock) {
+                teleport(pointer)
+                return pointer
             }
         }
 
-        newLocation.add(0.0, 1.0, 0.0)
-        teleport(newLocation)
-        break
+        pointer = newLocation.clone()
+        for (height in newLocation.y.toInt() downTo location.world!!.minHeight + 2) {
+            pointer.y = height.toDouble()
+            val firstBlock = pointer.block.isPassable
+            val secondBlock = pointer.add(0.0, -1.0, 0.0).block.isPassable
+            val thirdBlock = pointer.add(0.0, -2.0, 0.0).block.isPassable
+
+            if (firstBlock && secondBlock && !thirdBlock) {
+                pointer.y = height - 2.0
+                teleport(pointer)
+                return pointer
+            }
+        }
     }
 
-    return location
+    return Bukkit.getWorlds().first().spawnLocation
 }
