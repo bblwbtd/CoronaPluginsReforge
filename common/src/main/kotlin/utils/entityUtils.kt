@@ -90,5 +90,6 @@ fun Entity.safeRandomTP(radius: Double): Location {
         }
     }
 
+    teleport(Bukkit.getWorlds().first().spawnLocation)
     return Bukkit.getWorlds().first().spawnLocation
 }
