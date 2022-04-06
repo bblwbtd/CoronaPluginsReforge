@@ -63,13 +63,14 @@ fun Entity.safeRandomTP(radius: Double): Location {
         )
 
         var pointer = newLocation.clone()
-        for (height in newLocation.y.toInt()..newLocation.world!!.maxHeight) {
+        for (height in newLocation.y.toInt() - 1..newLocation.world!!.maxHeight) {
             pointer.y = height.toDouble()
             val firstBlock = pointer.block.isPassable
-            val secondBlock = pointer.add(0.0, 1.0, 0.0).block.isPassable
-            val thirdBlock = pointer.add(0.0, 2.0, 0.0).block.isPassable
+            val secondBlock = pointer.clone().add(0.0, 1.0, 0.0).block.isPassable
+            val thirdBlock = pointer.clone().add(0.0, 2.0, 0.0).block.isPassable
 
             if (!firstBlock && secondBlock && thirdBlock) {
+                pointer.y = height + 1.0
                 teleport(pointer)
                 return pointer
             }
@@ -79,11 +80,11 @@ fun Entity.safeRandomTP(radius: Double): Location {
         for (height in newLocation.y.toInt() downTo location.world!!.minHeight + 2) {
             pointer.y = height.toDouble()
             val firstBlock = pointer.block.isPassable
-            val secondBlock = pointer.add(0.0, -1.0, 0.0).block.isPassable
-            val thirdBlock = pointer.add(0.0, -2.0, 0.0).block.isPassable
+            val secondBlock = pointer.clone().add(0.0, -1.0, 0.0).block.isPassable
+            val thirdBlock = pointer.clone().add(0.0, -2.0, 0.0).block.isPassable
 
             if (firstBlock && secondBlock && !thirdBlock) {
-                pointer.y = height - 2.0
+                pointer.y = height - 1.0
                 teleport(pointer)
                 return pointer
             }
