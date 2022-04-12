@@ -19,20 +19,23 @@ import utils.removeValue
 import utils.setString
 import java.util.*
 
-class TeleportationHandler(private val player: Player) {
+class MachineHandler(private val player: Player) {
     companion object {
-        val machineKey = "last_machine"
+        const val machineKey = "last_machine"
     }
 
+    fun teleport(target: Location, tpDelay: Int = 5, disappearDelay: Int = 10) {
+        val machine = spawnMachine() ?: return
+        mountMachine(machine, target, tpDelay, disappearDelay)
+    }
 
-    fun spawnMachine(target: Location) {
-
+    private fun spawnMachine(): Chicken? {
         val lastEntityUUID = player.getString(Main.plugin, machineKey)
         if (lastEntityUUID != null) {
             Bukkit.getEntity(UUID.fromString(lastEntityUUID))?.apply {
                 if (!this.isDead) {
                     "Your can not summon two teleportation machine.".locale(player).color(ChatColor.RED).send(player)
-                    return
+                    return null
                 }
             }
         }
@@ -50,19 +53,18 @@ class TeleportationHandler(private val player: Player) {
             player.setString(Main.plugin, machineKey, machine.uniqueId.toString())
 
             setString(Main.plugin, "machine", "true")
-
-            mountMachine(this, target)
         }
 
         "Teleportation machine has been created.".locale(player).color(ChatColor.GREEN).send(player)
+        return machine
     }
 
-    private fun disappearCountdown(machine: Chicken) {
-        var timeout = Main.plugin.config.getInt("timeout")
+    private fun disappearCountdown(machine: Chicken, disappearDelay: Int) {
+        var count = disappearDelay
         machine.apply {
             Bukkit.getScheduler().runTaskTimer(Main.plugin, { task ->
-                if (timeout > 0) {
-                    timeout -= 1
+                if (disappearDelay > 0) {
+                    count -= 1
                 } else {
                     task.cancel()
                     player.removeValue(Main.plugin, machineKey)
@@ -77,10 +79,10 @@ class TeleportationHandler(private val player: Player) {
         }
     }
 
-    private fun mountMachine(machine: Chicken, target: Location) {
+    private fun mountMachine(machine: Chicken, target: Location, tpDelay: Int, disappearDelay: Int) {
         machine.run {
             addPassenger(player)
-            var countDown = Main.plugin.config.getInt("delay")
+            var countDown = tpDelay
             Bukkit.getScheduler().runTaskTimer(Main.plugin, { task ->
                 passengers.forEach { entity ->
                     "Teleporting in ".locale(player).plus(countDown).color(ChatColor.RED).send(entity)
@@ -94,15 +96,15 @@ class TeleportationHandler(private val player: Player) {
                         entity.teleport(target)
                         entity.location.world?.playSound(entity, Sound.ENTITY_ENDERMAN_TELEPORT, 1f, 5f)
                     }
-                    teleport(target)
                     Bukkit.getScheduler().runTaskLater(Main.plugin, { _ ->
+                        teleport(target)
                         clonedPassages.forEach {
                             "You have been teleported.".locale(it).color(ChatColor.GREEN).send(it)
                             addPassenger(it)
                         }
+                        disappearCountdown(this, disappearDelay)
                     }, 10L)
 
-                    disappearCountdown(this)
                 }
             }, 0, 20L)
 

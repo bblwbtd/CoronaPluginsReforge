@@ -3,9 +3,12 @@ package commands
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.default
 import command.MagicCommand
-import handlers.RelationHandler
+import handlers.RequestHandler
+import i18n.color
 import i18n.locale
+import i18n.send
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -14,7 +17,13 @@ class AcceptCommand(sender: CommandSender?) : MagicCommand(sender) {
 
     override fun run() {
         val player = checkSenderType<Player>()
-        val handler = RelationHandler(player)
-        handler.acceptInvitation(Bukkit.getPlayer(playerName))
+        val handler = RequestHandler(player)
+        val to = Bukkit.getPlayer(playerName)
+        if (to == null) {
+            "Can not find the player".locale(player).color(ChatColor.RED).send(player)
+            return
+        }
+
+        handler.acceptRequest(to)
     }
 }

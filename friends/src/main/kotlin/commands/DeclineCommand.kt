@@ -3,7 +3,7 @@ package commands
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.default
 import command.MagicCommand
-import handlers.RelationHandler
+import handlers.RequestHandler
 import i18n.locale
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
@@ -14,7 +14,7 @@ class DeclineCommand(sender: CommandSender?) : MagicCommand(sender) {
 
     override fun run() {
         val player = checkSenderType<Player>()
-        val handler = RelationHandler(player)
-        handler.declineInvitation(Bukkit.getPlayer(playerName))
+        val handler = RequestHandler(player)
+        handler.declineRequest(Bukkit.getPlayer(playerName))
     }
 }

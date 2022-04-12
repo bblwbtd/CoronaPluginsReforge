@@ -1,4 +1,4 @@
-import handler.TeleportationHandler
+import handler.MachineHandler
 import org.bukkit.Bukkit
 import org.bukkit.entity.Chicken
 import org.bukkit.entity.Entity
@@ -50,13 +50,13 @@ class EventListener : Listener {
 
     private fun removeLastMachine(player: Entity) {
         player.apply {
-            getString(Main.plugin, TeleportationHandler.machineKey)?.let {
+            getString(Main.plugin, MachineHandler.machineKey)?.let {
                 Bukkit.getEntity(UUID.fromString(it))?.apply {
                     removePassenger(player)
                     teleport(location.add(0.0, -999.9, 0.0))
                     remove()
                 }
-                removeValue(Main.plugin, TeleportationHandler.machineKey)
+                removeValue(Main.plugin, MachineHandler.machineKey)
             }
         }
     }

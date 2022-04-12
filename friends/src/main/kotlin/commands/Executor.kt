@@ -14,7 +14,7 @@ class Executor : MagicCommandExecutor() {
             FriendCommand(sender),
             RemoveCommand(sender),
             ListCommand(sender),
-            PendingCommand(sender)
+            TPCommand(sender)
         )
     }
 }

@@ -3,35 +3,38 @@ package handlers
 import CommonMain
 import Friend
 import i18n.color
-import i18n.locale
 import i18n.send
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
+import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.*
+import kotlin.io.path.pathString
 
 
 class RelationHandler(
     private val player: Player,
-    path: Path = Paths.get(CommonMain.plugin.dataFolder.path, "records", "${player.name}.yml")
+    private val recordDir: Path = Paths.get(CommonMain.plugin.dataFolder.path, "records")
 ) {
 
-    private val recordFile = path.toFile()
-    private val record = YamlConfiguration().apply {
-        load(recordFile)
+    private val record = getRecord(player.name)
+
+    private fun getFile(playerName: String): File {
+        return Paths.get(recordDir.pathString, "${playerName}.yml").toFile()
+    }
+
+    private fun getRecord(playerName: String): YamlConfiguration {
+        return YamlConfiguration().apply {
+            load(getFile(playerName))
+        }
     }
 
     private fun save() {
         Bukkit.getScheduler().runTaskAsynchronously(CommonMain.plugin) { _ ->
-            record.save(recordFile)
+            record.save(getFile(player.name))
         }
-    }
-
-    fun getPendingInvitation(): LinkedList<Player> {
-        return getAllInvitations(player)
     }
 
     fun getFriends(): MutableList<Friend> {
@@ -61,39 +64,5 @@ class RelationHandler(
         friends.removeIf { friend -> friend.name == player.name }
         record.set("friends", friends)
         save()
-    }
-
-    fun sendInvitation(name: String) {
-        val target = Bukkit.getPlayer(name)
-
-        if (target == null) {
-            "Can not find the player".locale(player).plus(" $name.").color(ChatColor.RED).send(player)
-            return
-        }
-
-        sendInvitation(player, target)
-        "Invitation sent.".locale(player).color(ChatColor.GREEN).send(player)
-    }
-
-    fun acceptInvitation(from: Player?) {
-        val invitation = from ?: popNextInvitation(player)
-        if (invitation == null) {
-            "No invitation found.".locale(player).color(ChatColor.RED).send(player)
-            return
-        }
-        addFriend(invitation)
-    }
-
-    fun declineInvitation(from: Player?) {
-        var invitation = from
-        if (invitation == null) {
-            invitation = popNextInvitation(player)
-            if (invitation == null) {
-                "No invitation found.".locale(player).color(ChatColor.RED).send(player)
-            }
-            return
-        }
-        removeInvitation(invitation, player)
-        "Invitation declined.".locale(player).color(ChatColor.RED).send(player, invitation)
     }
 }
