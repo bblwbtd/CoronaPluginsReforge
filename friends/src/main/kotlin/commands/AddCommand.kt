@@ -16,13 +16,11 @@ class AddCommand(sender: CommandSender?) : MagicCommand(sender) {
 
     override fun run() {
         val player = checkSenderType<Player>()
-        val handler = RequestHandler(player)
         val to = Bukkit.getPlayer(playerName)
         if (to == null) {
             "Can not find the player".locale(player).color(ChatColor.RED).send(player)
             return
         }
-
-        handler.sendRequest(to)
+        RequestHandler(player).sendRequest(to)
     }
 }
