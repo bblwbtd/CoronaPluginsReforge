@@ -9,12 +9,11 @@ class Executor : MagicCommandExecutor() {
     override fun getCommand(sender: CommandSender?): MagicCommand {
         return FriendCommand(sender).subcommands(
             AddCommand(sender),
-            AcceptCommand(sender),
-            DeclineCommand(sender),
             FriendCommand(sender),
             RemoveCommand(sender),
             ListCommand(sender),
-            TPCommand(sender)
+            TPCommand(sender),
+            RequestCommand(sender)
         )
     }
 }

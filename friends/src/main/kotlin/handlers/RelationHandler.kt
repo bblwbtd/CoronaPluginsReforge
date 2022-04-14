@@ -22,7 +22,10 @@ class RelationHandler(
     private val record = getRecord(player.name)
 
     private fun getFile(playerName: String): File {
-        return Paths.get(recordDir.pathString, "${playerName}.yml").toFile()
+        recordDir.toFile().mkdirs()
+        return Paths.get(recordDir.pathString, "${playerName}.yml").toFile().apply {
+            if (!exists()) createNewFile()
+        }
     }
 
     private fun getRecord(playerName: String): YamlConfiguration {

@@ -11,7 +11,7 @@ import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class AddCommand(sender: CommandSender?) : MagicCommand(sender) {
+class AddCommand(sender: CommandSender?) : MagicCommand(sender, help = "Send a friend request.") {
     private val playerName by argument("player name".locale(sender))
 
     override fun run() {

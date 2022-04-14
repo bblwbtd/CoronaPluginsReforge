@@ -14,6 +14,11 @@ class RequestHandler(val player: Player) {
     }
 
     fun sendRequest(to: Player) {
+        if (player.name == to.name) {
+            "You can not add yourselves.".locale(player).color(ChatColor.RED).send(player)
+            return
+        }
+
         val friendMessage = FriendMessage(player, {
             val handler1 = RelationHandler(player)
             val handler2 = RelationHandler(to)

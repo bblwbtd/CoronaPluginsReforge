@@ -14,7 +14,7 @@ import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class TPCommand(sender: CommandSender?) : MagicCommand(sender) {
+class TPCommand(sender: CommandSender?) : MagicCommand(sender, help = "Send teleport request to your friend.") {
     private val listFlag by option("-l", "--list", help = "List all requests".locale(sender)).flag()
     private val accept by option("-a", "--accept", help = "Accept a TP request.".locale(sender))
     private val decline by option("-d", "--decline", help = "Decline a TP request.".locale(sender))

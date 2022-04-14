@@ -12,7 +12,7 @@ import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class RemoveCommand(sender: CommandSender?) : MagicCommand(sender) {
+class RemoveCommand(sender: CommandSender?) : MagicCommand(sender, help = "Remove a friend.") {
     private val playerName by argument("player name", "The name of the ").default("")
 
     override fun run() {

@@ -29,7 +29,6 @@ fun toggleState(player: Player) {
             .send(player)
         player.setString(CommonMain.plugin, "loving", "true")
     } else {
-        "Stop making friends.".locale(player).color(ChatColor.YELLOW).send(player)
         player.setString(CommonMain.plugin, "loving", "false")
     }
 }

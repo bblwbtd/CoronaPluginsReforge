@@ -26,6 +26,7 @@ abstract class MagicCommandExecutor : CommandExecutor {
             "Unknown command.".locale(sender).color(ChatColor.RED).send(sender)
             return false
         } catch (e: Exception) {
+            e.printStackTrace()
             return false
         }
         return true

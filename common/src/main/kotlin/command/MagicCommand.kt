@@ -7,8 +7,18 @@ import i18n.send
 import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 
-abstract class MagicCommand(var sender: CommandSender?, help: String = "", var name: String? = null) :
-    CliktCommand(help = help.locale(sender), printHelpOnEmptyArgs = false, name = name?.locale(sender)) {
+abstract class MagicCommand(
+    var sender: CommandSender?,
+    help: String = "",
+    var name: String? = null,
+    invokeWithoutSubcommand: Boolean = false
+) :
+    CliktCommand(
+        help = help.locale(sender),
+        printHelpOnEmptyArgs = false,
+        name = name?.locale(sender),
+        invokeWithoutSubcommand = invokeWithoutSubcommand
+    ) {
 
     override fun run() {
 
