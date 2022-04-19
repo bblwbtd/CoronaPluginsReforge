@@ -19,6 +19,11 @@ class RequestHandler(val player: Player) {
             return
         }
 
+        if (queue.getAllMessages(to).find { message -> message.content.from == player } != null) {
+            "You have sent request. Don't send again!".locale(player).color(ChatColor.YELLOW).send(player)
+            return
+        }
+
         val friendMessage = FriendMessage(player, {
             val handler1 = RelationHandler(player)
             val handler2 = RelationHandler(to)
@@ -30,7 +35,18 @@ class RequestHandler(val player: Player) {
         })
 
         queue.addMessage(to, Message(friendMessage))
-        "You received a friend request from".locale(to).plus(" ${player.name}").color(ChatColor.GREEN).send(to)
+        "You received a friend request from".locale(to).plus(" ${player.name}".color(ChatColor.YELLOW))
+            .color(ChatColor.GREEN).send(to)
+        "${"Use".locale(to)} ${"/friend request -a ${player.name}".color(ChatColor.GREEN)} ${
+            "to accept this request.".locale(
+                to
+            )
+        }".send(to)
+        "${"Use".locale(to)} ${"/friend request -d ${player.name}".color(ChatColor.RED)} ${
+            "to decline this request.".locale(
+                to
+            )
+        }".send(to)
         "Request sent.".locale(player).color(ChatColor.GREEN).send(player)
     }
 

@@ -43,6 +43,10 @@ class MessageQueue<T> {
     fun getAllMessages(player: Player): MutableList<Message<T>> {
         return messageStorage.getOrPut(player) {
             LinkedList<Message<T>>()
+        }.apply {
+            removeIf {
+                it.expiredAt < System.currentTimeMillis()
+            }
         }
     }
 

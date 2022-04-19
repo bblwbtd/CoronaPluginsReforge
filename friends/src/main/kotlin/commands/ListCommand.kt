@@ -16,11 +16,10 @@ import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class ListCommand(sender: CommandSender?) : MagicCommand(sender, help = "List your friends and friend requests.") {
+class ListCommand(sender: CommandSender?) : MagicCommand(sender, help = "List your friends.") {
     private val page by argument().int().default(1)
     private val limit by argument().int().default(9)
     private val online by option("-o", "--online", help = "Only show online players.".locale(sender)).flag()
-
 
     override fun run() {
         if (page < 1) {
@@ -41,22 +40,18 @@ class ListCommand(sender: CommandSender?) : MagicCommand(sender, help = "List yo
         }
 
         val maxPage = (friends.size / limit) + 1
-        val subList = friends.subList((page - 1) * limit, friends.size.coerceAtMost(page * limit))
-
-        val header = "Friends".locale(sender).color(ChatColor.GREEN).plus(" ($page/$maxPage)\n")
-        val content = subList.filter {
-            if (online && !it.isOnline()) return@filter false
+        val subList = friends.filter {
+            if (online && !it.isOnline()) {
+                return@filter false
+            }
             return@filter true
-        }.map {
-            val status = if (it.isOnline()) "Online".locale(player).color(ChatColor.GREEN) else "Offline".locale(player)
-                .color(ChatColor.RED)
-            "${it.name}: $status " + if (it.isOnline()) "[TP]".onClick {
-                ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend tp ")
-            } else ""
-        }.joinToString { "\n" }
+        }.subList((page - 1) * limit, friends.size.coerceAtMost(page * limit))
 
-        "$header\n$content".send(player)
+        "Friends".locale(sender).color(ChatColor.GREEN).plus(" ($page/$maxPage)\n").send(player)
+        subList.forEach {
+            "${it.name} ${if (it.isOnline()) "[Online]".color(ChatColor.GREEN) else "[Offline]".color(ChatColor.GRAY)}".onClick {
+                ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend tp -t ${it.name}")
+            }.send(player)
+        }
     }
-
-
 }

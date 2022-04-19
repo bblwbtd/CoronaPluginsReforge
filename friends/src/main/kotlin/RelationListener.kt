@@ -19,13 +19,14 @@ class RelationListener : Listener {
         val player2 = event.damager as Player
         if (!isLoving(player1) || !isLoving(player2)) return
 
-        RelationHandler(player1).addFriend(player2)
-        RelationHandler(player2).addFriend(player1)
+        if (RelationHandler(player1).addFriend(player2) &&
+            RelationHandler(player2).addFriend(player1)
+        ) {
+            spawnSuccessParticle(player1)
+            spawnSuccessParticle(player2)
 
-        spawnSuccessParticle(player1)
-        spawnSuccessParticle(player2)
-
-        "${player2.name} ${"became your friend".locale(player1)}!".color(ChatColor.GREEN).send(player1)
-        "${player1.name} ${"became your friend".locale(player2)}!".color(ChatColor.GREEN).send(player2)
+            "${player2.name} ${"became your friend".locale(player1)}!".color(ChatColor.GREEN).send(player1)
+            "${player1.name} ${"became your friend".locale(player2)}!".color(ChatColor.GREEN).send(player2)
+        }
     }
 }

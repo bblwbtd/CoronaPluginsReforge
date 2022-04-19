@@ -6,9 +6,7 @@ import command.MagicCommand
 import handlers.RequestHandler
 import i18n.color
 import i18n.locale
-import i18n.onClick
 import i18n.send
-import net.md_5.bungee.api.chat.ClickEvent
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
@@ -27,8 +25,7 @@ class RequestCommand(sender: CommandSender?) : MagicCommand(sender) {
         } else if (accept != null) {
             RequestHandler(player).acceptRequest(Bukkit.getPlayer(accept!!))
         } else if (decline != null) {
-            val handler = RequestHandler(player)
-            handler.declineRequest(Bukkit.getPlayer(decline!!))
+            RequestHandler(player).declineRequest(Bukkit.getPlayer(decline!!))
         }
 
     }
@@ -37,24 +34,20 @@ class RequestCommand(sender: CommandSender?) : MagicCommand(sender) {
         val handler = RequestHandler(player)
         val requests = handler.getAllRequest()
         if (requests.isEmpty()) {
-            "You have no pending friend request".locale(player).color(ChatColor.YELLOW)
+            "You have no pending friend request".locale(player).color(ChatColor.YELLOW).send(player)
             return
         }
 
-        val header = "Pending requests".locale(player).color(ChatColor.GREEN)
-        val content = handler.getAllRequest().map {
-            "${it.from} ${
-                "[Accept]".locale(player).color(ChatColor.GREEN).onClick {
-                    return@onClick ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend accept ${it.from.name}")
-                }
-            } ${
-                "[Decline]".locale(player).color(ChatColor.RED).onClick {
-                    return@onClick ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend decline ${it.from.name}")
-                }
-            }"
-
+        "Pending requests".locale(player).color(ChatColor.GREEN).send(player)
+        handler.getAllRequest().forEach {
+            val content = it.from.name
+            content.send(player)
         }
 
-        "$header\n$content".send(player)
+    }
+
+    override fun getArgumentOptions(s: String): List<String> {
+        val player = checkSenderType<Player>()
+        return RequestHandler(player).getAllRequest().filter { it.from.name.contains(s) }.map { it.from.name }
     }
 }

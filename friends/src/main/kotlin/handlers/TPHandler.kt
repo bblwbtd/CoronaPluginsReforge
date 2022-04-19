@@ -22,11 +22,16 @@ class TPHandler(val player: Player) {
         }
 
         val friendMessage = FriendMessage(player, {
+            "$to ${"accepted your teleportation request!".locale(player).color(ChatColor.GREEN)}".send(player)
             MachineHandler(player).teleport(to.location)
         }, {
-            "$to" + "decline your teleportation request.".locale(player).color(ChatColor.RED).send(player)
+            "$to ${"declined your teleportation request!".locale(player).color(ChatColor.RED)}".send(player)
         })
 
+        getAllRequests().find { it.from == player }?.apply {
+            "Don't send repeated request.".locale(player).color(ChatColor.YELLOW).send(player)
+            return
+        }
         RequestHandler.queue.addMessage(
             to,
             Message(
@@ -34,6 +39,19 @@ class TPHandler(val player: Player) {
                 expiredAt = System.currentTimeMillis() + 1000 * CommonMain.plugin.config.getInt("tp_timeout")
             )
         )
+        "Request sent.".locale(player).color(ChatColor.GREEN).send(player)
+        "You received a teleportation request from".locale(to).plus(" ${player.name}".color(ChatColor.YELLOW))
+            .color(ChatColor.GREEN).send(to)
+        "${"Use".locale(to)} ${"/friend tp -a ${player.name}".color(ChatColor.GREEN)} ${
+            "to accept this request.".locale(
+                to
+            )
+        }".send(to)
+        "${"Use".locale(to)} ${"/friend tp -d ${player.name}".color(ChatColor.RED)} ${
+            "to decline this request.".locale(
+                to
+            )
+        }".send(to)
     }
 
     fun getAllRequests(): List<FriendMessage> {

@@ -13,7 +13,7 @@ class Main : CommonMain() {
         }
 
         registerListeners(RelationListener())
-    }
 
+    }
 
 }

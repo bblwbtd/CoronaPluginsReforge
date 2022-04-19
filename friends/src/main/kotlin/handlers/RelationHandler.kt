@@ -1,13 +1,14 @@
 package handlers
 
 import CommonMain
-import Friend
+import entities.Friend
+import entities.FriendRecord
 import i18n.color
 import i18n.send
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
+import utils.mapper
 import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -23,49 +24,49 @@ class RelationHandler(
 
     private fun getFile(playerName: String): File {
         recordDir.toFile().mkdirs()
-        return Paths.get(recordDir.pathString, "${playerName}.yml").toFile().apply {
-            if (!exists()) createNewFile()
-        }
+        return Paths.get(recordDir.pathString, "${playerName}.json").toFile()
     }
 
-    private fun getRecord(playerName: String): YamlConfiguration {
-        return YamlConfiguration().apply {
-            load(getFile(playerName))
+    private fun getRecord(playerName: String): FriendRecord {
+        val file = getFile(playerName)
+        if (!file.exists()) {
+            return FriendRecord()
         }
+
+        return mapper.readValue(getFile(playerName), FriendRecord::class.java)
     }
 
     private fun save() {
         Bukkit.getScheduler().runTaskAsynchronously(CommonMain.plugin) { _ ->
-            record.save(getFile(player.name))
+            mapper.writeValue(getFile(player.name), record)
         }
     }
 
     fun getFriends(): MutableList<Friend> {
-        return record.getMapList("friends").map {
-            Friend(it["name"] as String, it["createAt"] as Long)
-        }.toMutableList()
+        return record.friends
     }
 
-    fun addFriend(player: Player) {
-        if (player.name == this.player.name) {
-            "You can not make friend with yourself".color(ChatColor.RED).send(player)
-            return
+    fun addFriend(friend: Player): Boolean {
+        if (friend.name == this.player.name) {
+            "You can not make friend with yourself".color(ChatColor.RED).send(friend)
+            return false
         }
         val friends = getFriends()
-        if (friends.find { friend -> friend.name === player.name } != null) {
-            "${player.name} is already your friend.".send(player)
-            return
+        if (friends.find { f -> f.name == friend.name } != null) {
+            "You are already friend.".send(friend)
+            return false
         }
-        val newFriend = Friend(player.name, System.currentTimeMillis())
-        friends.add(newFriend)
-        record.set("friends", friends)
+        val newFriend = Friend(friend.name, System.currentTimeMillis())
+        record.friends.add(newFriend)
         save()
+
+        spawnSuccessParticle(player)
+        return true
     }
 
     fun removeFriend(player: Player) {
         val friends = getFriends()
         friends.removeIf { friend -> friend.name == player.name }
-        record.set("friends", friends)
         save()
     }
 }
