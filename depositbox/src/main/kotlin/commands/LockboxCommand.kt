@@ -7,19 +7,11 @@ import i18n.locale
 import i18n.send
 import org.bukkit.ChatColor
 import org.bukkit.Material
-import org.bukkit.NamespacedKey
 import org.bukkit.block.Chest
-import org.bukkit.block.TileState
 import org.bukkit.entity.Player
 import org.bukkit.inventory.DoubleChestInventory
-
-import org.bukkit.persistence.PersistentDataContainer
-import org.bukkit.persistence.PersistentDataHolder
-import org.bukkit.persistence.PersistentDataType
 import utils.*
-import java.security.KeyPairGenerator
-import java.security.PublicKey
-import java.util.UUID
+import java.util.*
 
 
 class LockboxCommand : MagicCommand() {
@@ -38,9 +30,18 @@ class LockboxCommand : MagicCommand() {
             player.sendMessage("Please aim at a Box!".locale(player).color(ChatColor.RED))
         }else{
 
+            //player没拿着key
+            if(chestKey.itemMeta == null){
+                "Please select an available key!".color(ChatColor.BLUE).send(player)
+                return
+            }
             //key不可用(key和chest存储字符串不一致)
             if (!keyCheck(chestKey,targetBlock)){
-                "This key has been use, please change another available key".color(ChatColor.BLUE).send(player)
+                if (getUUID(targetBlock) != ""){
+                    "Already locked!".color(ChatColor.YELLOW).send(player)
+                }else{
+                    "This key has been use, please change another available key".color(ChatColor.BLUE).send(player)
+                }
                 return
             }
             //key可以用
@@ -81,7 +82,7 @@ class LockboxCommand : MagicCommand() {
                     }else{
                         //已经set过了
                         if (getUUID(targetBlock) == getKey(chestKey)){
-                            "Already locked!".send(player)
+                            "Already locked!".color(ChatColor.YELLOW).send(player)
                         }
                     }
                 }

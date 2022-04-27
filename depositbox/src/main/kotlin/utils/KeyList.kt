@@ -1,26 +1,18 @@
 package utils
 
 
-import i18n.color
-import i18n.locale
-import i18n.send
-import org.bukkit.ChatColor
-import org.bukkit.Material
+import Main
 import org.bukkit.NamespacedKey
 import org.bukkit.block.Block
 import org.bukkit.block.TileState
-import org.bukkit.command.CommandSender
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
-import org.bukkit.metadata.MetadataValue
-import org.bukkit.metadata.Metadatable
 import org.bukkit.persistence.PersistentDataType
 import java.io.ByteArrayOutputStream
 import java.security.PrivateKey
 import java.security.PublicKey
 import java.util.*
 import javax.crypto.Cipher
-import java.util.Base64
 
 fun getKeyList(): List<String> {
     return Main.plugin.config.getStringList("keys")
@@ -162,5 +154,5 @@ fun clearKeyUUID(meta: ItemStack){
     val container = metaKey.persistentDataContainer
     container.remove(NamespacedKey(Main.plugin,"KeyUUID"))
     meta.itemMeta = metaKey
-
 }
+
