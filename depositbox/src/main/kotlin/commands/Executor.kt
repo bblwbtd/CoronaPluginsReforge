@@ -9,7 +9,8 @@ class Executor : MagicCommandExecutor() {
     override fun getCommand(sender: CommandSender?): MagicCommand {
         return BoxCommand(sender).subcommands(
             KeysCommand(sender),
-            LockboxCommand(sender)
+            LockboxCommand(sender),
+            UnlockCommand(sender)
         )
     }
 

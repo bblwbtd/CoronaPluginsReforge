@@ -67,7 +67,7 @@ class KeyListListener(): Listener {
             if (event.block?.type == Material.CHEST) {
                 val chestState = event.block.state as Chest
                 if (chestState.inventory !is DoubleChestInventory) {
-                    clearKeyUUID(inventory.itemInMainHand)
+                    cleanKeyUUID(inventory.itemInMainHand)
                 } else {
                     event.isCancelled = false
                 }

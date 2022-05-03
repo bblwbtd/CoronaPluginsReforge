@@ -149,10 +149,18 @@ fun keyCheck(chestKey: ItemStack?, targetChest: Block?): Boolean{
     return getKey(chestKey) == getUUID(targetChest)
 }
 
-fun clearKeyUUID(meta: ItemStack){
+fun cleanKeyUUID(meta: ItemStack){
     val metaKey = meta.itemMeta as ItemMeta
     val container = metaKey.persistentDataContainer
     container.remove(NamespacedKey(Main.plugin,"KeyUUID"))
     meta.itemMeta = metaKey
+}
+
+fun cleanChestUUID(block: Block?){
+    val tileState = block?.state as TileState
+    val container = tileState.persistentDataContainer
+    container.remove(NamespacedKey(Main.plugin,"ChestUUID"))
+    tileState.update(true)
+
 }
 
