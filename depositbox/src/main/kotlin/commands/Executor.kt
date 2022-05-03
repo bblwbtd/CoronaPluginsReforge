@@ -3,12 +3,13 @@ package commands
 import com.github.ajalt.clikt.core.subcommands
 import command.MagicCommand
 import command.MagicCommandExecutor
+import org.bukkit.command.CommandSender
 
 class Executor : MagicCommandExecutor() {
-    override fun getCommand(): MagicCommand {
-        return BoxCommand().subcommands(
-            KeysCommand(),
-            LockboxCommand()
+    override fun getCommand(sender: CommandSender?): MagicCommand {
+        return BoxCommand(sender).subcommands(
+            KeysCommand(sender),
+            LockboxCommand(sender)
         )
     }
 

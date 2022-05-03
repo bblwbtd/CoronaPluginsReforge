@@ -8,17 +8,18 @@ import i18n.send
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.block.Chest
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.inventory.DoubleChestInventory
 import utils.*
 import java.util.*
 
 
-class LockboxCommand : MagicCommand() {
+class LockboxCommand(sender: CommandSender?) : MagicCommand(sender) {
 
     override fun run() {
         if (sender !is Player) {
-            throw InvalidSenderException("Invalid sender type.".locale(sender).color(ChatColor.RED))
+            throw InvalidSenderException()
         }
 
         val player = sender as Player
