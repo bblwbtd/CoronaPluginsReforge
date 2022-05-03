@@ -1,10 +1,11 @@
 package command
 
 import com.github.ajalt.clikt.core.CliktCommand
+import i18n.locale
 import org.bukkit.command.CommandSender
 
 abstract class MagicCommand(var sender: CommandSender? = null, help: String = "", var name: String? = null) :
-    CliktCommand(help = help, printHelpOnEmptyArgs = false, name = name) {
+    CliktCommand(help = help.locale(sender), printHelpOnEmptyArgs = false, name = name) {
 
     override fun run() {
 
