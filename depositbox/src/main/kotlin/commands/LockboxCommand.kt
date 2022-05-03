@@ -61,7 +61,7 @@ class LockboxCommand : MagicCommand() {
                             "Lock successfully!".send(player)
                         }
                     }else{
-                        if (getUUID(leftChest)=="" || getUUID(rightChest)==""){//从一个depositbox拓展要再锁一次
+                        if (getUUID(leftChest)=="" || getUUID(rightChest)==""){//从一个deposit box拓展要再锁一次
                             when (getUUID(leftChest)) {
                                 "" -> getUUID(rightChest)?.let { setUUID(leftChest, it) }
                                 else -> getUUID(leftChest)?.let { setUUID(rightChest, it) }
