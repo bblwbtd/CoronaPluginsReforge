@@ -50,7 +50,7 @@ class LockboxCommand : MagicCommand() {
                 //检查箱子是否已经上锁
                 val chestState = targetBlock.state as Chest
                 val uuid = UUID.randomUUID().toString()
-                if (chestState.inventory is DoubleChestInventory) {
+                if (chestState.inventory is DoubleChestInventory) {//如果对准大箱子
                     val inv = chestState.inventory as DoubleChestInventory
                     val leftChest = inv.leftSide.location?.block
                     val rightChest = inv.rightSide.location?.block
@@ -75,7 +75,7 @@ class LockboxCommand : MagicCommand() {
                         }
                     }
 
-                }else {
+                }else {//最准小箱子
                     if (setUUID(targetBlock,uuid)){
                         setKey(chestKey, uuid)
                         "Lock successfully!".send(player)
@@ -86,7 +86,6 @@ class LockboxCommand : MagicCommand() {
                         }
                     }
                 }
-
 
             }else{
                 //拿的钥匙种类不对

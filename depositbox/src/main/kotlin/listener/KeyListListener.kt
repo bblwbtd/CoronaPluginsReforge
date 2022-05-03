@@ -13,9 +13,7 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.DoubleChestInventory
-import utils.clearKeyUUID
-import utils.getUUID
-import utils.keyCheck
+import utils.*
 
 
 class KeyListListener(): Listener {
@@ -23,18 +21,21 @@ class KeyListListener(): Listener {
     private val depositBoxHandler = DepositBoxHandler()
 
     @EventHandler
-    fun getKeyListsByCommand(event: PlayerCommandPreprocessEvent){
+    fun getKeyListsByCommand(event: PlayerCommandPreprocessEvent) {
         event.player.run {
             depositBoxHandler.getValidKeyList()
         }
     }
 
     @EventHandler
-    fun checkDepositBoxChange(event: PlayerInteractEvent){
-        event.player.run{
-            if (event.clickedBlock?.type == Material.CHEST){
-                if (!keyCheck(inventory.itemInMainHand, event.clickedBlock) && getUUID(event.clickedBlock) != ""){
-                    player?.let { "Please use the corresponding key to open/destroy the chest!".color(ChatColor.RED).send(it) }
+    fun checkDepositBoxChange(event: PlayerInteractEvent) {
+        event.player.run {
+            if (event.clickedBlock?.type == Material.CHEST) {
+                //检查小箱子
+                if (!keyCheck(inventory.itemInMainHand, event.clickedBlock) && getUUID(event.clickedBlock) != "") {
+                    player?.let {
+                        "Please use the corresponding key to open/destroy the chest!".color(ChatColor.RED).send(it)
+                    }
                     event.isCancelled = true
                 }
 
@@ -43,13 +44,31 @@ class KeyListListener(): Listener {
     }
 
     @EventHandler
-    fun clearKey(event: BlockBreakEvent){
+    fun checkDoubleChestChange(event: PlayerInteractEvent) {
         event.player.run {
-            if (event.block?.type == Material.CHEST){
+            val chestState = event.clickedBlock?.state as Chest
+            if (chestState.inventory is DoubleChestInventory){
+                val inv = chestState.inventory as DoubleChestInventory
+                val leftChest = inv.leftSide.location?.block
+                val rightChest = inv.rightSide.location?.block
+
+                if ((!keyCheck(inventory.itemInMainHand, leftChest) || !keyCheck(inventory.itemInMainHand, rightChest)) && getUUID(event.clickedBlock) != "") {
+                    event.isCancelled = true
+                }
+
+            }
+
+        }
+    }
+
+    @EventHandler
+    fun clearKey(event: BlockBreakEvent) {
+        event.player.run {
+            if (event.block?.type == Material.CHEST) {
                 val chestState = event.block.state as Chest
                 if (chestState.inventory !is DoubleChestInventory) {
                     clearKeyUUID(inventory.itemInMainHand)
-                }else{
+                } else {
                     event.isCancelled = false
                 }
 
@@ -57,8 +76,42 @@ class KeyListListener(): Listener {
         }
     }
 
+    @EventHandler
+    fun checkBoxExtension(event: PlayerInteractEvent) {
+        event.player.run {
+            val chestState = event.clickedBlock?.state as Chest
+            if (chestState.inventory is DoubleChestInventory) {
+                val inv = chestState.inventory as DoubleChestInventory
+                val leftChest = inv.leftSide.location?.block
+                val rightChest = inv.rightSide.location?.block
+                if (getUUID(leftChest) == "" || getUUID(rightChest) == "" ) {
+                    when (getUUID(leftChest)) {
+                        "" -> getUUID(rightChest)?.let { setUUID(leftChest, it) }
+                        else -> {
+                            getUUID(leftChest)?.let { setUUID(rightChest, it) }
+                        }
+                    }
+
+                    if (getUUID(leftChest) == getKey(inventory.itemInMainHand)){
+                        "Deposit box changed successfully!".color(ChatColor.GREEN).send(event.player)
+                        event.isCancelled = false
+                    } else if (getUUID(leftChest) == getKey(inventory.itemInMainHand)){
+                        "Deposit box changed successfully!".color(ChatColor.GREEN).send(event.player)
+                        event.isCancelled = false
+                    } else {
+                        event.isCancelled = true
+                    }
 
 
+                }else{
+                    event.isCancelled = false
+                }
+
+
+            }
+
+        }
+    }
 
 
 }
