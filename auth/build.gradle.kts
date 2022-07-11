@@ -2,6 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     kotlin("jvm")
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "ldgame"
@@ -17,6 +18,7 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation(project(":common"))
     implementation(kotlin("stdlib-jdk8"))
+    implementation("org.ktorm:ktorm-core:3.4.1")
     implementation("net.wesjd:anvilgui:1.5.3-SNAPSHOT")
 
 }
