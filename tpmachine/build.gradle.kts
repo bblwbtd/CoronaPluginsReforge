@@ -14,5 +14,5 @@ dependencies {
 
 tasks.withType<ShadowJar> {
     archiveBaseName.set("TP-Machine")
-    archiveClassifier.set("")
+    archiveClassifier.set("All")
 }
