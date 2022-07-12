@@ -40,6 +40,11 @@ class ListCommand(sender: CommandSender?) : MagicCommand(sender, help = "List yo
         }
 
         val maxPage = (friends.size / limit) + 1
+        if (page > maxPage) {
+            "Nothing to display".locale(sender).color(ChatColor.RED).send(sender)
+            return
+        }
+
         val subList = friends.filter {
             if (online && !it.isOnline()) {
                 return@filter false

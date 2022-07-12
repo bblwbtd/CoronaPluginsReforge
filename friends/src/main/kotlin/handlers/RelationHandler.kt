@@ -4,6 +4,7 @@ import CommonMain
 import entities.Friend
 import entities.FriendRecord
 import i18n.color
+import i18n.locale
 import i18n.send
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -61,6 +62,7 @@ class RelationHandler(
         save()
 
         spawnSuccessParticle(player)
+        "You get a new friend:".locale(player).plus(" ${friend.name}").color(ChatColor.GREEN).send(player)
         return true
     }
 

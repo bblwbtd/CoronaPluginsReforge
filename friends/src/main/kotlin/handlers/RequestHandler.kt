@@ -17,11 +17,18 @@ class RequestHandler(val player: Player) {
         if (player.name == to.name) {
             "you can't be friends with yourself.".locale(player).color(ChatColor.RED).send(player)
             return
-        }
-
-        if (queue.getAllMessages(to).find { message -> message.content.from == player } != null) {
+        } else if (queue.getAllMessages(to).find { message -> message.content.from == player } != null) {
             "You have sent request. Don't send again!".locale(player).color(ChatColor.YELLOW).send(player)
             return
+        } else {
+            val relationHandler = RelationHandler(player)
+            val friend = relationHandler.getFriends().find {
+                it.name == to.name
+            }
+            if (friend != null)  {
+                "You are already friends.".locale(player).color(ChatColor.RED).send(player)
+                return
+            }
         }
 
         val friendMessage = FriendMessage(player, {
@@ -31,7 +38,7 @@ class RequestHandler(val player: Player) {
             handler1.addFriend(to)
             handler2.addFriend(player)
         }, {
-            "$to" + "decline your invitation.".locale(player).color(ChatColor.RED).send(player)
+            "${to.name} ${"decline your friend request.".locale(player)}".color(ChatColor.RED).send(player)
         })
 
         queue.addMessage(to, Message(friendMessage))
