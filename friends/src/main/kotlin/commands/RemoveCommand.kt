@@ -29,6 +29,6 @@ class RemoveCommand(sender: CommandSender?) : MagicCommand(sender, help = "Remov
         handler1.removeFriend(player2)
         handler2.removeFriend(player)
 
-        "$playerName ".plus("is no longer your friend.".locale(player)).color(ChatColor.GREEN).send(player)
+        "$playerName ".plus("is no longer your friend.".locale(player)).color(ChatColor.YELLOW).send(player)
     }
 }

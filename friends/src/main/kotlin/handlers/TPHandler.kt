@@ -17,7 +17,7 @@ class TPHandler(val player: Player) {
 
     fun sendRequest(to: Player?) {
         if (to == null) {
-            "No such a player.".locale(player).color(ChatColor.RED).send(player)
+            "Can't find the player. Is it online?".locale(player).color(ChatColor.RED).send(player)
             return
         } else if (to.name == player.name) {
             "You can't tp to yourselves.".locale(player).color(ChatColor.RED).send(player)
@@ -42,7 +42,7 @@ class TPHandler(val player: Player) {
                 expiredAt = System.currentTimeMillis() + 1000 * CommonMain.plugin.config.getInt("tp_timeout")
             )
         )
-        "Request sent.".locale(player).color(ChatColor.GREEN).send(player)
+        "TP Request sent.".locale(player).color(ChatColor.GREEN).send(player)
         "You received a teleportation request from".locale(to).plus(" ${player.name}".color(ChatColor.YELLOW))
             .color(ChatColor.GREEN).send(to)
         "${"Use".locale(to)} ${"/friend tp -a ${player.name}".color(ChatColor.GREEN)} ${

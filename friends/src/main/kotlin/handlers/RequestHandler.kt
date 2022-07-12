@@ -40,14 +40,14 @@ class RequestHandler(val player: Player) {
         "${"Use".locale(to)} ${"/friend request -a ${player.name}".color(ChatColor.GREEN)} ${
             "to accept this request.".locale(
                 to
-            )
+            ).color(ChatColor.WHITE)
         }".send(to)
         "${"Use".locale(to)} ${"/friend request -d ${player.name}".color(ChatColor.RED)} ${
             "to decline this request.".locale(
                 to
-            )
+            ).color(ChatColor.WHITE)
         }".send(to)
-        "Request sent.".locale(player).color(ChatColor.GREEN).send(player)
+        "Friend request sent.".locale(player).color(ChatColor.GREEN).send(player)
     }
 
     fun getRequest(from: Player?): FriendMessage? {
