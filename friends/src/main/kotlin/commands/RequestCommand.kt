@@ -12,10 +12,10 @@ import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class RequestCommand(sender: CommandSender?) : MagicCommand(sender) {
+class RequestCommand(sender: CommandSender?) : MagicCommand(sender, help = "Manage friend requests") {
     private val accept by option("-a", "--accept", help = "Accept a friend request.".locale(sender))
     private val decline by option("-d", "--decline", help = "Decline a friend request.".locale(sender))
-    private val list by option("-l", "--list", help = "List all friend request.".locale(sender)).flag()
+    private val list by option("-l", "--list", help = "List all friend requests.".locale(sender)).flag()
 
     override fun run() {
         val player = checkSenderType<Player>()

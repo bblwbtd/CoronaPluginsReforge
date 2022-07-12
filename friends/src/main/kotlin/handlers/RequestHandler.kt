@@ -15,7 +15,7 @@ class RequestHandler(val player: Player) {
 
     fun sendRequest(to: Player) {
         if (player.name == to.name) {
-            "You can not add yourselves.".locale(player).color(ChatColor.RED).send(player)
+            "you can't be friends with yourself.".locale(player).color(ChatColor.RED).send(player)
             return
         }
 

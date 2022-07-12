@@ -12,6 +12,7 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Chicken
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
+import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import utils.getString
@@ -19,7 +20,8 @@ import utils.removeValue
 import utils.setString
 import java.util.*
 
-class MachineHandler(private val player: Player) {
+class MachineHandler(private val player: Player, private val  plugin: JavaPlugin = Main.plugin) {
+
     companion object {
         const val machineKey = "last_machine"
     }
@@ -30,7 +32,7 @@ class MachineHandler(private val player: Player) {
     }
 
     private fun spawnMachine(): Chicken? {
-        val lastEntityUUID = player.getString(Main.plugin, machineKey)
+        val lastEntityUUID = player.getString(plugin, machineKey)
         if (lastEntityUUID != null) {
             Bukkit.getEntity(UUID.fromString(lastEntityUUID))?.apply {
                 if (!this.isDead) {
@@ -43,16 +45,16 @@ class MachineHandler(private val player: Player) {
         val machine = player.location.world?.spawnEntity(player.location, EntityType.CHICKEN) as Chicken?
         machine?.apply {
 
-            getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = 80.0
+            getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = 20.0
             getAttribute(Attribute.GENERIC_FLYING_SPEED)?.baseValue = 1.0
             getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue = 1.0
             addPotionEffect(PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 5))
-            health = 80.0
+            health = 20.0
 
             customName = "TP Machine".locale(player).color(ChatColor.GREEN)
-            player.setString(Main.plugin, machineKey, machine.uniqueId.toString())
+            player.setString(plugin, machineKey, machine.uniqueId.toString())
 
-            setString(Main.plugin, "machine", "true")
+            setString(plugin, "machine", "true")
         }
 
         "Teleportation machine has been created.".locale(player).color(ChatColor.GREEN).send(player)
@@ -60,14 +62,14 @@ class MachineHandler(private val player: Player) {
     }
 
     private fun disappearCountdown(machine: Chicken, disappearDelay: Int) {
-        var count = disappearDelay
         machine.apply {
-            Bukkit.getScheduler().runTaskTimer(Main.plugin, { task ->
-                if (disappearDelay > 0) {
+            var count = disappearDelay
+            Bukkit.getScheduler().runTaskTimer(plugin, { task ->
+                if (count > 0) {
                     count -= 1
                 } else {
                     task.cancel()
-                    player.removeValue(Main.plugin, machineKey)
+                    player.removeValue(plugin, machineKey)
                     customName = null
                     if (!isDead) {
                         location.world?.playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0f)
@@ -83,7 +85,7 @@ class MachineHandler(private val player: Player) {
         machine.run {
             addPassenger(player)
             var countDown = tpDelay
-            Bukkit.getScheduler().runTaskTimer(Main.plugin, { task ->
+            Bukkit.getScheduler().runTaskTimer(plugin, { task ->
                 passengers.forEach { entity ->
                     "Teleporting in ".locale(player).plus(countDown).color(ChatColor.RED).send(entity)
                 }
@@ -96,14 +98,11 @@ class MachineHandler(private val player: Player) {
                         entity.teleport(target)
                         entity.location.world?.playSound(entity, Sound.ENTITY_ENDERMAN_TELEPORT, 1f, 5f)
                     }
-                    Bukkit.getScheduler().runTaskLater(Main.plugin, { _ ->
-                        teleport(target)
-                        clonedPassages.forEach {
-                            "You have been teleported.".locale(it).color(ChatColor.GREEN).send(it)
-                            addPassenger(it)
-                        }
-                        disappearCountdown(this, disappearDelay)
-                    }, 10L)
+                    teleport(target)
+                    clonedPassages.forEach {
+                        "You have been teleported.".locale(it).color(ChatColor.GREEN).send(it)
+                    }
+                    disappearCountdown(this, disappearDelay)
 
                 }
             }, 0, 20L)

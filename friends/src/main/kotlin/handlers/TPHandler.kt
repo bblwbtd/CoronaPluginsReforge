@@ -19,13 +19,16 @@ class TPHandler(val player: Player) {
         if (to == null) {
             "No such a player.".locale(player).color(ChatColor.RED).send(player)
             return
+        } else if (to.name == player.name) {
+            "You can't tp to yourselves.".locale(player).color(ChatColor.RED).send(player)
+            return
         }
 
         val friendMessage = FriendMessage(player, {
-            "$to ${"accepted your teleportation request!".locale(player).color(ChatColor.GREEN)}".send(player)
-            MachineHandler(player).teleport(to.location)
+            "${to.name} ${"accepted your teleportation request!".locale(player).color(ChatColor.GREEN)}".send(player)
+            MachineHandler(player, CommonMain.plugin).teleport(to.location)
         }, {
-            "$to ${"declined your teleportation request!".locale(player).color(ChatColor.RED)}".send(player)
+            "${to.name} ${"declined your teleportation request!".locale(player).color(ChatColor.RED)}".send(player)
         })
 
         getAllRequests().find { it.from == player }?.apply {
@@ -45,12 +48,12 @@ class TPHandler(val player: Player) {
         "${"Use".locale(to)} ${"/friend tp -a ${player.name}".color(ChatColor.GREEN)} ${
             "to accept this request.".locale(
                 to
-            )
+            ).color(ChatColor.WHITE)
         }".send(to)
         "${"Use".locale(to)} ${"/friend tp -d ${player.name}".color(ChatColor.RED)} ${
             "to decline this request.".locale(
                 to
-            )
+            ).color(ChatColor.WHITE)
         }".send(to)
     }
 

@@ -4,8 +4,8 @@ import org.bukkit.plugin.java.JavaPlugin
 import utils.info
 
 class Main : JavaPlugin() {
-
     companion object {
+        @JvmStatic
         lateinit var plugin: JavaPlugin
     }
 

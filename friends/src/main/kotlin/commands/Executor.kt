@@ -7,9 +7,9 @@ import org.bukkit.command.CommandSender
 
 class Executor : MagicCommandExecutor() {
     override fun getCommand(sender: CommandSender?): MagicCommand {
-        return FriendCommand(sender).subcommands(
+        return ToggleCommand(sender).subcommands(
             AddCommand(sender),
-            FriendCommand(sender),
+            ToggleCommand(sender),
             RemoveCommand(sender),
             ListCommand(sender),
             TPCommand(sender),

@@ -5,7 +5,7 @@ import handlers.toggleState
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class FriendCommand(sender: CommandSender?) :
+class ToggleCommand(sender: CommandSender?) :
     MagicCommand(sender, invokeWithoutSubcommand = true, help = "Start making friends.") {
     override fun run() {
         val subCommand = currentContext.invokedSubcommand

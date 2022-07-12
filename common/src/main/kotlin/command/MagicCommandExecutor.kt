@@ -1,7 +1,6 @@
 package command
 
-import com.github.ajalt.clikt.core.NoSuchSubcommand
-import com.github.ajalt.clikt.core.PrintHelpMessage
+import com.github.ajalt.clikt.core.*
 import i18n.color
 import i18n.locale
 import i18n.send
@@ -26,7 +25,18 @@ abstract class MagicCommandExecutor : CommandExecutor {
             "Unknown command.".locale(sender).color(ChatColor.RED).send(sender)
             return false
         } catch (e: Exception) {
-            e.printStackTrace()
+            when (e) {
+                is MissingArgument, is MissingOption -> {
+                    "Missing some arguments or options".locale(sender).plus(": ${e.message}").color(ChatColor.RED)
+                        .send(sender)
+                }
+                is UsageError -> {
+                    "Usage error".locale(sender).plus(": ${e.message}").color(ChatColor.RED).send(sender)
+                }
+                else -> {
+                    e.printStackTrace()
+                }
+            }
             return false
         }
         return true

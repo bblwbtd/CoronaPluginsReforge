@@ -1,5 +1,6 @@
 package commands
 
+import Main
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import command.MagicCommand
