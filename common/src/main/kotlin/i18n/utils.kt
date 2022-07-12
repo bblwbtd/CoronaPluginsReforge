@@ -34,11 +34,13 @@ fun String.color(color: ChatColor): String {
     return color + this
 }
 
-fun String.send(sender: CommandSender?) {
-    sender?.sendMessage(this)
+fun String.send(vararg sender: CommandSender?) {
+    sender.forEach {
+        it?.sendMessage(this)
+    }
 }
 
-fun String.onClick(handleClick: () -> ClickEvent): TextComponent {
+fun String.onClick(handleClick: () -> ClickEvent?): TextComponent {
     val event = handleClick()
     val textComponent = TextComponent(this)
     textComponent.clickEvent = event
@@ -51,4 +53,10 @@ fun TextComponent.send(sender: CommandSender) {
 
 operator fun TextComponent.plus(s: String) {
     addExtra(s)
+}
+
+operator fun String.plus(s: TextComponent): TextComponent {
+    return TextComponent(this).apply {
+        addExtra(s)
+    }
 }
