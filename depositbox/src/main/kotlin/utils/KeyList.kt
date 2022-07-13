@@ -113,35 +113,35 @@ fun getUUID(targetBlock: Block?) : String? {
 }
 
 fun setKey(meta: ItemStack?, uuid: String) : Boolean{
-    if (meta?.itemMeta is ItemMeta){
+    return if (meta?.itemMeta is ItemMeta){
         val metaKey = meta.itemMeta as ItemMeta
         val container = metaKey.persistentDataContainer
         if(container.has(NamespacedKey(Main.plugin,"KeyUUID"), PersistentDataType.STRING)){
-            return false
+            false
         }else{
             container.set(NamespacedKey(Main.plugin,"KeyUUID"), PersistentDataType.STRING, uuid)
             meta.itemMeta = metaKey
 
-            return true
+            true
         }
     }else{
-        return false
+        false
     }
 
 }
 
 fun getKey(meta: ItemStack?) : String? {
-    if (meta?.itemMeta is ItemMeta){
+    return if (meta?.itemMeta is ItemMeta){
         val metaKey = meta.itemMeta as ItemMeta
         val container = metaKey.persistentDataContainer
         if(container.has(NamespacedKey(Main.plugin,"KeyUUID"), PersistentDataType.STRING)){
-            return container.get(NamespacedKey(Main.plugin,"KeyUUID"), PersistentDataType.STRING)
+            container.get(NamespacedKey(Main.plugin,"KeyUUID"), PersistentDataType.STRING)
         }else{
-            return ""
+            ""
         }
     }else{
 
-        return ""
+        ""
     }
 }
 

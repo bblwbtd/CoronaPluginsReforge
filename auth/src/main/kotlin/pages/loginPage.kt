@@ -2,8 +2,8 @@ package pages
 
 import Main
 import handler.AuthHandler
-import handler.InvalidPasswordException
-import handler.NoUserException
+import exceptions.InvalidPasswordException
+import exceptions.NoUserException
 import i18n.locale
 import listener.PlayerAuthEvent
 import net.wesjd.anvilgui.AnvilGUI

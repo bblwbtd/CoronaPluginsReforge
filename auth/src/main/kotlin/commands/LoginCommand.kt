@@ -3,8 +3,8 @@ package commands
 import com.github.ajalt.clikt.parameters.arguments.argument
 import command.MagicCommand
 import handler.AuthHandler
-import handler.InvalidPasswordException
-import handler.NoUserException
+import exceptions.InvalidPasswordException
+import exceptions.NoUserException
 import i18n.color
 import i18n.locale
 import i18n.send

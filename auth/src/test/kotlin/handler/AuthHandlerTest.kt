@@ -1,5 +1,8 @@
 package handler
 
+import exceptions.DuplicatedUserException
+import exceptions.InvalidPasswordException
+import exceptions.NoUserException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

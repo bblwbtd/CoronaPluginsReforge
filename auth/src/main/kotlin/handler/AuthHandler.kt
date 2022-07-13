@@ -2,6 +2,9 @@ package handler
 
 import Main
 import entities.User
+import exceptions.DuplicatedUserException
+import exceptions.InvalidPasswordException
+import exceptions.NoUserException
 import utils.mapper
 import utils.md5
 import java.io.File
