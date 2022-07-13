@@ -1,6 +1,5 @@
 package commands
 
-import command.InvalidSenderException
 import command.MagicCommand
 import i18n.color
 import i18n.locale
@@ -15,11 +14,7 @@ import utils.*
 
 class UnlockCommand(sender: CommandSender?): MagicCommand(sender) {
     override fun run() {
-        if (sender !is Player) {
-            throw InvalidSenderException()
-        }
-
-        val player = sender as Player
+        val player = checkSenderType<Player>()
         val targetBlock = player.getTargetBlockExact(200)
         val chestKey = player.inventory.itemInMainHand
 
@@ -34,7 +29,7 @@ class UnlockCommand(sender: CommandSender?): MagicCommand(sender) {
             }
             //key不可用(key和chest存储字符串不一致)
             if (!keyCheck(chestKey,targetBlock)) {
-                if (getUUID(targetBlock) != "") {
+                if (getUUID(targetBlock) != null) {
                     "Please select the corresponding key!".color(ChatColor.YELLOW).send(player)
                 } else {
                     "This key has been use, please change another available key".color(ChatColor.BLUE).send(player)
@@ -53,7 +48,7 @@ class UnlockCommand(sender: CommandSender?): MagicCommand(sender) {
 
                     if (getUUID(leftChest) == getUUID(rightChest)){
                         if (getUUID(leftChest) == getKey(chestKey)){//key对应
-                            if (getUUID(leftChest) != "" && getKey(chestKey) != ""){
+                            if (getUUID(leftChest) != null && getKey(chestKey) != null){
                                 cleanKeyUUID(chestKey)
                                 cleanChestUUID(leftChest)
                                 cleanChestUUID(rightChest)
@@ -67,14 +62,13 @@ class UnlockCommand(sender: CommandSender?): MagicCommand(sender) {
 
                 }else {//最准小箱子
                     if (getUUID(targetBlock) == getKey(chestKey)){
-                        if (getUUID(targetBlock) != "" && getKey(chestKey) != ""){
+                        if (getUUID(targetBlock) != null && getKey(chestKey) != null){
                             cleanKeyUUID(chestKey)
                             cleanChestUUID(targetBlock)
                             "Unlock successfully!".send(player)
                         }else{
                             "This box has not been locked!".color(ChatColor.RED).send(player)
                         }
-
                     }
                 }
 

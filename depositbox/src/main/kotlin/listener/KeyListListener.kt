@@ -32,7 +32,7 @@ class KeyListListener(): Listener {
         event.player.run {
             if (event.clickedBlock?.type == Material.CHEST) {
                 //检查小箱子
-                if (!keyCheck(inventory.itemInMainHand, event.clickedBlock) && getUUID(event.clickedBlock) != "") {
+                if (!keyCheck(inventory.itemInMainHand, event.clickedBlock) && getUUID(event.clickedBlock) != null) {
                     player?.let {
                         "Please use the corresponding key to open/destroy the chest!".color(ChatColor.RED).send(it)
                     }
@@ -64,7 +64,7 @@ class KeyListListener(): Listener {
     @EventHandler
     fun clearKey(event: BlockBreakEvent) {
         event.player.run {
-            if (event.block?.type == Material.CHEST) {
+            if (event.block.type == Material.CHEST) {
                 val chestState = event.block.state as Chest
                 if (chestState.inventory !is DoubleChestInventory) {
                     cleanKeyUUID(inventory.itemInMainHand)
@@ -84,13 +84,13 @@ class KeyListListener(): Listener {
                 val inv = chestState.inventory as DoubleChestInventory
                 val leftChest = inv.leftSide.location?.block
                 val rightChest = inv.rightSide.location?.block
-                if (getUUID(leftChest) == "" || getUUID(rightChest) == "" ) {
-                    when (getUUID(leftChest)) {
-                        "" -> getUUID(rightChest)?.let { setUUID(leftChest, it) }
-                        else -> {
-                            getUUID(leftChest)?.let { setUUID(rightChest, it) }
-                        }
+                if (getUUID(leftChest) == null || getUUID(rightChest) == null ) {
+                    if (getUUID(leftChest) == null) {
+                        getUUID(rightChest)?.let { setUUID(leftChest, it) }
+                    } else {
+                        getUUID(leftChest)?.let { setUUID(rightChest, it) }
                     }
+
 
                     if (getUUID(leftChest) == getKey(inventory.itemInMainHand)){
                         "Deposit box changed successfully!".color(ChatColor.GREEN).send(event.player)

@@ -1,6 +1,5 @@
 package commands
 
-import command.InvalidSenderException
 import command.MagicCommand
 import i18n.color
 import i18n.locale
@@ -35,61 +34,58 @@ class LockCommand(sender: CommandSender?) : MagicCommand(sender, help = "Lock a 
         }
         //key不可用(key和chest存储字符串不一致)
         if (!keyCheck(chestKey, targetBlock)) {
-            if (getUUID(targetBlock) != "") {
-                "Already locked!".color(ChatColor.YELLOW).send(player)
+            if (getUUID(targetBlock) != null) {
+                "Already locked!".locale(player).color(ChatColor.YELLOW).send(player)
             } else {
-                "This key has been use, please change another available key".color(ChatColor.BLUE).send(player)
+                "This key has been use, please change another available key".locale(player).color(ChatColor.BLUE).send(player)
             }
             return
         }
-        //key可以用
-        if (chestKey.type.toString() in getKeyList()) {
-            //钥匙种类正确并且对准箱子
-            //检查箱子是否已经上锁
-            val chestState = targetBlock.state as Chest
-            val uuid = UUID.randomUUID().toString()
-            if (chestState.inventory is DoubleChestInventory) {//如果对准大箱子
-                val inv = chestState.inventory as DoubleChestInventory
-                val leftChest = inv.leftSide.location?.block
-                val rightChest = inv.rightSide.location?.block
 
-                if (getUUID(leftChest) == "" && getUUID(rightChest) == "") {
-                    if (setUUID(leftChest, uuid) && setUUID(rightChest, uuid)) {//第一次set
-                        setKey(chestKey, uuid)
-                        "Lock successfully!".send(player)
-                    }
-                } else {
-                    if (getUUID(leftChest) == "" || getUUID(rightChest) == "") {//从一个deposit box拓展要再锁一次
-                        when (getUUID(leftChest)) {
-                            "" -> getUUID(rightChest)?.let { setUUID(leftChest, it) }
-                            else -> getUUID(leftChest)?.let { setUUID(rightChest, it) }
-                        }
-                        "Lock successfully!".send(player)
-                    } else {
-                        //已经set过了
-                        if (getUUID(targetBlock) == getKey(chestKey)) {
-                            "Already locked!".color(ChatColor.YELLOW).send(player)
-                        }
-                    }
-                }
+        //钥匙种类正确并且对准箱子
+        if (chestKey.type.toString() !in getKeyList()) {
+            "Please check the materials that can be used as the key!".locale(player).color(ChatColor.YELLOW)
+                .send(player)
+            return
+        }
 
-            } else {//最准小箱子
-                if (setUUID(targetBlock, uuid)) {
+        //检查箱子是否已经上锁
+        val chestState = targetBlock.state as Chest
+        val uuid = UUID.randomUUID().toString()
+        if (chestState.inventory is DoubleChestInventory) {//如果对准大箱子
+            val inv = chestState.inventory as DoubleChestInventory
+            val leftChest = inv.leftSide.location?.block
+            val rightChest = inv.rightSide.location?.block
+
+            if (getUUID(leftChest) == null && getUUID(rightChest) == null) {
+                if (setUUID(leftChest, uuid) && setUUID(rightChest, uuid)) {//第一次set
                     setKey(chestKey, uuid)
-                    "Lock successfully!".send(player)
+                    "Lock successfully!".locale(player).color(ChatColor.GREEN).send(player)
+                }
+            } else if (getUUID(leftChest) == null || getUUID(rightChest) == null) {//从一个deposit box拓展要再锁一次
+                if (getUUID(leftChest) == null) {
+                    getUUID(rightChest)?.let { setUUID(leftChest, it) }
                 } else {
-                    //已经set过了
-                    if (getUUID(targetBlock) == getKey(chestKey)) {
-                        "Already locked!".color(ChatColor.YELLOW).send(player)
-                    }
+                    getUUID(leftChest)?.let { setUUID(rightChest, it) }
+                }
+                "Lock successfully!".send(player)
+            } else {
+                //已经set过了
+                if (getUUID(targetBlock) == getKey(chestKey)) {
+                    "Already locked!".color(ChatColor.YELLOW).send(player)
                 }
             }
 
-        } else {
-            //拿的钥匙种类不对
-            player.sendMessage(
-                "Please check the materials that can be used as the key!".locale(player).color(ChatColor.YELLOW)
-            )
+        } else {//最准小箱子
+            if (setUUID(targetBlock, uuid)) {
+                setKey(chestKey, uuid)
+                "Lock successfully!".send(player)
+            } else {
+                //已经set过了
+                if (getUUID(targetBlock) == getKey(chestKey)) {
+                    "Already locked!".color(ChatColor.YELLOW).send(player)
+                }
+            }
         }
 
 

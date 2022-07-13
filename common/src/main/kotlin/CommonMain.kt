@@ -1,6 +1,7 @@
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import utils.info
+import utils.warn
 
 abstract class CommonMain : JavaPlugin() {
     companion object {
@@ -9,7 +10,7 @@ abstract class CommonMain : JavaPlugin() {
 
     override fun onEnable() {
         plugin = this
-        info("$name enabled")
+        info("$name enabled.")
         saveDefaultConfig()
     }
 
@@ -17,5 +18,9 @@ abstract class CommonMain : JavaPlugin() {
         listener.forEach {
             server.pluginManager.registerEvents(it, this)
         }
+    }
+
+    override fun onDisable() {
+        warn("$name disabled.")
     }
 }

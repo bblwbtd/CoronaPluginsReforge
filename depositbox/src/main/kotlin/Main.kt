@@ -1,19 +1,11 @@
 import command.CommandCompleter
 import commands.Executor
 import listener.KeyListListener
-import org.bukkit.plugin.java.JavaPlugin
-import utils.info
-import utils.warn
-import viewRender.MagicViewListener
 
-class Main: JavaPlugin() {
-    companion object {
-        lateinit var plugin: JavaPlugin
-    }
+class Main: CommonMain() {
 
     override fun onEnable() {
-        info("CoronaDepositBox enabled")
-        plugin = this
+        super.onEnable()
         getCommand("box")!!.apply {
             Executor().let {
                 setExecutor(it)
@@ -21,19 +13,14 @@ class Main: JavaPlugin() {
             }
         }
 
-        saveConfig()
         registerListeners()
     }
 
     private fun registerListeners() {
         server.pluginManager.run {
-            registerEvents(MagicViewListener(), plugin)
             registerEvents(KeyListListener(), plugin)
         }
     }
 
-    override fun onDisable() {
-        warn("CoronaDepositBox disabled")
-    }
 
 }
