@@ -15,10 +15,7 @@ class UpdateCommand(sender: CommandSender?) : MagicCommand(sender) {
     private val newPassword by argument()
 
     override fun run() {
-        if (sender !is Player) {
-            "Invalid sender type.".locale(sender).color(ChatColor.RED).send(sender!!)
-            return
-        }
+        checkSenderType<Player>()
 
         val player = sender as Player
 

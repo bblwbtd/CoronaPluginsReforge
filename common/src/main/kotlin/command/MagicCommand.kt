@@ -23,7 +23,7 @@ abstract class MagicCommand(var sender: CommandSender?, help: String = "", var n
             throw InvalidSenderException()
         }
         if (sender !is T) {
-            "Invalid sender.".locale(sender).color(ChatColor.RED).send(sender!!)
+            "Invalid sender.".locale(sender).color(ChatColor.RED).send(sender)
             throw InvalidSenderException()
         }
 
