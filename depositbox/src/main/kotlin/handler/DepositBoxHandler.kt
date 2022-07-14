@@ -25,6 +25,7 @@ class DepositBoxHandler(private val player: Player) {
         }
 
         setKey(to, secret, label)
+        "Copy successfully!".locale(player).color(ChatColor.GREEN).send(player)
     }
 
     fun lockBox(block: Block, label: String) {
@@ -51,14 +52,15 @@ class DepositBoxHandler(private val player: Player) {
         setKey(chestKey, uuid, label)
         if (chestState.inventory is DoubleChestInventory) {
             val inv = chestState.inventory as DoubleChestInventory
-            val leftChest = inv.leftSide.location?.block
-            val rightChest = inv.rightSide.location?.block
+            val leftChest = inv.leftSide.location?.block!!
+            val rightChest = inv.rightSide.location?.block!!
 
             setUUID(leftChest, uuid)
             setUUID(rightChest, uuid)
         } else {
             setUUID(block, uuid)
         }
+        "Chest is locked".locale(player).color(ChatColor.GREEN).send(player)
     }
 
     fun unlockBox(block: Block) {
@@ -78,7 +80,11 @@ class DepositBoxHandler(private val player: Player) {
             return
         }
 
-        cleanKeyUUID(chestKey)
+        if (!keyCheck(chestKey, block)) {
+            "You need to hold the key in your main hand before unlocking".locale(player).color(ChatColor.RED)
+                .send(player)
+        }
+
         val chestState = block.state as Chest
         if (chestState.inventory is DoubleChestInventory) {
             val inv = chestState.inventory as DoubleChestInventory
@@ -90,5 +96,6 @@ class DepositBoxHandler(private val player: Player) {
         } else {
             cleanChestUUID(block)
         }
+        "Chest is unlocked!".locale(player).color(ChatColor.RED).send(player)
     }
 }

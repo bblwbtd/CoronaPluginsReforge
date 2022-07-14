@@ -1,7 +1,6 @@
 package commands
 
 import command.MagicCommand
-import handler.DepositBoxHandler
 import i18n.color
 import i18n.locale
 import org.bukkit.ChatColor

@@ -9,18 +9,17 @@ import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class UnlockCommand(sender: CommandSender?): MagicCommand(sender) {
+class UnlockCommand(sender: CommandSender?) : MagicCommand(sender, help = "Unlock a chest permanently.") {
     override fun run() {
         val player = checkSenderType<Player>()
         val targetBlock = player.getTargetBlockExact(10)
 
-        val handler = DepositBoxHandler(player)
         if (targetBlock == null) {
             "Please aim a block or the block is too far from your.".locale(player).color(ChatColor.RED).send(player)
             return
         }
 
-        handler.unlockBox(targetBlock)
+        DepositBoxHandler(player).unlockBox(targetBlock)
     }
 
 }

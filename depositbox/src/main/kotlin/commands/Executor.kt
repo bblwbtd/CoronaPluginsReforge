@@ -10,7 +10,8 @@ class Executor : MagicCommandExecutor() {
         return BoxCommand(sender).subcommands(
             KeysCommand(sender),
             LockCommand(sender),
-            UnlockCommand(sender)
+            UnlockCommand(sender),
+            CopyCommand(sender)
         )
     }
 

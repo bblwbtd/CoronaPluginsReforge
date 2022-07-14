@@ -23,16 +23,13 @@ class LockCommand(sender: CommandSender?) : MagicCommand(sender, help = "Lock a 
         val player = checkSenderType<Player>()
         val targetBlock = player.getTargetBlockExact(10)
 
-        val handler = DepositBoxHandler(player)
         if (targetBlock == null) {
             "Please aim a block or the block is too far from your.".locale(player).color(ChatColor.RED).send(player)
             return
         }
 
-        handler.lockBox(targetBlock, label)
+        DepositBoxHandler(player).lockBox(targetBlock, label)
     }
-
-
 }
 
 

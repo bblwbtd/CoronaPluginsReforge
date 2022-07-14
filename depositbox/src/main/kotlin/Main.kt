@@ -1,6 +1,6 @@
 import command.CommandCompleter
 import commands.Executor
-import listener.KeyListListener
+import listener.ChestListener
 
 class Main: CommonMain() {
 
@@ -18,9 +18,7 @@ class Main: CommonMain() {
 
     private fun registerListeners() {
         server.pluginManager.run {
-            registerEvents(KeyListListener(), plugin)
+            registerEvents(ChestListener(), plugin)
         }
     }
-
-
 }

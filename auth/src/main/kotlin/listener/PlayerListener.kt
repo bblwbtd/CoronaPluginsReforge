@@ -61,12 +61,10 @@ class PlayerListener : Listener {
                 })
             }
 
-            sendMessage(
-                getText(
-                    "You need to login or register at first! Right click with the block or Use /auth command.",
-                    locale
-                ).color(ChatColor.RED)
-            )
+            "You need to login or register at first!".locale(this).color(ChatColor.YELLOW).send(this)
+            "Right click with the item in your hand to register/login! (JAVA version only)".locale(this).color(ChatColor.AQUA).send(this)
+            "You can also use /auth r YOUR_PASSWORD to register.".locale(this).send(this)
+            "Use /auth l YOUR_PASSWORD to login.".locale(this).send(this)
         }
     }
 

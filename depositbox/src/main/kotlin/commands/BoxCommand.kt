@@ -9,7 +9,7 @@ class BoxCommand(sender: CommandSender?): MagicCommand(sender) {
         return mapOf(
             "l" to listOf("lock"),
             "k" to listOf("keys"),
-            "unl" to listOf("unlock")
+            "u" to listOf("unlock")
         )
     }
 }
