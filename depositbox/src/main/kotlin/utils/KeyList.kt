@@ -17,22 +17,11 @@ fun getNameSpaceKey(key: String): NamespacedKey {
     return NamespacedKey(CommonMain.plugin, key)
 }
 
-fun setUUID(targetBlock: Block?, uuid: String): Boolean {
-    if (targetBlock?.state == null) {
-        return false
-    }
-
+fun setUUID(targetBlock: Block, uuid: String) {
     val tileState = targetBlock.state as TileState
     val container = tileState.persistentDataContainer
-
-    if (container.has(getNameSpaceKey("ChestUUID"), PersistentDataType.STRING)) {
-        return false
-    }
-
     container.set(getNameSpaceKey("ChestUUID"), PersistentDataType.STRING, uuid)
     tileState.update(true)
-
-    return false
 }
 
 fun getUUID(targetBlock: Block?): String? {
@@ -50,11 +39,12 @@ fun getUUID(targetBlock: Block?): String? {
     return container.get(NamespacedKey(CommonMain.plugin, "ChestUUID"), PersistentDataType.STRING)
 }
 
-fun setKey(itemStack: ItemStack?, uuid: String): Boolean {
+fun setKey(itemStack: ItemStack?, uuid: String, label: String): Boolean {
     if (itemStack == null) {
         return false
     }
     itemStack.setString("KeyUUID", uuid)
+    itemStack.setName(label)
     return true
 }
 

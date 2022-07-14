@@ -1,7 +1,6 @@
 package listener
 
 
-import handler.DepositBoxHandler
 import i18n.color
 import i18n.send
 import org.bukkit.ChatColor
@@ -10,22 +9,12 @@ import org.bukkit.block.Chest
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
-import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.DoubleChestInventory
 import utils.*
 
 
-class KeyListListener(): Listener {
-
-    private val depositBoxHandler = DepositBoxHandler()
-
-    @EventHandler
-    fun getKeyListsByCommand(event: PlayerCommandPreprocessEvent) {
-        event.player.run {
-            depositBoxHandler.getValidKeyList()
-        }
-    }
+class KeyListListener : Listener {
 
     @EventHandler
     fun checkDepositBoxChange(event: PlayerInteractEvent) {
@@ -38,7 +27,6 @@ class KeyListListener(): Listener {
                     }
                     event.isCancelled = true
                 }
-
             }
         }
     }
@@ -71,7 +59,6 @@ class KeyListListener(): Listener {
                 } else {
                     event.isCancelled = false
                 }
-
             }
         }
     }
@@ -91,7 +78,6 @@ class KeyListListener(): Listener {
                         getUUID(leftChest)?.let { setUUID(rightChest, it) }
                     }
 
-
                     if (getUUID(leftChest) == getKey(inventory.itemInMainHand)){
                         "Deposit box changed successfully!".color(ChatColor.GREEN).send(event.player)
                         event.isCancelled = false
@@ -101,13 +87,9 @@ class KeyListListener(): Listener {
                     } else {
                         event.isCancelled = true
                     }
-
-
                 }else{
                     event.isCancelled = false
                 }
-
-
             }
 
         }
