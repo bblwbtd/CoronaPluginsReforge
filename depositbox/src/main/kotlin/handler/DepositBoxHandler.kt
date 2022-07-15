@@ -41,7 +41,7 @@ class DepositBoxHandler(private val player: Player) {
 
         val chestKey = player.inventory.itemInMainHand
         if (chestKey.type.toString() !in getKeyList()) {
-            "Please check the materials that can be used as the key!".locale(player).color(ChatColor.YELLOW)
+            "Please use command /box keys to check the materials that can be used as the key!".locale(player).color(ChatColor.YELLOW)
                 .send(player)
             return
         }
@@ -55,15 +55,15 @@ class DepositBoxHandler(private val player: Player) {
             val leftChest = inv.leftSide.location?.block!!
             val rightChest = inv.rightSide.location?.block!!
 
-            setUUID(leftChest, uuid)
-            setUUID(rightChest, uuid)
+            setUUID(leftChest, uuid, label)
+            setUUID(rightChest, uuid, label)
         } else {
-            setUUID(block, uuid)
+            setUUID(block, uuid, label)
         }
         "Chest is locked".locale(player).color(ChatColor.GREEN).send(player)
     }
 
-    fun unlockBox(block: Block) {
+    fun unlockBox(block: Block, isOp: Boolean) {
         if (block.type != Material.CHEST) {
             "Please aim at a chest!".locale(player).color(ChatColor.RED).send(player)
             return
@@ -80,9 +80,10 @@ class DepositBoxHandler(private val player: Player) {
             return
         }
 
-        if (!keyCheck(chestKey, block)) {
+        if (!keyCheck(chestKey, block) && !isOp) {
             "You need to hold the key in your main hand before unlocking".locale(player).color(ChatColor.RED)
                 .send(player)
+            return
         }
 
         val chestState = block.state as Chest

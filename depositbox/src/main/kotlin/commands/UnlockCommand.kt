@@ -19,7 +19,7 @@ class UnlockCommand(sender: CommandSender?) : MagicCommand(sender, help = "Unloc
             return
         }
 
-        DepositBoxHandler(player).unlockBox(targetBlock)
+        DepositBoxHandler(player).unlockBox(targetBlock, player.isOp)
     }
 
 }

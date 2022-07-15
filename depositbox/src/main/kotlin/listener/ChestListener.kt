@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockExplodeEvent
+import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.event.inventory.InventoryMoveItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.DoubleChestInventory
@@ -21,12 +22,14 @@ class ChestListener : Listener {
     fun preventBreak(event: BlockBreakEvent) {
         if (getUUID(event.block) == null) return
         val item = event.player.inventory.itemInMainHand
-        if (!keyCheck(item, event.block)) event.isCancelled = true
+        if (!keyCheck(item, event.block)) {
+            event.isCancelled = true
+        }
     }
 
     @EventHandler
     fun preventLeak(event: InventoryMoveItemEvent) {
-        val location = event.initiator.location
+        val location = event.source.location
         if (location?.block == null) return
         if (getUUID(location.block) != null) {
             event.isCancelled = true
@@ -35,25 +38,38 @@ class ChestListener : Listener {
 
     @EventHandler
     fun preventBlockExplosion(event: BlockExplodeEvent) {
-        event.blockList().removeIf {
-            getUUID(it) != null
+        val iterator = event.blockList().iterator()
+        while (iterator.hasNext()) {
+            val block = iterator.next()
+            if (getUUID(block) != null) {
+                iterator.remove()
+            }
         }
     }
 
     @EventHandler
-    fun preventEntityExplosion(event: BlockExplodeEvent) {
-        event.blockList().removeIf {
-            getUUID(it) != null
+    fun preventEntityExplosion(event: EntityExplodeEvent) {
+        val iterator = event.blockList().iterator()
+        while (iterator.hasNext()) {
+            val block = iterator.next()
+            if (getUUID(block) != null) {
+                iterator.remove()
+            }
         }
     }
 
     @EventHandler
     fun preventOpen(event: PlayerInteractEvent) {
         event.player.run {
-            if (!keyCheck(inventory.itemInMainHand, event.clickedBlock) && getUUID(event.clickedBlock) != null) {
-                player?.let {
-                    "Please use the corresponding key to open/destroy the chest!".locale(this).color(ChatColor.RED)
-                        .send(it)
+            val isBlockLocked = getUUID(event.clickedBlock) != null
+            if (!isBlockLocked) return
+            val isKeyMatch = keyCheck(inventory.itemInMainHand, event.clickedBlock)
+            if (!isKeyMatch) {
+                val hint = getHint(event.clickedBlock!!)
+                "Please use the corresponding key to open/destroy the chest!".locale(this).color(ChatColor.RED)
+                    .send(player)
+                if (hint != "" && hint != null) {
+                    "Hint: ".locale(player).plus(hint).send(player)
                 }
                 event.isCancelled = true
             }
@@ -62,6 +78,9 @@ class ChestListener : Listener {
 
     @EventHandler
     fun checkBoxExtension(event: PlayerInteractEvent) {
+        if (event.clickedBlock?.type != Material.CHEST) {
+            return
+        }
         event.player.run {
             val chestState = event.clickedBlock?.state as Chest
             if (chestState.inventory is DoubleChestInventory) {
@@ -74,29 +93,17 @@ class ChestListener : Listener {
                 val rightUUID = getUUID(rightChest)
 
                 if (leftUUID != null && rightUUID == null) {
-                    setUUID(rightChest, leftUUID)
+                    val hint = getHint(leftChest) ?: ""
+                    setUUID(rightChest, leftUUID, hint)
                 } else if (rightUUID != null && leftUUID == null) {
-                    setUUID(leftChest, rightUUID)
+                    val hint = getHint(rightChest) ?: ""
+                    setUUID(leftChest, rightUUID, hint)
                 }
-
             }
         }
 
     }
 
-    @EventHandler
-    fun clearKey(event: BlockBreakEvent) {
-        event.player.run {
-            if (event.block.type == Material.CHEST) {
-                val chestState = event.block.state as Chest
-                if (chestState.inventory !is DoubleChestInventory) {
-                    cleanKeyUUID(inventory.itemInMainHand)
-                } else {
-                    event.isCancelled = false
-                }
-            }
-        }
-    }
 }
 
 

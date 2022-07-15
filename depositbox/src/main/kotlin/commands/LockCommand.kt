@@ -1,7 +1,7 @@
 package commands
 
-import com.github.ajalt.clikt.parameters.options.default
-import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.arguments.default
 import command.MagicCommand
 import handler.DepositBoxHandler
 import i18n.color
@@ -14,8 +14,7 @@ import java.util.*
 
 
 class LockCommand(sender: CommandSender?) : MagicCommand(sender, help = "Lock a chest.") {
-    private val label by option(
-        "label".locale(sender),
+    private val keyLabel by argument(
         help = "The label of the chest key".locale(sender)
     ).default(UUID.randomUUID().toString().slice(0..3))
 
@@ -28,7 +27,7 @@ class LockCommand(sender: CommandSender?) : MagicCommand(sender, help = "Lock a 
             return
         }
 
-        DepositBoxHandler(player).lockBox(targetBlock, label)
+        DepositBoxHandler(player).lockBox(targetBlock, keyLabel)
     }
 }
 

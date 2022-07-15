@@ -1,3 +1,3 @@
 package expections
 
-class InvalidKeyMaterialException: Exception(message = "invalid key material")
+class InvalidKeyMaterialException: Exception("invalid key material")

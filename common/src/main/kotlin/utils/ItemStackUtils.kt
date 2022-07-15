@@ -9,15 +9,20 @@ fun getNamespaceKey(key: String): NamespacedKey {
 }
 
 fun ItemStack.setString(key: String, value: String) {
-    itemMeta?.persistentDataContainer?.set(getNamespaceKey(key), PersistentDataType.STRING, value)
+    val meta = itemMeta
+    meta?.persistentDataContainer?.set(getNamespaceKey(key), PersistentDataType.STRING, value)
+    itemMeta = meta
 }
+
 
 fun ItemStack.getString(key: String): String? {
     return itemMeta?.persistentDataContainer?.get(getNamespaceKey(key), PersistentDataType.STRING)
 }
 
 fun ItemStack.setInt(key: String, value: Int) {
-    itemMeta?.persistentDataContainer?.set(getNamespaceKey(key), PersistentDataType.INTEGER, value)
+    val meta = itemMeta
+    meta?.persistentDataContainer?.set(getNamespaceKey(key), PersistentDataType.INTEGER, value)
+    itemMeta = meta
 }
 
 fun ItemStack.getInt(key: String): Int? {
