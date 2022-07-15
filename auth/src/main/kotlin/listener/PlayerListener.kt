@@ -236,7 +236,7 @@ class PlayerListener : Listener {
 
         event.disallow(
             AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
-            "Your are already online. If you think this is a mistake, please contract server administrator".locale(
+            "Your are already online. If you think this is a mistake, please contact the server administrator".locale(
                 player
             )
         )
