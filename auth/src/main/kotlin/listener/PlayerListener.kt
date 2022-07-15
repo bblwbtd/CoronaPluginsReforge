@@ -1,5 +1,6 @@
 package listener
 
+import CommonMain
 import Main
 import exceptions.DuplicatedRegisterException
 import exceptions.InvalidPasswordException
@@ -28,7 +29,7 @@ import utils.*
 class PlayerListener : Listener {
 
     private val authHandler = AuthHandler()
-    private val loginBook = ItemStack(Material.WRITABLE_BOOK, 5)
+    private val loginBook = ItemStack(Material.WRITABLE_BOOK, 1)
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
@@ -60,13 +61,16 @@ class PlayerListener : Listener {
     @EventHandler
     fun onPlayerAuth(event: PlayerAuthEvent) {
         event.player.apply {
-            val location = retrieveLocation("original")
-            teleport(location!!)
-            loadInventory(this)
-            PlayerState.AUTHENTICATED.setState(this)
-            "Login successfully!".locale(this).color(ChatColor.GREEN).send(this)
-            retrieveLocation("current")
-            retrieveLocation("original")
+            Bukkit.getScheduler().runTask(Main.plugin, Runnable {
+                val location = retrieveLocation("original")
+                teleport(location!!)
+                loadInventory(this)
+                PlayerState.AUTHENTICATED.setState(this)
+                "Login successfully!".locale(this).color(ChatColor.GREEN).send(this)
+                retrieveLocation("current")
+                retrieveLocation("original")
+            })
+
         }
     }
 
