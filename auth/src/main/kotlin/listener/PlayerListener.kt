@@ -81,6 +81,20 @@ class PlayerListener : Listener {
     }
 
     @EventHandler
+    fun onPlayerIsKicked(event: PlayerKickEvent) {
+        if (!event.player.isAuthenticated()) {
+            event.leaveMessage = ""
+        }
+    }
+
+    @EventHandler
+    fun onPlayerLeave(event: PlayerQuitEvent) {
+        if (!event.player.isAuthenticated()) {
+            event.quitMessage = ""
+        }
+    }
+
+    @EventHandler
     fun onPlayerAuth(event: PlayerAuthEvent) {
         event.player.apply {
             Bukkit.getScheduler().runTask(Main.plugin, Runnable {
