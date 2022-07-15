@@ -3,8 +3,8 @@ package commands
 import com.github.ajalt.clikt.parameters.arguments.argument
 import command.MagicCommand
 import handler.AuthHandler
-import handler.DuplicatedUserException
-import handler.InvalidPasswordException
+import exceptions.DuplicatedRegisterException
+import exceptions.InvalidPasswordException
 import i18n.color
 import i18n.locale
 import i18n.send
@@ -21,15 +21,13 @@ class RegisterCommand(sender: CommandSender?) : MagicCommand(sender) {
         get() = "Password's length must be longer than 6.".locale(sender)
 
     override fun run() {
-        checkSenderType<Player>()
-
-        val player = sender as Player
+        val player = checkSenderType<Player>()
         try {
             handler.register(player.name, password)
             Bukkit.getPluginManager().callEvent(PlayerAuthEvent(player))
         } catch (e: InvalidPasswordException) {
             "Invalid password.".locale(sender).color(ChatColor.RED).send(player)
-        } catch (e: DuplicatedUserException) {
+        } catch (e: DuplicatedRegisterException) {
             "This user has already registered.".locale(sender).color(ChatColor.RED).send(player)
         }
     }

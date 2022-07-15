@@ -1,6 +1,8 @@
 # CoronaPluginReforge
 
-The kotlin version of CoronaPlugin.
+The kotlin version of CoronaPlugin. 
+
+Demo server: **mc.ldgame.xyz**
 
 ## Build
 
