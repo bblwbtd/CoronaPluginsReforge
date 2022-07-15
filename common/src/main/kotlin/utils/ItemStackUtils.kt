@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
 fun getNamespaceKey(key: String): NamespacedKey {
-    return NamespacedKey.fromString(key)!!
+    return NamespacedKey.minecraft(key)
 }
 
 fun ItemStack.setString(key: String, value: String) {

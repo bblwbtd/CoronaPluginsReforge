@@ -3,7 +3,7 @@ package commands
 import com.github.ajalt.clikt.parameters.arguments.argument
 import command.MagicCommand
 import handler.AuthHandler
-import exceptions.DuplicatedUserException
+import exceptions.DuplicatedRegisterException
 import exceptions.InvalidPasswordException
 import i18n.color
 import i18n.locale
@@ -27,7 +27,7 @@ class RegisterCommand(sender: CommandSender?) : MagicCommand(sender) {
             Bukkit.getPluginManager().callEvent(PlayerAuthEvent(player))
         } catch (e: InvalidPasswordException) {
             "Invalid password.".locale(sender).color(ChatColor.RED).send(player)
-        } catch (e: DuplicatedUserException) {
+        } catch (e: DuplicatedRegisterException) {
             "This user has already registered.".locale(sender).color(ChatColor.RED).send(player)
         }
     }

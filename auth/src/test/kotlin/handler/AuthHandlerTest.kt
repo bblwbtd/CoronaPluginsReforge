@@ -1,6 +1,6 @@
 package handler
 
-import exceptions.DuplicatedUserException
+import exceptions.DuplicatedRegisterException
 import exceptions.InvalidPasswordException
 import exceptions.NoUserException
 import org.junit.jupiter.api.Assertions.*
@@ -51,7 +51,7 @@ internal class AuthHandlerTest {
 
         handler.register("test4", "1234567")
 
-        assertThrows<DuplicatedUserException> { handler.register("test4", "1234567") }
+        assertThrows<DuplicatedRegisterException> { handler.register("test4", "1234567") }
 
         assertTrue(handler.fetchUserFile("test4").exists())
     }

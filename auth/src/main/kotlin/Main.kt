@@ -22,6 +22,8 @@ class Main : JavaPlugin() {
         }
 
         registerListeners()
+
+
     }
 
     private fun registerListeners() {

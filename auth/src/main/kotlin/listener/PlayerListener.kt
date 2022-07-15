@@ -1,9 +1,11 @@
 package listener
 
 import Main
+import exceptions.DuplicatedRegisterException
+import exceptions.InvalidPasswordException
+import exceptions.NoUserException
 import handler.*
 import i18n.color
-import i18n.getText
 import i18n.locale
 import i18n.send
 import org.bukkit.Bukkit
@@ -13,7 +15,6 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
@@ -22,21 +23,12 @@ import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
-import pages.showLoginPage
-import pages.showRegisterPage
 import utils.*
 
 class PlayerListener : Listener {
 
     private val authHandler = AuthHandler()
-
-    private val loginEntry = ItemStack(Material.EMERALD_BLOCK).apply {
-        setString("type", "login")
-    }
-
-    private val registryEntry = ItemStack(Material.REDSTONE_BLOCK).apply {
-        setString("type", "register")
-    }
+    private val loginBook = ItemStack(Material.WRITABLE_BOOK, 5)
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
@@ -54,15 +46,12 @@ class PlayerListener : Listener {
                     saveInventory(this)
                 }
                 inventory.clear()
-                inventory.addItem(if (authHandler.hasRegistered(name)) loginEntry.apply {
-                    setName(getText("Login Entrance", locale))
-                } else registryEntry.apply {
-                    setName(getText("Register Entrance", locale))
-                })
+                inventory.addItem(loginBook)
             }
 
             "You need to login or register at first!".locale(this).color(ChatColor.YELLOW).send(this)
-            "Right click with the item in your hand to register/login! (JAVA version only)".locale(this).color(ChatColor.AQUA).send(this)
+            "You can login/register by inputting your password to a book!".locale(this)
+                .color(ChatColor.AQUA).send(this)
             "You can also use /auth r YOUR_PASSWORD to register.".locale(this).send(this)
             "Use /auth l YOUR_PASSWORD to login.".locale(this).send(this)
         }
@@ -80,15 +69,6 @@ class PlayerListener : Listener {
             retrieveLocation("original")
         }
     }
-
-//    @EventHandler
-//    fun onPlayerQuit(event: PlayerQuitEvent) {
-//        event.player.run {
-//            if (!isAuthenticated()) {
-//                loadInventory(this)
-//            }
-//        }
-//    }
 
     @EventHandler
     fun preventPlayerMove(event: PlayerMoveEvent) {
@@ -152,14 +132,7 @@ class PlayerListener : Listener {
     @EventHandler
     fun openLoginPage(event: PlayerInteractEvent) {
         event.player.run {
-            if (isAuthenticated()) return
-            event.isCancelled = true
-            if (event.action === Action.RIGHT_CLICK_BLOCK || event.action === Action.RIGHT_CLICK_AIR) {
-                when (inventory.itemInMainHand) {
-                    loginEntry -> showLoginPage(this)
-                    registryEntry -> showRegisterPage(this)
-                }
-            }
+            if (!isAuthenticated()) event.isCancelled = true
         }
     }
 
@@ -183,4 +156,36 @@ class PlayerListener : Listener {
         if (!player.isAuthenticated()) event.isCancelled = true
     }
 
+    @EventHandler
+    fun playerFinishInput(event: PlayerEditBookEvent) {
+        if (event.player.isAuthenticated()) return
+        val password = event.newBookMeta.pages.joinToString("")
+        if (authHandler.hasRegistered(event.player.name)) {
+            try {
+                authHandler.login(event.player.name, password)
+                Bukkit.getPluginManager().callEvent(PlayerAuthEvent(event.player))
+            } catch (e: NoUserException) {
+                "You need to register first.".locale(event.player).color(ChatColor.RED).send(event.player)
+            } catch (e: InvalidPasswordException) {
+                "Wrong password".locale(event.player).color(ChatColor.RED).send(event.player)
+            }
+        } else {
+            try {
+                authHandler.register(event.player.name, password)
+                Bukkit.getPluginManager().callEvent(PlayerAuthEvent(event.player))
+            } catch (e: DuplicatedRegisterException) {
+                "You have already registered.".locale(event.player).color(ChatColor.RED).send(event.player)
+            } catch (e: InvalidPasswordException) {
+                "Invalid password".locale(event.player).color(ChatColor.RED).send(event.player)
+            }
+        }
+    }
+
+    @EventHandler
+    fun preventLoginFromAnotherLocation(event: AsyncPlayerPreLoginEvent) {
+        val player = Bukkit.getServer().getPlayer(event.name) ?: return
+        if (!player.isOnline) return
+
+
+    }
 }
