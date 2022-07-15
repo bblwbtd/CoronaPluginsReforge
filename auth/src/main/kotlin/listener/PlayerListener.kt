@@ -37,9 +37,7 @@ class PlayerListener : Listener {
                 it.name != name
             }
             for (player in playerList) {
-                if (!player.isOp) {
-                    player.hidePlayer(Main.plugin, this)
-                }
+                player.hidePlayer(Main.plugin, this)
                 hidePlayer(Main.plugin, player)
             }
             setString(Main.plugin, "join_message", event.joinMessage ?: "")
