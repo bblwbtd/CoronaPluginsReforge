@@ -1,6 +1,5 @@
 package listener
 
-import CommonMain
 import Main
 import exceptions.DuplicatedRegisterException
 import exceptions.InvalidPasswordException
@@ -34,8 +33,31 @@ class PlayerListener : Listener {
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
         event.player.run {
-            PlayerState.UNAUTHENTICATED.setState(this)
+            val playerList = Bukkit.getOnlinePlayers().filter {
+                it.name != name
+            }
+            for (player in playerList) {
+                player.hidePlayer(Main.plugin, this)
+                hidePlayer(Main.plugin, player)
+            }
+            setString(Main.plugin, "join_message", event.joinMessage ?: "")
+            event.joinMessage = ""
+            var countDown = Main.plugin.config.getInt("timeout")
+            Bukkit.getScheduler().runTaskTimerAsynchronously(Main.plugin, { task ->
+                if (countDown > 0) {
+                    countDown -= 1
+                } else {
+                    task.cancel()
+                    if (!isAuthenticated()) {
+                        Bukkit.getScheduler().runTask(Main.plugin, Runnable {
+                            kickPlayer("Login Timeout.".locale(this))
+                        })
+                    }
+                }
+            }, 0, 20L)
 
+
+            PlayerState.UNAUTHENTICATED.setState(this)
             Bukkit.getScheduler().runTask(Main.plugin) { _ ->
                 if (loadLocation("original") == null) {
                     saveLocation("original")
@@ -69,8 +91,16 @@ class PlayerListener : Listener {
                 "Login successfully!".locale(this).color(ChatColor.GREEN).send(this)
                 retrieveLocation("current")
                 retrieveLocation("original")
-            })
 
+                val playerList = Bukkit.getOnlinePlayers().filter {
+                    it.name != name
+                }
+                for (player in playerList) {
+                    player.showPlayer(Main.plugin, this)
+                    showPlayer(Main.plugin, player)
+                }
+                Bukkit.broadcastMessage(getString(Main.plugin, "join_message") ?: "")
+            })
         }
     }
 
@@ -188,8 +218,13 @@ class PlayerListener : Listener {
     @EventHandler
     fun preventLoginFromAnotherLocation(event: AsyncPlayerPreLoginEvent) {
         val player = Bukkit.getServer().getPlayer(event.name) ?: return
-        if (!player.isOnline) return
+        if (!player.isOnline || !player.isAuthenticated()) return
 
-
+        event.disallow(
+            AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
+            "Your are already online. If you think this is a mistake, please contract server administrator".locale(
+                player
+            )
+        )
     }
 }
