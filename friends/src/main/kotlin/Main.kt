@@ -3,8 +3,6 @@ import commands.Executor
 
 class Main : CommonMain() {
 
-
-
     override fun onEnable() {
         super.onEnable()
 

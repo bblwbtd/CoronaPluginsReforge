@@ -51,4 +51,12 @@ class TPCommand(sender: CommandSender?) : MagicCommand(sender, help = "Send tele
         "Pending requests: \n$requestText".send(player)
     }
 
+    override fun getArgumentOptions(s: String): List<String> {
+        val player = checkSenderType<Player>()
+        return TPHandler(player).getAllRequests().map {
+            it.from.name
+        }.filter {
+            Regex(s).matches(it)
+        }
+    }
 }

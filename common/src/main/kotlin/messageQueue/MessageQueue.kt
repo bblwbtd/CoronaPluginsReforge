@@ -36,6 +36,9 @@ class MessageQueue<T> {
 
     fun fetchMessage(player: Player, predicate: (Message<T>) -> Boolean): Message<T>? {
         return messageStorage[player]?.indexOfFirst(predicate)?.run {
+            if (this == -1) {
+                return@run null
+            }
             messageStorage[player]?.removeAt(this)
         }
     }
