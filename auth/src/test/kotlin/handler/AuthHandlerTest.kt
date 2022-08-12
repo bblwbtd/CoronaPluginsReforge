@@ -35,6 +35,8 @@ internal class AuthHandlerTest {
             handler.login("test3", "123456")
         }
 
+        handler.register("test3", "1234567")
+
         assertThrows<InvalidPasswordException> { handler.login("test3", "2213123123") }
 
         assertDoesNotThrow {
