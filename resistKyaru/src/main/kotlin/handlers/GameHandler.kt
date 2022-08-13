@@ -5,22 +5,29 @@ import GameListener
 import i18n.broadcast
 import i18n.color
 import i18n.locale
+import i18n.send
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.command.CommandSender
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.scheduler.BukkitTask
 
 var isPlaying = false
 
-var timer: BukkitTask? = null
+var effectTimer: BukkitTask? = null
+var finishTimer: BukkitTask? = null
 
-fun startGame() {
+fun startGame(sender: CommandSender?) {
+    if (isPlaying) {
+        "Don't start the game again!".locale(sender).color(ChatColor.RED).send(sender)
+    }
+
     isPlaying = true
 
-    timer = Bukkit.getScheduler().runTaskTimer(CommonMain.plugin, Runnable {
+    effectTimer = Bukkit.getScheduler().runTaskTimer(CommonMain.plugin, Runnable {
         if (!isPlaying) {
-            timer?.cancel()
+            effectTimer?.cancel()
             return@Runnable
         }
 
@@ -33,7 +40,25 @@ fun startGame() {
                 )
             )
         }
-    }, 0, 20L)
+    }, 0, 200L)
+
+    finishTimer = Bukkit.getScheduler().runTaskTimer(CommonMain.plugin, Runnable {
+        if (!isPlaying) {
+            finishTimer?.cancel()
+            return@Runnable
+        }
+
+        for (player in Bukkit.getOnlinePlayers()) {
+            if (player.inventory.helmet != GameListener.kyaruSkull) return@Runnable
+        }
+
+        Bukkit.getOnlinePlayers().forEach {
+            "Each player has a kyaru skull now!".locale(it).color(ChatColor.GREEN).send(it)
+        }
+
+        finishTimer?.cancel()
+    }, 0, 60L)
+
 
     "Kyaru's game is started.".locale().color(ChatColor.GREEN).broadcast()
 }

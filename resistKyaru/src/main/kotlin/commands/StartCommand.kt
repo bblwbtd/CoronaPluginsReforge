@@ -12,7 +12,7 @@ class StartCommand(sender: CommandSender?) : MagicCommand(sender, help = "start 
             throw InvalidSenderException()
         }
 
-        startGame()
+        startGame(sender)
     }
 
 }
