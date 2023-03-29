@@ -2,6 +2,9 @@ package handler
 
 import Main
 import entities.User
+import exceptions.DuplicatedRegisterException
+import exceptions.InvalidPasswordException
+import exceptions.NoUserException
 import utils.mapper
 import utils.md5
 import java.io.File
@@ -37,7 +40,7 @@ class AuthHandler(private val userDir: String = Paths.get(Main.plugin.dataFolder
         validatePassword(password)
 
         if (hasRegistered(username)) {
-            throw DuplicatedUserException()
+            throw DuplicatedRegisterException()
         }
 
         val user = User(username, md5(password))

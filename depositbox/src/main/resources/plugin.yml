@@ -1,0 +1,9 @@
+name: CoronaDepositBox
+main: Main
+version: 0.0.1
+authors:
+  - DGHSRailgun
+  - bblwbtd
+commands:
+  box:
+    description: The DepositBox plugin's command

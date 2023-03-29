@@ -1,9 +1,10 @@
 package commonds
 
+import Main
 import com.github.ajalt.clikt.parameters.arguments.argument
 import command.MagicCommand
 import handler.AddressHandler
-import handler.TeleportationHandler
+import handler.MachineHandler
 import i18n.color
 import i18n.locale
 import i18n.send
@@ -27,8 +28,12 @@ class ToCommand(sender: CommandSender?) : MagicCommand(help = "Teleport to an ad
             return
         }
 
-        val teleportationHandler = TeleportationHandler(player)
-        teleportationHandler.spawnMachine(address.toLocation())
+        val machineHandler = MachineHandler(player)
+        machineHandler.teleport(
+            address.toLocation(),
+            Main.plugin.config.getInt("delay"),
+            Main.plugin.config.getInt("timeout")
+        )
     }
 
     override fun getArgumentOptions(s: String): List<String> {

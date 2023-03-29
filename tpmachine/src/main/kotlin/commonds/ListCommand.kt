@@ -28,11 +28,11 @@ class ListCommand(sender: CommandSender?) : MagicCommand(sender, help = "List al
         if (book.address.size % pageSize > 0) {
             limit += 1
         }
-
         if (page <= 0 || limit < page) {
             "Nothing to display.".locale(sender).color(ChatColor.YELLOW).send(player)
             return
         }
+
         ("Address book".locale(sender).color(ChatColor.YELLOW) + "(${page}/${limit}):\n").send(player)
         book.address.subList(
             (page - 1) * pageSize,

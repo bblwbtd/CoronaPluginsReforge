@@ -4,24 +4,29 @@ import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
-fun getKey(key: String): NamespacedKey {
-    return NamespacedKey.fromString(key)!!
+fun getNamespaceKey(key: String): NamespacedKey {
+    return NamespacedKey.minecraft(key)
 }
 
 fun ItemStack.setString(key: String, value: String) {
-    itemMeta?.persistentDataContainer?.set(getKey(key), PersistentDataType.STRING, value)
+    val meta = itemMeta
+    meta?.persistentDataContainer?.set(getNamespaceKey(key), PersistentDataType.STRING, value)
+    itemMeta = meta
 }
 
+
 fun ItemStack.getString(key: String): String? {
-    return itemMeta?.persistentDataContainer?.get(getKey(key), PersistentDataType.STRING)
+    return itemMeta?.persistentDataContainer?.get(getNamespaceKey(key), PersistentDataType.STRING)
 }
 
 fun ItemStack.setInt(key: String, value: Int) {
-    itemMeta?.persistentDataContainer?.set(getKey(key), PersistentDataType.INTEGER, value)
+    val meta = itemMeta
+    meta?.persistentDataContainer?.set(getNamespaceKey(key), PersistentDataType.INTEGER, value)
+    itemMeta = meta
 }
 
 fun ItemStack.getInt(key: String): Int? {
-    return itemMeta?.persistentDataContainer?.get(getKey(key), PersistentDataType.INTEGER)
+    return itemMeta?.persistentDataContainer?.get(getNamespaceKey(key), PersistentDataType.INTEGER)
 }
 
 fun ItemStack.setName(name: String): ItemStack {

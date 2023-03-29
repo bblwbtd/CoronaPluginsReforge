@@ -1,3 +1,3 @@
-package handler
+package exceptions
 
 class NoUserException : Exception()
