@@ -2,6 +2,7 @@ package i18n
 
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.TextComponent
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
@@ -59,4 +60,8 @@ operator fun String.plus(s: TextComponent): TextComponent {
     return TextComponent(this).apply {
         addExtra(s)
     }
+}
+
+fun String.broadcast() {
+    Bukkit.broadcastMessage(this)
 }
