@@ -46,10 +46,7 @@ class ListCommand(sender: CommandSender?) : MagicCommand(sender, help = "List yo
         }
 
         val subList = friends.filter {
-            if (online && !it.isOnline()) {
-                return@filter false
-            }
-            return@filter true
+            return@filter !(online && !it.isOnline())
         }.subList((page - 1) * limit, friends.size.coerceAtMost(page * limit))
 
         "Friends".locale(sender).color(ChatColor.GREEN).plus(" ($page/$maxPage)\n").send(player)
