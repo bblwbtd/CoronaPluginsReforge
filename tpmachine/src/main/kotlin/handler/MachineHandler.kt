@@ -20,10 +20,10 @@ import utils.removeValue
 import utils.setString
 import java.util.*
 
-class MachineHandler(private val player: Player, private val  plugin: JavaPlugin = Main.plugin) {
+class MachineHandler(private val player: Player, private val plugin: JavaPlugin = Main.plugin) {
 
     companion object {
-        const val machineKey = "last_machine"
+        const val machineKey = "lastMachine"
     }
 
     fun teleport(target: Location, tpDelay: Int = 5, disappearDelay: Int = 10) {

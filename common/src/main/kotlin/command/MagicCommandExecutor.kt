@@ -18,7 +18,7 @@ abstract class MagicCommandExecutor : CommandExecutor {
         try {
             magicCommand.parse(args)
         } catch (e: PrintHelpMessage) {
-            val message = e.command.getFormattedHelp()
+            val message = e.context?.command?.getFormattedHelp()
             sender.sendMessage(message)
             return true
         } catch (e: NoSuchSubcommand) {

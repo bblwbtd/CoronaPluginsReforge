@@ -1,11 +1,6 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") version "1.9.20"
 }
-
-group = "ldgame"
-version = "0.0.1"
 
 allprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
@@ -29,33 +24,23 @@ allprojects {
     dependencies {
         testImplementation(kotlin("test"))
         implementation(kotlin("stdlib-jdk8"))
-        compileOnly("org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT")
-        testImplementation("com.github.seeseemelk:MockBukkit-v1.17:1.13.0")
+        compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
         testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
-        implementation("com.github.ajalt.clikt:clikt:3.5.0")
-        implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
+        implementation("com.github.ajalt.clikt:clikt:4.4.0")
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.+")
     }
 
     tasks.test {
         useJUnitPlatform()
     }
 
-    val compileKotlin: KotlinCompile by tasks
-    compileKotlin.kotlinOptions {
-        jvmTarget = "16"
-    }
+
 }
-dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-}
+
 repositories {
     mavenCentral()
 }
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
-}
-val compileTestKotlin: KotlinCompile by tasks
-compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+
+kotlin {
+    jvmToolchain(17)
 }
