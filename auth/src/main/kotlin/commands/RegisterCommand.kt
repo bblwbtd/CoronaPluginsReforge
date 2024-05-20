@@ -1,5 +1,6 @@
 package commands
 
+import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.arguments.argument
 import command.MagicCommand
 import handler.AuthHandler
@@ -17,9 +18,10 @@ import org.bukkit.entity.Player
 class RegisterCommand(sender: CommandSender?) : MagicCommand(sender) {
     private val password by argument()
     private val handler = AuthHandler()
-    override val commandHelp: String
-        get() = "Password's length must be longer than 6.".locale(sender)
 
+    override fun commandHelp(context: Context): String {
+        return "Password's length must be longer than 6.".locale(sender)
+    }
     override fun run() {
         val player = checkSenderType<Player>()
         try {
