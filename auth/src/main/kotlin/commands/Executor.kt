@@ -1,4 +1,4 @@
-package commands
+package xyz.ldgame.coronaauth.commands
 
 import com.github.ajalt.clikt.core.subcommands
 import command.MagicCommand

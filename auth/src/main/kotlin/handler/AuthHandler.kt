@@ -1,12 +1,13 @@
-package handler
+package xyz.ldgame.coronaauth.handler
 
-import Main
-import entities.User
-import exceptions.DuplicatedRegisterException
-import exceptions.InvalidPasswordException
-import exceptions.NoUserException
+
 import utils.mapper
 import utils.md5
+import xyz.ldgame.coronaauth.Main
+import xyz.ldgame.coronaauth.entities.User
+import xyz.ldgame.coronaauth.exceptions.DuplicatedRegisterException
+import xyz.ldgame.coronaauth.exceptions.InvalidPasswordException
+import xyz.ldgame.coronaauth.exceptions.NoUserException
 import java.io.File
 import java.nio.file.Paths
 

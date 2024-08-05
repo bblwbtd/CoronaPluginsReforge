@@ -1,10 +1,5 @@
-package listener
+package xyz.ldgame.coronaauth.listener
 
-import Main
-import exceptions.DuplicatedRegisterException
-import exceptions.InvalidPasswordException
-import exceptions.NoUserException
-import handler.*
 import i18n.color
 import i18n.locale
 import i18n.send
@@ -24,6 +19,12 @@ import org.bukkit.event.entity.EntityTargetLivingEntityEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
 import utils.*
+import xyz.ldgame.coronaauth.Main
+import xyz.ldgame.coronaauth.exceptions.DuplicatedRegisterException
+import xyz.ldgame.coronaauth.exceptions.InvalidPasswordException
+import xyz.ldgame.coronaauth.exceptions.NoUserException
+import xyz.ldgame.coronaauth.handler.*
+import xyz.ldgame.coronaauth.utils.isAuthenticated
 
 class PlayerListener : Listener {
 

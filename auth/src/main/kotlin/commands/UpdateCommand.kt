@@ -1,23 +1,21 @@
-package commands
+package xyz.ldgame.coronaauth.commands
 
 import com.github.ajalt.clikt.parameters.arguments.argument
 import command.MagicCommand
-import handler.AuthHandler
 import i18n.color
 import i18n.locale
 import i18n.send
 import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import utils.isAuthenticated
+import xyz.ldgame.coronaauth.handler.AuthHandler
+import xyz.ldgame.coronaauth.utils.isAuthenticated
 
 class UpdateCommand(sender: CommandSender?) : MagicCommand(sender) {
     private val newPassword by argument()
 
     override fun run() {
-        checkSenderType<Player>()
-
-        val player = sender as Player
+        val player = checkSenderType<Player>()
 
         if (player.isAuthenticated()) {
             AuthHandler().update(player.name, newPassword)

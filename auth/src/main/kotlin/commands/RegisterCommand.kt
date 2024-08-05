@@ -1,19 +1,19 @@
-package commands
+package xyz.ldgame.coronaauth.commands
 
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.arguments.argument
 import command.MagicCommand
-import handler.AuthHandler
-import exceptions.DuplicatedRegisterException
-import exceptions.InvalidPasswordException
 import i18n.color
 import i18n.locale
 import i18n.send
-import listener.PlayerAuthEvent
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import xyz.ldgame.coronaauth.exceptions.DuplicatedRegisterException
+import xyz.ldgame.coronaauth.exceptions.InvalidPasswordException
+import xyz.ldgame.coronaauth.handler.AuthHandler
+import xyz.ldgame.coronaauth.listener.PlayerAuthEvent
 
 class RegisterCommand(sender: CommandSender?) : MagicCommand(sender) {
     private val password by argument()

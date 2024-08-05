@@ -1,8 +1,8 @@
-package handler
+package xyz.ldgame.coronaauth.handler
 
-import Main
 import org.bukkit.entity.Player
 import utils.setString
+import xyz.ldgame.coronaauth.Main
 
 enum class PlayerState {
     UNAUTHENTICATED,

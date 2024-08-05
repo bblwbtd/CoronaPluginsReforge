@@ -1,3 +1,3 @@
-package entities
+package xyz.ldgame.coronaauth.entities
 
 data class User(val username: String, val password: String)
