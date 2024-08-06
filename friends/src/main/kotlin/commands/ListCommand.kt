@@ -13,10 +13,9 @@ import i18n.onClick
 import i18n.send
 import net.md_5.bungee.api.chat.ClickEvent
 import org.bukkit.ChatColor
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class ListCommand(sender: CommandSender?) : MagicCommand(sender, help = "List your friends.") {
+class ListCommand : MagicCommand(help = "List your friends.") {
     private val page by argument().int().default(1)
     private val limit by argument().int().default(9)
     private val online by option("-o", "--online", help = "Only show online players.".locale(sender)).flag()

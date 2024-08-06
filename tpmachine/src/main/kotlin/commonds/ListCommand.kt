@@ -15,7 +15,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import kotlin.math.min
 
-class ListCommand(sender: CommandSender?) : MagicCommand(sender, help = "List all saved addresses.") {
+class ListCommand : MagicCommand(help = "List all saved addresses.") {
     private val page by argument(help = "Page number".locale(sender)).int().default(1)
     private val pageSize = 9
 

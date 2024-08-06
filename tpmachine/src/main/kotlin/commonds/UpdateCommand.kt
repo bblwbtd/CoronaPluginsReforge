@@ -7,7 +7,7 @@ import i18n.locale
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class UpdateCommand(sender: CommandSender?) : MagicCommand(sender, "Update an address.") {
+class UpdateCommand : MagicCommand("Update an address.") {
     private val addressName by argument(help = "The name of the address.".locale(sender), name = "name")
 
     override fun run() {

@@ -7,7 +7,7 @@ import i18n.locale
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class RemoveCommand(sender: CommandSender?) : MagicCommand(sender, help = "Remove addresses.") {
+class RemoveCommand : MagicCommand(help = "Remove addresses.") {
     private val addressName by argument(
         help = "The name of the address. (Regex is supported)".locale(sender),
         name = "name"

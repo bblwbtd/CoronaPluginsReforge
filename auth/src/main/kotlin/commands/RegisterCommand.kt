@@ -8,14 +8,13 @@ import i18n.locale
 import i18n.send
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import xyz.ldgame.coronaauth.exceptions.DuplicatedRegisterException
 import xyz.ldgame.coronaauth.exceptions.InvalidPasswordException
 import xyz.ldgame.coronaauth.handler.AuthHandler
 import xyz.ldgame.coronaauth.listener.PlayerAuthEvent
 
-class RegisterCommand(sender: CommandSender?) : MagicCommand(sender) {
+class RegisterCommand : MagicCommand() {
     private val password by argument()
     private val handler = AuthHandler()
 

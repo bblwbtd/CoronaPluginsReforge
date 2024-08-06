@@ -7,7 +7,7 @@ import i18n.locale
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class RenameCommand(sender: CommandSender?) : MagicCommand(help = "Rename an address.", sender = sender) {
+class RenameCommand : MagicCommand(help = "Rename an address.") {
     private val oldName by argument(help = "The old address name".locale(sender))
     private val newName by argument(help = "The new address name".locale(sender))
 

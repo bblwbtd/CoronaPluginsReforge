@@ -8,22 +8,15 @@ object BotMain : CommonMain() {
     override fun onEnable() {
         super.onEnable()
 
-        saveDefaultConfig()
-
         val port = config.getInt("port")
         val host = config.getString("host")
 
-        if (host == null) {
-            logger.severe("Host not found in config")
+        if (host == null || port == 0) {
+            logger.severe("Invalid host or port in the config")
             server.pluginManager.disablePlugin(this)
             return
         }
 
-        if (port == 0) {
-            logger.severe("Port not found in config")
-            server.pluginManager.disablePlugin(this)
-            return
-        }
 
         client = APIClient(host, port)
 

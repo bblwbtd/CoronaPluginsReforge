@@ -6,12 +6,11 @@ import i18n.color
 import i18n.locale
 import i18n.send
 import org.bukkit.ChatColor
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import xyz.ldgame.coronaauth.handler.AuthHandler
 import xyz.ldgame.coronaauth.utils.isAuthenticated
 
-class UpdateCommand(sender: CommandSender?) : MagicCommand(sender) {
+class UpdateCommand : MagicCommand() {
     private val newPassword by argument()
 
     override fun run() {

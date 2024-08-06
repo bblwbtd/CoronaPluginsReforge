@@ -1,6 +1,5 @@
 package commands
 
-import Main
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import command.MagicCommand
@@ -12,10 +11,9 @@ import i18n.send
 import net.md_5.bungee.api.chat.ClickEvent
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class TPCommand(sender: CommandSender?) : MagicCommand(sender, help = "Send teleport request to your friend.") {
+class TPCommand() : MagicCommand(help = "Send teleport request to your friend.") {
     private val listFlag by option("-l", "--list", help = "List all requests".locale(sender)).flag()
     private val accept by option("-a", "--accept", help = "Accept a TP request.".locale(sender))
     private val decline by option("-d", "--decline", help = "Decline a TP request.".locale(sender))

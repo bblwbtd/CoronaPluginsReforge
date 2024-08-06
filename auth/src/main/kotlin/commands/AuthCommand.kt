@@ -1,9 +1,8 @@
 package xyz.ldgame.coronaauth.commands
 
 import command.MagicCommand
-import org.bukkit.command.CommandSender
 
-class AuthCommand(sender: CommandSender?) : MagicCommand(sender) {
+class AuthCommand : MagicCommand() {
 
     override fun aliases(): Map<String, List<String>> {
         return mapOf(
