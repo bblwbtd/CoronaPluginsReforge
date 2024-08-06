@@ -1,12 +1,15 @@
 package xyz.ldgame.bot
 
 import CommonMain
+import java.io.File
 
 object BotMain : CommonMain() {
     private lateinit var client: APIClient
 
     override fun onEnable() {
         super.onEnable()
+
+        saveAndLoadLanguageFiles()
 
         val port = config.getInt("port")
         val host = config.getString("host")
@@ -19,6 +22,7 @@ object BotMain : CommonMain() {
 
 
         client = APIClient(host, port)
-
     }
+
+
 }

@@ -12,6 +12,7 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     testImplementation(kotlin("test"))
     implementation(project(":common"))
+    implementation(project(":auth"))
 }
 
 tasks.test {
