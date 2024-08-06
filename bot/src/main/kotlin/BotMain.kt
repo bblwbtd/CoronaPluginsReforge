@@ -1,7 +1,8 @@
 package xyz.ldgame.bot
 
 import CommonMain
-import java.io.File
+import i18n.saveAndLoadLanguageFiles
+import xyz.ldgame.bot.commands.Executor
 
 object BotMain : CommonMain() {
     private lateinit var client: APIClient
@@ -9,7 +10,7 @@ object BotMain : CommonMain() {
     override fun onEnable() {
         super.onEnable()
 
-        saveAndLoadLanguageFiles()
+        saveAndLoadLanguageFiles(this, "en", "zh")
 
         val port = config.getInt("port")
         val host = config.getString("host")
@@ -20,8 +21,11 @@ object BotMain : CommonMain() {
             return
         }
 
-
         client = APIClient(host, port)
+
+        getCommand("bot")!!.apply {
+            setExecutor(Executor())
+        }
     }
 
 

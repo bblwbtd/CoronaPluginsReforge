@@ -12,4 +12,6 @@ class Bot(val player: Player, val client: APIClient) {
         client.sendCommand(player.name, "protect $target")
     }
 
+
+
 }

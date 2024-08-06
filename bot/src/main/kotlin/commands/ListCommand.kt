@@ -1,4 +1,9 @@
 package xyz.ldgame.bot.commands
 
-class ListCommand {
+import command.MagicCommand
+
+class ListCommand: MagicCommand(help = "ListCommandHelp") {
+    override fun run() {
+        println("List command")
+    }
 }

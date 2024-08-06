@@ -1,0 +1,5 @@
+BotCommandHelp: Bot management plugin.
+AddCommandHelp: Add a bot under your control.
+ListCommandHelp: List all bots under your control.
+RemoveCommandHelp: Remove a bot from your control.
+BotNameHelp: The name of the bot.

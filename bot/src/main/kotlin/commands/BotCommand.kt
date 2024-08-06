@@ -1,6 +1,6 @@
 package xyz.ldgame.bot.commands
 
 import command.MagicCommand
-import org.bukkit.command.CommandSender
+import i18n.locale
 
-class BotCommand: MagicCommand(help = "Bot management plugin")
+class BotCommand: MagicCommand(help = "BotCommandHelp")

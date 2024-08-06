@@ -1,3 +1,8 @@
 name: CoronaBot
 main: xyz.ldgame.coronabot.Main
 version: 0.0.1
+commands:
+  bot:
+    description: Bot management plugin.
+    usage: /bot <add|list|remove|summon> [botname]
+    permission: coronabot.bot
