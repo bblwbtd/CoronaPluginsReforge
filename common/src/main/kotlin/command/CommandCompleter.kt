@@ -1,5 +1,6 @@
 package command
 
+import com.github.ajalt.clikt.core.context
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
@@ -15,26 +16,28 @@ class CommandCompleter(private val customCommand: MagicCommand) : TabCompleter {
     ): MutableList<String> {
 
         val results = LinkedList<String>()
-        var current: MagicCommand? = customCommand
+        var current: MagicCommand = customCommand
 
         args.forEach { arg ->
-            current?.sender = sender
-            val nextCommand = current?.registeredSubcommands()?.find {
+            current.context {
+                obj = MagicContext(sender)
+            }
+            val nextCommand = current.registeredSubcommands()?.find {
                 it.commandName == arg
             }
             if (nextCommand != null) {
-                current = nextCommand as MagicCommand?
+                current = nextCommand as MagicCommand
             }
         }
 
-        current?.registeredSubcommandNames()?.forEach {
+        current.registeredSubcommandNames().forEach {
             if (it.contains(args.last())) {
                 results.add(it)
             }
         }
 
         try {
-            results.addAll(current?.getArgumentOptions(args.last()) ?: emptyList())
+            results.addAll(current.getArgumentOptions(args.last()) ?: emptyList())
         } catch (_: InvalidSenderException) {
 
         }
