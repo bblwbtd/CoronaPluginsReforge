@@ -5,6 +5,7 @@ import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
 import java.util.*
 
 fun String.locale(locale: CommandSender? = null): String {
@@ -35,6 +36,9 @@ val strings = mutableMapOf<String, Map<String, String>>()
 
 fun saveAndLoadLanguageFiles(plugin: JavaPlugin, vararg supportedLanguages: String) {
     for (lang in supportedLanguages) {
+        if (File(plugin.dataFolder, "$lang.yml").exists()) {
+            continue
+        }
         plugin.saveResource("$lang.yml", false)
     }
 

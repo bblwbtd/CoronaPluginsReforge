@@ -22,7 +22,7 @@ class CommandCompleter(private val customCommand: MagicCommand) : TabCompleter {
             current.context {
                 obj = MagicContext(sender)
             }
-            val nextCommand = current.registeredSubcommands()?.find {
+            val nextCommand = current.registeredSubcommands().find {
                 it.commandName == arg
             }
             if (nextCommand != null) {

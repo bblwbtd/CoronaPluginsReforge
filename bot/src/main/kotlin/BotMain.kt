@@ -4,7 +4,7 @@ import CommonMain
 import i18n.saveAndLoadLanguageFiles
 import xyz.ldgame.bot.commands.Executor
 
-object BotMain : CommonMain() {
+class BotMain : CommonMain() {
     private lateinit var client: APIClient
 
     override fun onEnable() {
