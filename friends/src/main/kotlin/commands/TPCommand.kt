@@ -49,12 +49,10 @@ class TPCommand : MagicCommand(help = "Send teleport request to your friend.") {
         "Pending requests: \n$requestText".send(player)
     }
 
-    override fun getArgumentOptions(s: String): List<String> {
+    override fun getTabCompleteOptions(): List<String> {
         val player = checkSenderType<Player>()
         return TPHandler(player).getAllRequests().map {
             it.from.name
-        }.filter {
-            Regex(s).matches(it)
         }
     }
 }

@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
+import java.nio.file.Paths
 import java.util.*
 
 fun String.locale(locale: CommandSender? = null): String {
@@ -32,19 +33,65 @@ fun getText(rawText: String, sender: CommandSender? = null): String {
     return getText(rawText, "en")
 }
 
-val strings = mutableMapOf<String, Map<String, String>>()
+val strings = mutableMapOf<String, MutableMap<String, String>>()
 
-fun saveAndLoadLanguageFiles(plugin: JavaPlugin, vararg supportedLanguages: String) {
-    for (lang in supportedLanguages) {
-        if (File(plugin.dataFolder, "$lang.yml").exists()) {
-            continue
+fun JavaPlugin.copyResource(resourcePath: String, targetPath: String) {
+    val inputStream = getResource(resourcePath)
+
+    if (inputStream == null) {
+        logger.warning("Resource $resourcePath not found.")
+        return
+    }
+
+    val outputStream = File(targetPath).outputStream()
+    inputStream.copyTo(outputStream)
+
+    inputStream.close()
+    outputStream.close()
+}
+
+fun JavaPlugin.saveAndLoadLanguageFiles(resourcePath: String) {
+    val langFolder = Paths.get(dataFolder.parent, resourcePath).toFile()
+
+    if (!langFolder.exists()) {
+        langFolder.mkdirs()
+    }
+
+    if (!File(langFolder, "meta.yml").exists()) {
+        copyResource("$resourcePath/meta.yml", "$langFolder/meta.yml")
+    }
+
+    val supportedLanguages = LinkedList<String>()
+
+    val existedMeta = YamlConfiguration.loadConfiguration(File(langFolder, "meta.yml"))
+    val bundleMeta = YamlConfiguration.loadConfiguration(getResource("$resourcePath/meta.yml")!!.reader())
+
+    if (existedMeta.getInt("version") < bundleMeta.getInt("version")) {
+        copyResource("$resourcePath/meta.yml", "$langFolder/meta.yml")
+        supportedLanguages.addAll(bundleMeta.getStringList("languages"))
+
+        for (lang in supportedLanguages) {
+            copyResource("$resourcePath/$lang.yml", "$langFolder/$lang.yml")
         }
-        plugin.saveResource("$lang.yml", false)
+    } else {
+        supportedLanguages.addAll(existedMeta.getStringList("languages"))
     }
 
     for (lang in supportedLanguages) {
-        val file = plugin.dataFolder.resolve("$lang.yml")
+        val file = File(langFolder, "$lang.yml")
+
+        if (!file.exists()) {
+            copyResource("$resourcePath/$lang.yml", "$langFolder/$lang.yml")
+        }
+
         val langConfig = YamlConfiguration.loadConfiguration(file)
-        strings[lang] = langConfig.getValues(false).mapValues { it.value.toString() }
+        val existLangConfig = strings[lang] ?: mutableMapOf()
+
+        for (key in langConfig.getKeys(false)) {
+            existLangConfig[key] = langConfig.getString(key)!!
+        }
+
+        strings[lang] = existLangConfig
     }
 }
+

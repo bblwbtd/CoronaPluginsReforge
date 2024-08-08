@@ -30,16 +30,10 @@ class CommandCompleter(private val customCommand: MagicCommand) : TabCompleter {
             }
         }
 
-        current.registeredSubcommandNames().forEach {
+        current.getTabCompleteOptions().forEach {
             if (it.contains(args.last())) {
                 results.add(it)
             }
-        }
-
-        try {
-            results.addAll(current.getArgumentOptions(args.last()))
-        } catch (_: InvalidSenderException) {
-
         }
 
         return results

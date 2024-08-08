@@ -3,11 +3,11 @@ package xyz.ldgame.corona.common.command
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.core.requireObject
+import org.bukkit.ChatColor
+import org.bukkit.command.CommandSender
 import xyz.ldgame.corona.common.i18n.color
 import xyz.ldgame.corona.common.i18n.locale
 import xyz.ldgame.corona.common.i18n.send
-import org.bukkit.ChatColor
-import org.bukkit.command.CommandSender
 
 abstract class MagicCommand(
     var name: String? = null,
@@ -49,4 +49,7 @@ abstract class MagicCommand(
         return sender as T
     }
 
+    open fun getTabCompleteOptions(): List<String> {
+        return registeredSubcommandNames()
+    }
 }

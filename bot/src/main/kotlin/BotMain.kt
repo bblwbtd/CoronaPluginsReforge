@@ -2,6 +2,7 @@ package xyz.ldgame.corona.bot
 
 import xyz.ldgame.corona.bot.commands.Executor
 import xyz.ldgame.corona.common.CommonMain
+import xyz.ldgame.corona.common.command.CommandCompleter
 import xyz.ldgame.corona.common.i18n.saveAndLoadLanguageFiles
 
 class BotMain : CommonMain() {
@@ -9,8 +10,6 @@ class BotMain : CommonMain() {
 
     override fun onEnable() {
         super.onEnable()
-
-        saveAndLoadLanguageFiles(this, "en", "zh")
 
         val port = config.getInt("port")
         val host = config.getString("host")
@@ -24,9 +23,11 @@ class BotMain : CommonMain() {
         client = APIClient(host, port)
 
         getCommand("bot")!!.apply {
-            setExecutor(Executor())
+            val executor = Executor()
+            setExecutor(executor)
+            tabCompleter = CommandCompleter(executor.getCommand())
         }
+
+        saveAndLoadLanguageFiles("lang/bot")
     }
-
-
 }

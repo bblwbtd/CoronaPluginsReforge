@@ -2,14 +2,14 @@ package xyz.ldgame.corona.friends.commands
 
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
-import xyz.ldgame.corona.common.command.MagicCommand
-import xyz.ldgame.corona.friends.RequestHandler
-import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.locale
-import xyz.ldgame.corona.common.i18n.send
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
+import xyz.ldgame.corona.common.command.MagicCommand
+import xyz.ldgame.corona.common.i18n.color
+import xyz.ldgame.corona.common.i18n.locale
+import xyz.ldgame.corona.common.i18n.send
+import xyz.ldgame.corona.friends.RequestHandler
 
 class RequestCommand : MagicCommand(help = "Manage friend requests") {
     private val accept by option("-a", "--accept", help = "Accept a friend request.".locale(sender))
@@ -45,8 +45,8 @@ class RequestCommand : MagicCommand(help = "Manage friend requests") {
 
     }
 
-    override fun getArgumentOptions(s: String): List<String> {
+    override fun getTabCompleteOptions(): List<String> {
         val player = checkSenderType<Player>()
-        return RequestHandler(player).getAllRequest().filter { it.from.name.contains(s) }.map { it.from.name }
+        return RequestHandler(player).getAllRequest().map { it.from.name }
     }
 }

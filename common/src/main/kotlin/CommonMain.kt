@@ -1,14 +1,10 @@
 package xyz.ldgame.corona.common
 
-import xyz.ldgame.corona.common.i18n.saveAndLoadLanguageFiles
-import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
+import xyz.ldgame.corona.common.i18n.saveAndLoadLanguageFiles
 import xyz.ldgame.corona.common.utils.info
 import xyz.ldgame.corona.common.utils.warn
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 
 abstract class CommonMain : JavaPlugin() {
     companion object {
@@ -19,6 +15,7 @@ abstract class CommonMain : JavaPlugin() {
         plugin = this
         info("$name enabled.")
         saveDefaultConfig()
+        saveAndLoadLanguageFiles("lang/common")
     }
 
     fun registerListeners(vararg listener: Listener) {
@@ -30,5 +27,4 @@ abstract class CommonMain : JavaPlugin() {
     override fun onDisable() {
         warn("$name disabled.")
     }
-
 }

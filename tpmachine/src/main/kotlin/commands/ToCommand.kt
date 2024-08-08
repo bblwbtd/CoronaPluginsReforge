@@ -35,9 +35,9 @@ class ToCommand : MagicCommand(help = "Teleport to an address.") {
         )
     }
 
-    override fun getArgumentOptions(s: String): List<String> {
+    override fun getTabCompleteOptions(): List<String> {
         val player = checkSenderType<Player>()
         val addressHandler = AddressHandler(player)
-        return addressHandler.getPlayerAddressBook().address.filter { it.name.contains(s) }.map { it.name }
+        return addressHandler.getPlayerAddressBook().address.map { it.name }
     }
 }
