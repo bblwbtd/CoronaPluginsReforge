@@ -1,4 +1,4 @@
-package utils
+package xyz.ldgame.corona.common.utils
 
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack

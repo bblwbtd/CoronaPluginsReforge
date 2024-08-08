@@ -1,6 +1,6 @@
 api-version: 1.13
 name: CoronaAuth
-main: xyz.ldgame.coronaauth.Main
+main: xyz.ldgame.corona.auth.Main
 version: 0.0.2
 authors:
   - bblwbtd

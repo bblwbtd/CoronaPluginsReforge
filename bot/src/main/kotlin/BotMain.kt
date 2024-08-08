@@ -1,8 +1,8 @@
-package xyz.ldgame.bot
+package xyz.ldgame.corona.bot
 
-import CommonMain
-import i18n.saveAndLoadLanguageFiles
+import xyz.ldgame.corona.common.i18n.saveAndLoadLanguageFiles
 import xyz.ldgame.bot.commands.Executor
+import xyz.ldgame.corona.common.CommonMain
 
 class BotMain : CommonMain() {
     private lateinit var client: APIClient

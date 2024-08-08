@@ -1,6 +1,6 @@
-package xyz.ldgame.coronaauth.commands
+package xyz.ldgame.corona.auth.commands
 
-import command.MagicCommand
+import xyz.ldgame.corona.common.command.MagicCommand
 
 class AuthCommand : MagicCommand() {
 

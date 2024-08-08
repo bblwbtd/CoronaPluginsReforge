@@ -1,7 +1,7 @@
-package commands
+package xyz.ldgame.corona.friends.commands
 
-import command.MagicCommand
-import handlers.toggleState
+import xyz.ldgame.corona.common.command.MagicCommand
+import xyz.ldgame.corona.friends.toggleState
 import org.bukkit.entity.Player
 
 class ToggleCommand() :

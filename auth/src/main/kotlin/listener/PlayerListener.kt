@@ -1,8 +1,8 @@
-package xyz.ldgame.coronaauth.listener
+package xyz.ldgame.corona.auth.listener
 
-import i18n.color
-import i18n.locale
-import i18n.send
+import xyz.ldgame.corona.common.i18n.color
+import xyz.ldgame.corona.common.i18n.locale
+import xyz.ldgame.corona.common.i18n.send
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
@@ -18,13 +18,13 @@ import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
-import utils.*
-import xyz.ldgame.coronaauth.Main
-import xyz.ldgame.coronaauth.exceptions.DuplicatedRegisterException
-import xyz.ldgame.coronaauth.exceptions.InvalidPasswordException
-import xyz.ldgame.coronaauth.exceptions.NoUserException
-import xyz.ldgame.coronaauth.handler.*
-import xyz.ldgame.coronaauth.utils.isAuthenticated
+import xyz.ldgame.corona.auth.Main
+import xyz.ldgame.corona.common.utils.*
+import xyz.ldgame.corona.auth.exceptions.DuplicatedRegisterException
+import xyz.ldgame.corona.auth.exceptions.InvalidPasswordException
+import xyz.ldgame.corona.auth.exceptions.NoUserException
+import xyz.ldgame.corona.auth.handler.*
+import xyz.ldgame.corona.auth.utils.isAuthenticated
 
 class PlayerListener : Listener {
 

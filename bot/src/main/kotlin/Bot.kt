@@ -1,4 +1,4 @@
-package xyz.ldgame.bot
+package xyz.ldgame.corona.bot
 
 import org.bukkit.entity.Player
 

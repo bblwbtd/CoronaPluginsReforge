@@ -1,3 +1,3 @@
-package xyz.ldgame.coronaauth.exceptions
+package xyz.ldgame.corona.auth.exceptions
 
 class InvalidPasswordException : Exception()

@@ -1,4 +1,4 @@
-package command
+package xyz.ldgame.corona.common.command
 
 import com.github.ajalt.clikt.core.context
 import org.bukkit.command.Command

@@ -1,4 +1,4 @@
-package utils
+package xyz.ldgame.corona.common.utils
 
 import java.math.BigInteger
 import java.security.MessageDigest

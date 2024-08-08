@@ -1,4 +1,4 @@
-package command
+package xyz.ldgame.corona.common.command
 
 import org.bukkit.command.CommandSender
 

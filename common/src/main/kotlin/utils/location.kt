@@ -1,4 +1,4 @@
-package utils
+package xyz.ldgame.corona.common.utils
 
 import org.bukkit.Location
 import org.bukkit.entity.EntityType

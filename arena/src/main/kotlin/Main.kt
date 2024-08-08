@@ -1,7 +1,6 @@
-import command.CommandCompleter
 import org.bukkit.plugin.java.JavaPlugin
-import utils.info
-import utils.warn
+import xyz.ldgame.corona.common.utils.info
+import xyz.ldgame.corona.common.utils.warn
 
 class Main : JavaPlugin() {
     companion object {

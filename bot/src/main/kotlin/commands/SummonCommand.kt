@@ -1,7 +1,7 @@
-package xyz.ldgame.bot.commands
+package xyz.ldgame.corona.bot.commands
 
 import com.github.ajalt.clikt.parameters.arguments.argument
-import command.MagicCommand
+import xyz.ldgame.corona.common.command.MagicCommand
 
 class SummonCommand : MagicCommand(help = "SummonCommandHelp") {
     val botName by argument(help = "BotNameHelp")

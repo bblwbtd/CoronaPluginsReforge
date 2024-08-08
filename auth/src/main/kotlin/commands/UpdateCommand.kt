@@ -1,14 +1,14 @@
-package xyz.ldgame.coronaauth.commands
+package xyz.ldgame.corona.auth.commands
 
 import com.github.ajalt.clikt.parameters.arguments.argument
-import command.MagicCommand
-import i18n.color
-import i18n.locale
-import i18n.send
+import xyz.ldgame.corona.common.command.MagicCommand
+import xyz.ldgame.corona.common.i18n.color
+import xyz.ldgame.corona.common.i18n.locale
+import xyz.ldgame.corona.common.i18n.send
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
-import xyz.ldgame.coronaauth.handler.AuthHandler
-import xyz.ldgame.coronaauth.utils.isAuthenticated
+import xyz.ldgame.corona.auth.handler.AuthHandler
+import xyz.ldgame.corona.auth.utils.isAuthenticated
 
 class UpdateCommand : MagicCommand() {
     private val newPassword by argument()

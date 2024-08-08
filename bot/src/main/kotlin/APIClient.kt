@@ -1,4 +1,4 @@
-package xyz.ldgame.bot
+package xyz.ldgame.corona.bot
 
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -11,7 +11,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
-import xyz.ldgame.coronaauth.listener.PlayerAuthEvent
+import xyz.ldgame.corona.auth.listener.PlayerAuthEvent
 
 
 class APIClient(private val host: String, private val port: Int) : Listener {

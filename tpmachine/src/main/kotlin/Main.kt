@@ -1,7 +1,9 @@
-import command.CommandCompleter
-import commonds.Executor
+package xyz.ldgame.corona.tpmachine
+
+import xyz.ldgame.corona.common.command.CommandCompleter
+import xyz.ldgame.corona.tpmachine.commands.Executor
 import org.bukkit.plugin.java.JavaPlugin
-import utils.info
+import xyz.ldgame.corona.common.utils.info
 
 class Main : JavaPlugin() {
     companion object {

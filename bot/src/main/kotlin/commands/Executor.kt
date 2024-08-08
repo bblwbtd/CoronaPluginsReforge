@@ -1,8 +1,8 @@
-package xyz.ldgame.bot.commands
+package xyz.ldgame.corona.bot.commands
 
 import com.github.ajalt.clikt.core.subcommands
-import command.MagicCommand
-import command.MagicCommandExecutor
+import xyz.ldgame.corona.common.command.MagicCommand
+import xyz.ldgame.corona.common.command.MagicCommandExecutor
 
 class Executor : MagicCommandExecutor() {
     override fun getCommand(): MagicCommand {

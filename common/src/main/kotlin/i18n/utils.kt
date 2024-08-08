@@ -1,11 +1,11 @@
-package i18n
+package xyz.ldgame.corona.common.i18n
 
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
-import utils.plus
+import xyz.ldgame.corona.common.utils.plus
 
 fun String.color(color: ChatColor): String {
     return color + this

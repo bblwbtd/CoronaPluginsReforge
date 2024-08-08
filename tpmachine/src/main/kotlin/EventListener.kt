@@ -1,4 +1,5 @@
-import handler.MachineHandler
+package xyz.ldgame.corona.tpmachine
+
 import org.bukkit.Bukkit
 import org.bukkit.entity.Chicken
 import org.bukkit.entity.Entity
@@ -9,8 +10,8 @@ import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.world.ChunkUnloadEvent
-import utils.getString
-import utils.removeValue
+import xyz.ldgame.corona.common.utils.getString
+import xyz.ldgame.corona.common.utils.removeValue
 import java.util.*
 
 class EventListener : Listener {

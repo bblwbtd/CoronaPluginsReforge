@@ -1,4 +1,4 @@
-package xyz.ldgame.coronaauth.listener
+package xyz.ldgame.corona.auth.listener
 
 import org.bukkit.entity.Player
 import org.bukkit.event.Event

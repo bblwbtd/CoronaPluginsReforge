@@ -1,6 +1,5 @@
-package xyz.ldgame.bot.commands
+package xyz.ldgame.corona.bot.commands
 
-import command.MagicCommand
-import i18n.locale
+import xyz.ldgame.corona.common.command.MagicCommand
 
 class BotCommand: MagicCommand(help = "BotCommandHelp")

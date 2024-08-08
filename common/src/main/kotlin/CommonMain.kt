@@ -1,9 +1,11 @@
-import i18n.saveAndLoadLanguageFiles
+package xyz.ldgame.corona.common
+
+import xyz.ldgame.corona.common.i18n.saveAndLoadLanguageFiles
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
-import utils.info
-import utils.warn
+import xyz.ldgame.corona.common.utils.info
+import xyz.ldgame.corona.common.utils.warn
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream

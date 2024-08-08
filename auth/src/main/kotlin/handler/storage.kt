@@ -1,9 +1,9 @@
-package xyz.ldgame.coronaauth.handler
+package xyz.ldgame.corona.auth.handler
 
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import xyz.ldgame.coronaauth.Main
+import xyz.ldgame.corona.auth.Main
 import java.io.File
 import java.nio.file.Paths
 import kotlin.io.path.createDirectories

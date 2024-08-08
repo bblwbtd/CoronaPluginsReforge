@@ -1,11 +1,11 @@
-package xyz.ldgame.coronaauth
+package xyz.ldgame.corona.auth
 
-import command.CommandCompleter
+import xyz.ldgame.corona.common.command.CommandCompleter
 import org.bukkit.plugin.java.JavaPlugin
-import utils.info
-import utils.warn
-import xyz.ldgame.coronaauth.commands.Executor
-import xyz.ldgame.coronaauth.listener.PlayerListener
+import xyz.ldgame.corona.common.utils.info
+import xyz.ldgame.corona.common.utils.warn
+import xyz.ldgame.corona.auth.commands.Executor
+import xyz.ldgame.corona.auth.listener.PlayerListener
 
 class Main : JavaPlugin() {
 

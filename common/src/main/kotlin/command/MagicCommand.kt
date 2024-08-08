@@ -1,11 +1,11 @@
-package command
+package xyz.ldgame.corona.common.command
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.core.requireObject
-import i18n.color
-import i18n.locale
-import i18n.send
+import xyz.ldgame.corona.common.i18n.color
+import xyz.ldgame.corona.common.i18n.locale
+import xyz.ldgame.corona.common.i18n.send
 import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 
