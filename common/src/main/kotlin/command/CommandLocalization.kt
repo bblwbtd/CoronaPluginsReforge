@@ -8,11 +8,11 @@ import com.github.ajalt.clikt.parameters.groups.MutuallyExclusiveOptions
 import org.bukkit.command.CommandSender
 import xyz.ldgame.corona.common.i18n.locale
 
-class CommandLocalization(val sender: CommandSender) : Localization {
+class CommandLocalization(val getSender: () -> CommandSender?) : Localization {
     private val defaultLocal = object : Localization {}
 
     private fun getText(key: String, variables: Map<String, String> = emptyMap()): String? {
-        val localizedText = key.locale(sender)
+        val localizedText = key.locale(getSender())
         if (localizedText != key) {
             val sb = StringBuilder(localizedText)
             variables.forEach { (k, v) ->

@@ -16,11 +16,9 @@ abstract class MagicCommandExecutor : CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         val magicCommand = getCommand()
-        val local = CommandLocalization(sender)
         magicCommand.context {
             obj = MagicContext(sender)
             helpFormatter = { ctx -> PlaintextHelpFormatter(ctx) }
-            localization = local
         }
 
         try {

@@ -2,6 +2,7 @@ package xyz.ldgame.corona.common.command
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
+import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.requireObject
 import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
@@ -20,13 +21,19 @@ abstract class MagicCommand(
         printHelpOnEmptyArgs = false,
         invokeWithoutSubcommand = invokeWithoutSubcommand
     ) {
-    private val context by requireObject<MagicContext>()
+    private val magicContext by requireObject<MagicContext>()
     val sender: CommandSender? by lazy {
-        context.sender
+        magicContext.sender
     }
 
     override fun commandHelp(context: Context): String {
         return super.commandHelp(context).locale(sender)
+    }
+
+    init {
+        context {
+            localization = CommandLocalization { sender }
+        }
     }
 
     override fun run() {
