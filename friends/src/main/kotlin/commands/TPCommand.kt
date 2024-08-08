@@ -2,18 +2,18 @@ package xyz.ldgame.corona.friends.commands
 
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
-import xyz.ldgame.corona.common.command.MagicCommand
-import xyz.ldgame.corona.friends.TPHandler
-import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.locale
-import xyz.ldgame.corona.common.i18n.onClick
-import xyz.ldgame.corona.common.i18n.send
 import net.md_5.bungee.api.chat.ClickEvent
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
+import xyz.ldgame.corona.common.command.MagicCommand
+import xyz.ldgame.corona.common.i18n.color
+import xyz.ldgame.corona.common.i18n.locale
+import xyz.ldgame.corona.common.i18n.onClick
+import xyz.ldgame.corona.common.i18n.send
+import xyz.ldgame.corona.friends.TPHandler
 
-class TPCommand() : MagicCommand(help = "Send teleport request to your friend.") {
+class TPCommand : MagicCommand(help = "Send teleport request to your friend.") {
     private val listFlag by option("-l", "--list", help = "List all requests".locale(sender)).flag()
     private val accept by option("-a", "--accept", help = "Accept a TP request.".locale(sender))
     private val decline by option("-d", "--decline", help = "Decline a TP request.".locale(sender))

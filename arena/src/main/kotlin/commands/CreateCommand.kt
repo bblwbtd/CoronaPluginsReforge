@@ -1,5 +1,3 @@
 package commands
 
-class CreateCommand() {
-
-}
+class CreateCommand

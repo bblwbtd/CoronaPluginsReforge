@@ -1,13 +1,13 @@
 package xyz.ldgame.corona.friends
 
-import CommonMain
-import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.locale
-import xyz.ldgame.corona.common.i18n.send
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Particle
 import org.bukkit.entity.Player
+import xyz.ldgame.corona.common.CommonMain
+import xyz.ldgame.corona.common.i18n.color
+import xyz.ldgame.corona.common.i18n.locale
+import xyz.ldgame.corona.common.i18n.send
 import xyz.ldgame.corona.common.utils.getString
 import xyz.ldgame.corona.common.utils.setString
 

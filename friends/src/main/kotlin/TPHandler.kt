@@ -1,14 +1,14 @@
 package xyz.ldgame.corona.friends
 
-import CommonMain
-import xyz.ldgame.corona.tpmachine.MachineHandler
+import org.bukkit.ChatColor
+import org.bukkit.entity.Player
+import xyz.ldgame.corona.common.CommonMain
 import xyz.ldgame.corona.common.i18n.color
 import xyz.ldgame.corona.common.i18n.locale
 import xyz.ldgame.corona.common.i18n.send
 import xyz.ldgame.corona.common.queue.Message
 import xyz.ldgame.corona.common.queue.MessageQueue
-import org.bukkit.ChatColor
-import org.bukkit.entity.Player
+import xyz.ldgame.corona.tpmachine.MachineHandler
 
 class TPHandler(val player: Player) {
     companion object {

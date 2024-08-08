@@ -37,7 +37,7 @@ class CommandCompleter(private val customCommand: MagicCommand) : TabCompleter {
         }
 
         try {
-            results.addAll(current.getArgumentOptions(args.last()) ?: emptyList())
+            results.addAll(current.getArgumentOptions(args.last()))
         } catch (_: InvalidSenderException) {
 
         }
