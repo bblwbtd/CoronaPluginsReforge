@@ -2,6 +2,9 @@
 group = "xyz.ldgame"
 version = "unspecified"
 val ktorVersion = "2.3.12"
+val ktorm = object {
+    val version = "0.7.0"
+}
 
 repositories {
     mavenCentral()
@@ -17,7 +20,4 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
-}
-kotlin {
-    jvmToolchain(17)
 }

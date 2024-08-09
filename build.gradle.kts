@@ -1,6 +1,8 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     kotlin("jvm") version "2.0.0"
-    id("com.github.johnrengelman.shadow") version "8.1.1" apply false
+    id("com.gradleup.shadow") version "8.3.0" apply false
 }
 
 repositories {
@@ -9,7 +11,7 @@ repositories {
 
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "com.github.johnrengelman.shadow")
+    apply(plugin = "com.gradleup.shadow")
 
     group = "ldgame"
 
@@ -42,6 +44,9 @@ subprojects {
         useJUnitPlatform()
     }
 
+    tasks.withType<ShadowJar> {
+        minimize()
+    }
 }
 
 kotlin {
