@@ -8,16 +8,16 @@ import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import xyz.ldgame.corona.common.command.MagicCommand
 import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.locale
 import xyz.ldgame.corona.common.i18n.onClick
 import xyz.ldgame.corona.common.i18n.send
+import xyz.ldgame.corona.common.i18n.translate
 import xyz.ldgame.corona.friends.TPHandler
 
 class TPCommand : MagicCommand(help = "Send teleport request to your friend.") {
-    private val listFlag by option("-l", "--list", help = "List all requests".locale(sender)).flag()
-    private val accept by option("-a", "--accept", help = "Accept a TP request.".locale(sender))
-    private val decline by option("-d", "--decline", help = "Decline a TP request.".locale(sender))
-    private val target by option("-t", "--target", help = "The teleportation target.".locale(sender))
+    private val listFlag by option("-l", "--list", help = "List all requests".translate(sender)).flag()
+    private val accept by option("-a", "--accept", help = "Accept a TP request.".translate(sender))
+    private val decline by option("-d", "--decline", help = "Decline a TP request.".translate(sender))
+    private val target by option("-t", "--target", help = "The teleportation target.".translate(sender))
 
     override fun run() {
         val player = checkSenderType<Player>()
@@ -36,11 +36,11 @@ class TPCommand : MagicCommand(help = "Send teleport request to your friend.") {
         val handler = TPHandler(player)
         val requestText = handler.getAllRequests().map {
             "${it.from.name} ${
-                "[Accept]".locale(player).color(ChatColor.GREEN).onClick {
+                "[Accept]".translate(player).color(ChatColor.GREEN).onClick {
                     return@onClick ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend tp -a ${it.from.name}")
                 }
             } ${
-                "[Decline]".locale(player).color(ChatColor.RED).onClick {
+                "[Decline]".translate(player).color(ChatColor.RED).onClick {
                     return@onClick ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend tp -d ${it.from.name}")
                 }
             }"

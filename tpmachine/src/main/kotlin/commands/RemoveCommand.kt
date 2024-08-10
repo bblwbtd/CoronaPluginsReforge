@@ -1,14 +1,14 @@
 package xyz.ldgame.corona.tpmachine.commands
 
 import com.github.ajalt.clikt.parameters.arguments.argument
-import xyz.ldgame.corona.common.command.MagicCommand
-import xyz.ldgame.corona.tpmachine.AddressHandler
-import xyz.ldgame.corona.common.i18n.locale
 import org.bukkit.entity.Player
+import xyz.ldgame.corona.common.command.MagicCommand
+import xyz.ldgame.corona.common.i18n.translate
+import xyz.ldgame.corona.tpmachine.AddressHandler
 
 class RemoveCommand : MagicCommand(help = "Remove addresses.") {
     private val addressName by argument(
-        help = "The name of the address. (Regex is supported)".locale(sender),
+        help = "The name of the address. (Regex is supported)".translate(sender),
         name = "name"
     )
 

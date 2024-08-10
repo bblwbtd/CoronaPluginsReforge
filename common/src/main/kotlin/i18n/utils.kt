@@ -11,10 +11,8 @@ fun String.color(color: ChatColor): String {
     return color + this
 }
 
-fun String.send(vararg sender: CommandSender?) {
-    sender.forEach {
-        it?.sendMessage(this)
-    }
+fun String.send(sender: CommandSender?) {
+    sender?.sendMessage(this)
 }
 
 fun String.onClick(handleClick: () -> ClickEvent?): TextComponent {
@@ -41,3 +39,4 @@ operator fun String.plus(s: TextComponent): TextComponent {
 fun String.broadcast() {
     Bukkit.broadcastMessage(this)
 }
+

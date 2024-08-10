@@ -1,7 +1,6 @@
 package xyz.ldgame.corona.common.i18n
 
 import org.bukkit.command.CommandSender
-import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
@@ -9,28 +8,32 @@ import java.io.File
 import java.nio.file.Paths
 import java.util.*
 
-fun String.locale(locale: CommandSender? = null): String {
-    return getText(this, locale)
+
+fun String.translate(sender: CommandSender? = null, variables: Map<String, String> = emptyMap()): String {
+    val local = if (sender is Player) sender.locale else "en"
+
+    return getText(this, local, variables)
+
 }
 
-fun getText(rawText: String, locale: String = "en"): String {
-    val bestMatchKey = strings.keys.maxByOrNull { key ->
-        locale.commonPrefixWith(key).length
-    } ?: "en"
-    return strings[bestMatchKey]?.get(rawText) ?: strings["en"]?.get(rawText) ?: rawText
-}
+fun getText(key: String, locale: String = "en", variables: Map<String, String> = emptyMap()): String {
+    val bestMatchKey = strings.keys.maxByOrNull { it.commonPrefixWith(locale).length } ?: "en"
+    val localizedText = strings[bestMatchKey]?.get(key) ?: strings["en"]?.get(key) ?: key
 
-fun getText(rawText: String, sender: CommandSender? = null): String {
-    if (sender is Player) {
-        return getText(rawText, sender.locale)
+    if (variables.isNotEmpty()) {
+        val sb = StringBuilder(localizedText)
+        variables.forEach { (k, v) ->
+            val placeholder = "$$k"
+            var index = sb.indexOf(placeholder)
+            while (index != -1) {
+                sb.replace(index, index + placeholder.length, v)
+                index = sb.indexOf(placeholder, index + v.length)
+            }
+        }
+        return sb.toString()
     }
 
-    if (sender is ConsoleCommandSender) {
-        val currentLocal = Locale.getDefault()
-        return getText(rawText, "${currentLocal.language}_${currentLocal.country}")
-    }
-
-    return getText(rawText, "en")
+    return localizedText
 }
 
 val strings = mutableMapOf<String, MutableMap<String, String>>()

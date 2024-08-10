@@ -7,14 +7,14 @@ import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import xyz.ldgame.corona.common.command.MagicCommand
 import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.locale
 import xyz.ldgame.corona.common.i18n.send
+import xyz.ldgame.corona.common.i18n.translate
 import xyz.ldgame.corona.friends.RequestHandler
 
 class RequestCommand : MagicCommand(help = "Manage friend requests") {
-    private val accept by option("-a", "--accept", help = "Accept a friend request.".locale(sender))
-    private val decline by option("-d", "--decline", help = "Decline a friend request.".locale(sender))
-    private val list by option("-l", "--list", help = "List all friend requests.".locale(sender)).flag()
+    private val accept by option("-a", "--accept", help = "Accept a friend request.".translate(sender))
+    private val decline by option("-d", "--decline", help = "Decline a friend request.".translate(sender))
+    private val list by option("-l", "--list", help = "List all friend requests.".translate(sender)).flag()
 
     override fun run() {
         val player = checkSenderType<Player>()
@@ -33,11 +33,11 @@ class RequestCommand : MagicCommand(help = "Manage friend requests") {
         val handler = RequestHandler(player)
         val requests = handler.getAllRequest()
         if (requests.isEmpty()) {
-            "You have no pending friend request".locale(player).color(ChatColor.YELLOW).send(player)
+            "You have no pending friend request".translate(player).color(ChatColor.YELLOW).send(player)
             return
         }
 
-        "Pending requests".locale(player).color(ChatColor.GREEN).send(player)
+        "Pending requests".translate(player).color(ChatColor.GREEN).send(player)
         handler.getAllRequest().forEach {
             val content = it.from.name
             content.send(player)

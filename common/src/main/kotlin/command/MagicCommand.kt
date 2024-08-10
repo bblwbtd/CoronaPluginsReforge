@@ -7,8 +7,8 @@ import com.github.ajalt.clikt.core.requireObject
 import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.locale
 import xyz.ldgame.corona.common.i18n.send
+import xyz.ldgame.corona.common.i18n.translate
 
 abstract class MagicCommand(
     var name: String? = null,
@@ -27,7 +27,7 @@ abstract class MagicCommand(
     }
 
     override fun commandHelp(context: Context): String {
-        return super.commandHelp(context).locale(sender)
+        return super.commandHelp(context).translate(sender)
     }
 
     init {
@@ -49,7 +49,7 @@ abstract class MagicCommand(
             throw InvalidSenderException()
         }
         if (sender !is T) {
-            "Invalid sender.".locale(sender).color(ChatColor.RED).send(sender)
+            "Invalid sender.".translate(sender).color(ChatColor.RED).send(sender)
             throw InvalidSenderException()
         }
 

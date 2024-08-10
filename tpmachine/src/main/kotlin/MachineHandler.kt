@@ -1,8 +1,5 @@
 package xyz.ldgame.corona.tpmachine
 
-import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.locale
-import xyz.ldgame.corona.common.i18n.send
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Location
@@ -14,6 +11,9 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
+import xyz.ldgame.corona.common.i18n.color
+import xyz.ldgame.corona.common.i18n.send
+import xyz.ldgame.corona.common.i18n.translate
 import xyz.ldgame.corona.common.utils.getString
 import xyz.ldgame.corona.common.utils.removeValue
 import xyz.ldgame.corona.common.utils.setString
@@ -35,7 +35,7 @@ class MachineHandler(private val player: Player, private val plugin: JavaPlugin 
         if (lastEntityUUID != null) {
             Bukkit.getEntity(UUID.fromString(lastEntityUUID))?.apply {
                 if (!this.isDead) {
-                    "Your can not summon two teleportation machine.".locale(player).color(ChatColor.RED).send(player)
+                    "Your can not summon two teleportation machine.".translate(player).color(ChatColor.RED).send(player)
                     return null
                 }
             }
@@ -50,13 +50,13 @@ class MachineHandler(private val player: Player, private val plugin: JavaPlugin 
             addPotionEffect(PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 5))
             health = 20.0
 
-            customName = "TP Machine".locale(player).color(ChatColor.GREEN)
+            customName = "TP Machine".translate(player).color(ChatColor.GREEN)
             player.setString(plugin, machineKey, machine.uniqueId.toString())
 
             setString(plugin, "machine", "true")
         }
 
-        "Teleportation machine has been created.".locale(player).color(ChatColor.GREEN).send(player)
+        "Teleportation machine has been created.".translate(player).color(ChatColor.GREEN).send(player)
         return machine
     }
 
@@ -86,7 +86,7 @@ class MachineHandler(private val player: Player, private val plugin: JavaPlugin 
             var countDown = tpDelay
             Bukkit.getScheduler().runTaskTimer(plugin, { task ->
                 passengers.forEach { entity ->
-                    "Teleporting in ".locale(player).plus(countDown).color(ChatColor.RED).send(entity)
+                    "Teleporting in ".translate(player).plus(countDown).color(ChatColor.RED).send(entity)
                 }
                 if (countDown > 0) {
                     countDown -= 1
@@ -99,7 +99,7 @@ class MachineHandler(private val player: Player, private val plugin: JavaPlugin 
                     }
                     teleport(target)
                     clonedPassages.forEach {
-                        "You have been teleported.".locale(it).color(ChatColor.GREEN).send(it)
+                        "You have been teleported.".translate(it).color(ChatColor.GREEN).send(it)
                     }
                     disappearCountdown(this, disappearDelay)
 

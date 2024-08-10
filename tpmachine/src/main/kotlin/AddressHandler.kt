@@ -1,11 +1,11 @@
 package xyz.ldgame.corona.tpmachine
 
-import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.locale
-import xyz.ldgame.corona.common.i18n.send
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
+import xyz.ldgame.corona.common.i18n.color
+import xyz.ldgame.corona.common.i18n.send
+import xyz.ldgame.corona.common.i18n.translate
 import xyz.ldgame.corona.common.utils.mapper
 import java.io.File
 import java.nio.file.Paths
@@ -14,7 +14,7 @@ class AddressHandler(private val player: Player, private val dataDir: String = M
 
     private val file = getUserAddressBookFile()
     private val book = getPlayerAddressBook()
-    private val invalidAddressNameMessage = "Invalid address name.".locale(player).color(ChatColor.RED)
+    private val invalidAddressNameMessage = "Invalid address name.".translate(player).color(ChatColor.RED)
 
 
     private fun getUserAddressBookFile(): File {
@@ -39,12 +39,12 @@ class AddressHandler(private val player: Player, private val dataDir: String = M
         val address = Address(name, location.x, location.y, location.z, location.world!!.name)
 
         if (book.address.size >= book.limit) {
-            "Can't save address due to maximum limit.".locale(player).color(ChatColor.RED).send(player)
+            "Can't save address due to maximum limit.".translate(player).color(ChatColor.RED).send(player)
             return false
         }
 
         if (book.address.find { item -> item.name == name } != null) {
-            "Duplicated address name.".locale(player).color(ChatColor.RED).send(player)
+            "Duplicated address name.".translate(player).color(ChatColor.RED).send(player)
             return false
         }
 
@@ -61,12 +61,12 @@ class AddressHandler(private val player: Player, private val dataDir: String = M
         val location = book.address.find { item -> item.name == oldName }
 
         if (location == null) {
-            "Can't find the address with name ".locale(player).plus(oldName).color(ChatColor.RED).send(player)
+            "Can't find the address with name ".translate(player).plus(oldName).color(ChatColor.RED).send(player)
             return
         }
         location.name = newName
         saveBook()
-        "Address $oldName has been rename to $newName".locale(player).color(ChatColor.GREEN).send(player)
+        "Address $oldName has been rename to $newName".translate(player).color(ChatColor.GREEN).send(player)
     }
 
     private fun validateAddressName(name: String): Boolean {
@@ -97,16 +97,16 @@ class AddressHandler(private val player: Player, private val dataDir: String = M
         }
         if (count > 0) {
             saveBook()
-            "$count addresses have been removed.".locale(player).color(ChatColor.GREEN).send(player)
+            "$count addresses have been removed.".translate(player).color(ChatColor.GREEN).send(player)
             return
         }
-        "No address fond.".locale(player).color(ChatColor.RED).send(player)
+        "No address fond.".translate(player).color(ChatColor.RED).send(player)
     }
 
     fun updateAddress(addressName: String) {
         val address = book.getAddressByName(addressName)
         if (address == null) {
-            "No address with name.".locale(player).plus(": $addressName").send(player)
+            "No address with name.".translate(player).plus(": $addressName").send(player)
             return
         }
 
@@ -117,6 +117,6 @@ class AddressHandler(private val player: Player, private val dataDir: String = M
         }
 
         saveBook()
-        "Address has benn updated.".locale(player).color(ChatColor.GREEN).send(player)
+        "Address has benn updated.".translate(player).color(ChatColor.GREEN).send(player)
     }
 }

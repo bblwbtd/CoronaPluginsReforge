@@ -1,13 +1,13 @@
 package xyz.ldgame.corona.friends
 
-import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.locale
-import xyz.ldgame.corona.common.i18n.send
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import xyz.ldgame.corona.common.i18n.color
+import xyz.ldgame.corona.common.i18n.send
+import xyz.ldgame.corona.common.i18n.translate
 
 class RelationListener : Listener {
 
@@ -24,8 +24,8 @@ class RelationListener : Listener {
             spawnSuccessParticle(player1)
             spawnSuccessParticle(player2)
 
-            "${player2.name} ${"became your friend".locale(player1)}!".color(ChatColor.GREEN).send(player1)
-            "${player1.name} ${"became your friend".locale(player2)}!".color(ChatColor.GREEN).send(player2)
+            "${player2.name} ${"became your friend".translate(player1)}!".color(ChatColor.GREEN).send(player1)
+            "${player1.name} ${"became your friend".translate(player2)}!".color(ChatColor.GREEN).send(player2)
         }
     }
 }

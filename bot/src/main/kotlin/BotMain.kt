@@ -4,15 +4,11 @@ import xyz.ldgame.corona.bot.commands.Executor
 import xyz.ldgame.corona.common.CommonMain
 import xyz.ldgame.corona.common.command.CommandCompleter
 import xyz.ldgame.corona.common.i18n.saveAndLoadLanguageFiles
-import xyz.ldgame.corona.common.utils.Storage
-import java.nio.file.Paths
-import kotlin.io.path.pathString
 
 class BotMain : CommonMain() {
 
     companion object {
         lateinit var client: APIClient
-        lateinit var storage: Storage
     }
 
     override fun onEnable() {
@@ -36,7 +32,5 @@ class BotMain : CommonMain() {
         }
 
         saveAndLoadLanguageFiles("lang/bot")
-
-        storage = Storage(Paths.get(dataFolder.path, "data").pathString)
     }
 }

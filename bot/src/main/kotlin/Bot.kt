@@ -1,17 +1,20 @@
 package xyz.ldgame.corona.bot
 
-import org.bukkit.entity.Player
+data class Bot(
+    val name: String,
+) {
 
-class Bot(val player: Player, val client: APIClient) {
+    private val client: APIClient by lazy {
+        BotMain.client
+    }
 
     suspend fun attack(vararg targets: String) {
-        client.sendCommand(player.name, "attack ${targets.joinToString(" ")}")
+        client.sendCommand(name, "attack ${targets.joinToString(" ")}")
     }
 
     suspend fun protect(target: String) {
-        client.sendCommand(player.name, "protect $target")
+        client.sendCommand(name, "protect $target")
     }
-
 
 
 }

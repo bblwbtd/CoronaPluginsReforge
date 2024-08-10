@@ -1,8 +1,5 @@
 package xyz.ldgame.corona.auth.listener
 
-import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.locale
-import xyz.ldgame.corona.common.i18n.send
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
@@ -19,12 +16,15 @@ import org.bukkit.event.entity.EntityTargetLivingEntityEvent
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
 import xyz.ldgame.corona.auth.Main
-import xyz.ldgame.corona.common.utils.*
 import xyz.ldgame.corona.auth.exceptions.DuplicatedRegisterException
 import xyz.ldgame.corona.auth.exceptions.InvalidPasswordException
 import xyz.ldgame.corona.auth.exceptions.NoUserException
 import xyz.ldgame.corona.auth.handler.*
 import xyz.ldgame.corona.auth.utils.isAuthenticated
+import xyz.ldgame.corona.common.i18n.color
+import xyz.ldgame.corona.common.i18n.send
+import xyz.ldgame.corona.common.i18n.translate
+import xyz.ldgame.corona.common.utils.*
 
 class PlayerListener : Listener {
 
@@ -51,7 +51,7 @@ class PlayerListener : Listener {
                     task.cancel()
                     if (!isAuthenticated()) {
                         Bukkit.getScheduler().runTask(Main.plugin, Runnable {
-                            kickPlayer("Login Timeout.".locale(this))
+                            kickPlayer("Login Timeout.".translate(this))
                         })
                     }
                 }
@@ -73,11 +73,11 @@ class PlayerListener : Listener {
                 inventory.addItem(loginBook)
             }
 
-            "You need to login or register at first!".locale(this).color(ChatColor.YELLOW).send(this)
-            "You can login/register by inputting your password to a book!".locale(this)
+            "You need to login or register at first!".translate(this).color(ChatColor.YELLOW).send(this)
+            "You can login/register by inputting your password to a book!".translate(this)
                 .color(ChatColor.AQUA).send(this)
-            "You can also use /auth r YOUR_PASSWORD to register.".locale(this).send(this)
-            "Use /auth l YOUR_PASSWORD to login.".locale(this).send(this)
+            "You can also use /auth r YOUR_PASSWORD to register.".translate(this).send(this)
+            "Use /auth l YOUR_PASSWORD to login.".translate(this).send(this)
         }
     }
 
@@ -103,7 +103,7 @@ class PlayerListener : Listener {
                 teleport(location!!)
                 loadInventory(this)
                 PlayerState.AUTHENTICATED.setState(this)
-                "Login successfully!".locale(this).color(ChatColor.GREEN).send(this)
+                "Login successfully!".translate(this).color(ChatColor.GREEN).send(this)
                 retrieveLocation("current")
                 retrieveLocation("original")
 
@@ -214,18 +214,18 @@ class PlayerListener : Listener {
                 authHandler.login(event.player.name, password)
                 Bukkit.getPluginManager().callEvent(PlayerAuthEvent(event.player))
             } catch (e: NoUserException) {
-                "You need to register first.".locale(event.player).color(ChatColor.RED).send(event.player)
+                "You need to register first.".translate(event.player).color(ChatColor.RED).send(event.player)
             } catch (e: InvalidPasswordException) {
-                "Wrong password".locale(event.player).color(ChatColor.RED).send(event.player)
+                "Wrong password".translate(event.player).color(ChatColor.RED).send(event.player)
             }
         } else {
             try {
                 authHandler.register(event.player.name, password)
                 Bukkit.getPluginManager().callEvent(PlayerAuthEvent(event.player))
             } catch (e: DuplicatedRegisterException) {
-                "You have already registered.".locale(event.player).color(ChatColor.RED).send(event.player)
+                "You have already registered.".translate(event.player).color(ChatColor.RED).send(event.player)
             } catch (e: InvalidPasswordException) {
-                "Invalid password".locale(event.player).color(ChatColor.RED).send(event.player)
+                "Invalid password".translate(event.player).color(ChatColor.RED).send(event.player)
             }
         }
     }
@@ -237,7 +237,7 @@ class PlayerListener : Listener {
 
         event.disallow(
             AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
-            "Your are already online. If you think this is a mistake, please contact the server administrator".locale(
+            "Your are already online. If you think this is a mistake, please contact the server administrator".translate(
                 player
             )
         )

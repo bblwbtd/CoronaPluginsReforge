@@ -6,6 +6,8 @@ import org.bukkit.NamespacedKey
 import org.bukkit.entity.Entity
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.Plugin
+import java.nio.charset.StandardCharsets
+import java.util.*
 import kotlin.math.ceil
 import kotlin.random.Random
 
@@ -106,4 +108,8 @@ fun Entity.safeRandomTP(radius: Double): Location {
 
     teleport(Bukkit.getWorlds().first().spawnLocation)
     return Bukkit.getWorlds().first().spawnLocation
+}
+
+fun playerNameToUUID(name: String): String {
+    return UUID.nameUUIDFromBytes("OfflinePlayer:<player_name>".toByteArray(StandardCharsets.UTF_8)).toString()
 }

@@ -6,8 +6,8 @@ import org.bukkit.Particle
 import org.bukkit.entity.Player
 import xyz.ldgame.corona.common.CommonMain
 import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.locale
 import xyz.ldgame.corona.common.i18n.send
+import xyz.ldgame.corona.common.i18n.translate
 import xyz.ldgame.corona.common.utils.getString
 import xyz.ldgame.corona.common.utils.setString
 
@@ -17,7 +17,7 @@ fun toggleState(player: Player) {
         Bukkit.getScheduler().runTaskTimer(CommonMain.plugin, { task ->
             if (!isLoving(player) || countdown <= 0) {
                 task.cancel()
-                "Stop making friends.".locale(player).color(ChatColor.YELLOW).send(player)
+                "Stop making friends.".translate(player).color(ChatColor.YELLOW).send(player)
                 player.setString(CommonMain.plugin, "loving", "false")
                 return@runTaskTimer
             }
@@ -25,7 +25,7 @@ fun toggleState(player: Player) {
             countdown -= 1
             player.world.spawnParticle(Particle.HEART, player.location.add(0.0, 2.0, 0.0), 1)
         }, 0, 20L)
-        "You can make friends with other players by clicking on them.".locale(player).color(ChatColor.GREEN)
+        "You can make friends with other players by clicking on them.".translate(player).color(ChatColor.GREEN)
             .send(player)
         player.setString(CommonMain.plugin, "loving", "true")
     } else {

@@ -5,14 +5,17 @@ import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import xyz.ldgame.corona.common.command.MagicCommand
 import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.locale
 import xyz.ldgame.corona.common.i18n.send
+import xyz.ldgame.corona.common.i18n.translate
 import xyz.ldgame.corona.tpmachine.AddressHandler
 import xyz.ldgame.corona.tpmachine.MachineHandler
 import xyz.ldgame.corona.tpmachine.Main
 
 class ToCommand : MagicCommand(help = "Teleport to an address.") {
-    private val addressName by argument(help = "The name of the address you want to go.".locale(sender), name = "name")
+    private val addressName by argument(
+        help = "The name of the address you want to go.".translate(sender),
+        name = "name"
+    )
 
     override fun run() {
         val player = checkSenderType<Player>()
@@ -23,7 +26,8 @@ class ToCommand : MagicCommand(help = "Teleport to an address.") {
             it.name == addressName
         }
         if (address == null) {
-            "Can't find address with name:".locale(sender).plus(" ").plus(addressName).color(ChatColor.RED).send(sender)
+            "Can't find address with name:".translate(sender).plus(" ").plus(addressName).color(ChatColor.RED)
+                .send(sender)
             return
         }
 
