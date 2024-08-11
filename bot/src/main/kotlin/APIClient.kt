@@ -35,7 +35,7 @@ class APIClient(private val host: String, private val port: Int) : Listener {
 
             val botPlayer = deferred.await()
 
-            return Bot(botPlayer, this)
+            return Bot(botPlayer.name)
         } catch (e: Exception) {
             botJoinDeferred.remove(username)
             throw e

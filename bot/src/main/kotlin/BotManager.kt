@@ -30,13 +30,7 @@ fun saveRecord() {
 fun addBot(player: Player, botName: String) {
     for ((key, value) in recordCache.entries) {
         if (value.bots.any { it.name == botName }) {
-            MagicString("BotExists").send(
-                player,
-                mapOf(
-                    "owner" to key
-                )
-            )
-            return
+            throw IllegalArgumentException(key)
         }
     }
 
