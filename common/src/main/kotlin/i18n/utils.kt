@@ -11,8 +11,8 @@ fun String.color(color: ChatColor): String {
     return color + this
 }
 
-fun String.send(sender: CommandSender?) {
-    sender?.sendMessage(this)
+fun String.send(sender: CommandSender?, variables: Map<String, String> = emptyMap()) {
+    MagicString(this).send(sender ?: return, variables)
 }
 
 fun String.onClick(handleClick: () -> ClickEvent?): TextComponent {

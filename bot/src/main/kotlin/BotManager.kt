@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import xyz.ldgame.corona.common.CommonMain
-import xyz.ldgame.corona.common.i18n.MagicString
 import xyz.ldgame.corona.common.utils.mapper
 import java.nio.file.NoSuchFileException
 import java.util.*
@@ -43,7 +42,7 @@ fun addBot(player: Player, botName: String) {
 fun removeBot(player: Player, botName: String) {
     val record = recordCache[player.name] ?: return
     if (!record.bots.removeIf { it.name == botName }) {
-        MagicString("BotNotFound").send(player)
+        throw IllegalArgumentException()
     }
 
     Bukkit.getScheduler().runTaskAsynchronously(CommonMain.plugin, Runnable {
@@ -60,4 +59,3 @@ fun listBot(player: Player): List<Bot> {
     val record = recordCache[player.name] ?: return emptyList()
     return record.bots
 }
-
