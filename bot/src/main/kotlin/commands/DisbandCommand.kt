@@ -1,7 +1,6 @@
 package xyz.ldgame.corona.bot.commands
 
 import com.github.ajalt.clikt.parameters.arguments.argument
-import com.github.ajalt.clikt.parameters.arguments.default
 import com.github.ajalt.clikt.parameters.arguments.help
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
