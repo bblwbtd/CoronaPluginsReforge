@@ -1,7 +1,7 @@
 package xyz.ldgame.corona.auth.listener
 
+import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -73,9 +73,8 @@ class PlayerListener : Listener {
                 inventory.addItem(loginBook)
             }
 
-            "You need to login or register at first!".translate(this).color(ChatColor.YELLOW).send(this)
-            "You can login/register by inputting your password to a book!".translate(this)
-                .color(ChatColor.AQUA).send(this)
+            "You need to login or register at first!".color(ChatColor.YELLOW).send(this)
+            "You can login/register by inputting your password to a book!".color(ChatColor.AQUA).send(this)
             "You can also use /auth r YOUR_PASSWORD to register.".translate(this).send(this)
             "Use /auth l YOUR_PASSWORD to login.".translate(this).send(this)
         }

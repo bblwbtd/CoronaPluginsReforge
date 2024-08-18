@@ -4,10 +4,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.core.requireObject
-import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
-import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.send
 import xyz.ldgame.corona.common.i18n.translate
 
 abstract class MagicCommand(
@@ -45,11 +42,7 @@ abstract class MagicCommand(
     }
 
     inline fun <reified T> checkSenderType(): T {
-        if (sender == null) {
-            throw InvalidSenderException()
-        }
         if (sender !is T) {
-            "Invalid sender.".translate(sender).color(ChatColor.RED).send(sender)
             throw InvalidSenderException()
         }
 

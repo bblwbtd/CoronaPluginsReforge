@@ -4,3 +4,8 @@ ListCommandHelp: 列出你控制的所有机器人。
 RemoveCommandHelp: 从你的控制中移除一个机器人。
 BotNameHelp: 机器人的名称。
 SummonCommandHelp: 召唤一个机器人到你的位置。
+InvalidBotNameLength: 机器人名称必须在 1 到 ${botNameMaxLength} 个字符之间。
+BotExisted: "机器人已经存在。所有者：${owner}"
+BotRemoved: 机器人已被移除。
+BotNotFound: 机器人不存在。
+TooManyBot: 你不能召唤超过 ${maxLoginBotPerPlayer} 个机器人。

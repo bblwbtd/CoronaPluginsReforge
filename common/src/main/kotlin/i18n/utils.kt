@@ -1,14 +1,13 @@
 package xyz.ldgame.corona.common.i18n
 
+import net.md_5.bungee.api.ChatColor
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
-import xyz.ldgame.corona.common.utils.plus
 
-fun String.color(color: ChatColor): String {
-    return color + this
+fun String.color(color: ChatColor): MagicString {
+    return MagicString(this).color(color)
 }
 
 fun String.send(sender: CommandSender?, variables: Map<String, String> = emptyMap()) {

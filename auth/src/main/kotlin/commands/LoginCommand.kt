@@ -1,8 +1,8 @@
 package xyz.ldgame.corona.auth.commands
 
 import com.github.ajalt.clikt.parameters.arguments.argument
+import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import xyz.ldgame.corona.auth.exceptions.InvalidPasswordException
 import xyz.ldgame.corona.auth.exceptions.NoUserException
@@ -11,7 +11,6 @@ import xyz.ldgame.corona.auth.listener.PlayerAuthEvent
 import xyz.ldgame.corona.auth.utils.isAuthenticated
 import xyz.ldgame.corona.common.command.MagicCommand
 import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.send
 import xyz.ldgame.corona.common.i18n.translate
 
 class LoginCommand : MagicCommand() {

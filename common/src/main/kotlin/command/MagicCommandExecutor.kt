@@ -3,7 +3,7 @@ package xyz.ldgame.corona.common.command
 import com.github.ajalt.clikt.core.PrintHelpMessage
 import com.github.ajalt.clikt.core.UsageError
 import com.github.ajalt.clikt.core.context
-import org.bukkit.ChatColor
+import net.md_5.bungee.api.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -28,6 +28,9 @@ abstract class MagicCommandExecutor : CommandExecutor {
             return true
         } catch (e: UsageError) {
             e.context?.command?.getFormattedHelp(e)?.color(ChatColor.RED)?.send(sender)
+            return false
+        } catch (e: InvalidSenderException) {
+            "invalidSender".color(ChatColor.RED).send(sender)
             return false
         } catch (e: Exception) {
             e.printStackTrace()
