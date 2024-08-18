@@ -11,6 +11,7 @@ class Executor : MagicCommandExecutor() {
             RemoveCommand(),
             SummonCommand(),
             ListCommand(),
+            BotCommand()
         )
     }
 }

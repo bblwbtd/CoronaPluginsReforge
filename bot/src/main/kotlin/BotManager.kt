@@ -47,6 +47,7 @@ fun removeBot(player: Player, botName: String) {
 
     Bukkit.getScheduler().runTaskAsynchronously(CommonMain.plugin, Runnable {
         val uid = UUID.fromString("OfflinePlayer:$botName").toString()
+        Bukkit.getPlayer(botName)?.kickPlayer("Bye")
         Bukkit.getWorlds().forEach {
             it.worldFolder.resolve("playerdata").resolve("$uid.dat").delete()
         }
@@ -58,4 +59,10 @@ fun removeBot(player: Player, botName: String) {
 fun listBot(player: Player): List<Bot> {
     val record = recordCache[player.name] ?: return emptyList()
     return record.bots
+}
+
+fun getOnlineBot(player: Player): List<Bot> {
+    return listBot(player).filter {
+        Bukkit.getOnlinePlayers().find { p -> p.name == it.name } != null
+    }
 }

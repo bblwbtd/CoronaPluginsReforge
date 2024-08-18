@@ -5,6 +5,7 @@ import kotlinx.coroutines.runBlocking
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import xyz.ldgame.corona.bot.BotMain
+import xyz.ldgame.corona.bot.getOnlineBot
 import xyz.ldgame.corona.bot.listBot
 import xyz.ldgame.corona.common.CommonMain
 import xyz.ldgame.corona.common.command.MagicCommand
@@ -19,14 +20,9 @@ class SummonCommand : MagicCommand(help = "SummonCommandHelp") {
         runBlocking {
             CommonMain.plugin.config.run {
 
-                if (listBot(player).count {
-                        Bukkit.getOnlinePlayers().find { p -> p.name == it.name } != null
-                    } > getInt("maxLoginBotPerPlayer", 1)) {
-                    "TooManyBot".send(
-                        player, mapOf(
-                            "max" to getInt("maxLoginBotPerPlayer", 1).toString()
-                        )
-                    )
+                if (getOnlineBot(player).count() >= getInt("maxBotPerPlayer")) {
+                    "TooManyBot".send(player)
+                    return@runBlocking
                 }
 
                 val serverHost = getString("serverHost")
