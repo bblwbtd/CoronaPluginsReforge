@@ -5,6 +5,7 @@ import com.github.ajalt.clikt.parameters.arguments.help
 import com.github.ajalt.clikt.parameters.arguments.validate
 import org.bukkit.entity.Player
 import xyz.ldgame.corona.bot.addBot
+import xyz.ldgame.corona.bot.listBot
 import xyz.ldgame.corona.common.CommonMain
 import xyz.ldgame.corona.common.command.MagicCommand
 import xyz.ldgame.corona.common.i18n.MagicString
@@ -26,6 +27,15 @@ class AddCommand : MagicCommand(help = "AddCommandHelp") {
     override fun run() {
         val player = checkSenderType<Player>()
 
+        if (listBot(player).count() > CommonMain.plugin.config.getInt("maxBotPerPlayer", 10)) {
+            MagicString("BotCountExceeded").send(
+                player, mapOf(
+                    "max" to CommonMain.plugin.config.getInt("maxBotPerPlayer", 10).toString()
+                )
+            )
+            return
+        }
+
         try {
             addBot(player, botName)
         } catch (e: IllegalArgumentException) {
@@ -39,7 +49,7 @@ class AddCommand : MagicCommand(help = "AddCommandHelp") {
 
         MagicString("BotAdded").send(
             player, mapOf(
-                "bot" to botName
+                "botName" to botName
             )
         )
     }

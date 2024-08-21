@@ -32,7 +32,7 @@ class MagicString(
         return this + MagicString(s)
     }
 
-    private fun toTextComponent(locale: String = "en", variables: Map<String, String> = emptyMap()): TextComponent {
+    fun toTextComponent(locale: String = "en", variables: Map<String, String> = emptyMap()): TextComponent {
         val currentComponent = TextComponent(getText(string, locale, variables))
         currentComponent.clickEvent = clickEvent
         currentComponent.color = color
@@ -47,8 +47,8 @@ class MagicString(
     }
 
 
-    fun send(sender: CommandSender, variables: Map<String, String> = emptyMap()) {
-        sender.spigot().sendMessage(
+    fun send(sender: CommandSender?, variables: Map<String, String> = emptyMap()) {
+        sender?.spigot()?.sendMessage(
             toTextComponent(
                 if (sender is Player) sender.locale else "en",
                 variables

@@ -3,7 +3,10 @@ package xyz.ldgame.corona.bot
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.serialization.jackson.*
 import kotlinx.coroutines.CompletableDeferred
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -15,13 +18,18 @@ import xyz.ldgame.corona.auth.listener.PlayerAuthEvent
 
 
 class APIClient(private val host: String, private val port: Int) : Listener {
-    private val client = HttpClient(CIO)
+    private val client = HttpClient(CIO) {
+        install(ContentNegotiation) {
+            jackson()
+        }
+    }
     private val botJoinDeferred = mutableMapOf<String, CompletableDeferred<Player>>()
 
     suspend fun addBot(serverHost: String, serverPort: Int, username: String): Bot {
         val deferred = CompletableDeferred<Player>()
         try {
             val response = client.post("http://$host:$port/add") {
+                contentType(ContentType.Application.Json)
                 setBody {
                     "username" to username
                     "host" to serverHost

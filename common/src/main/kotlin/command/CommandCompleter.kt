@@ -17,11 +17,11 @@ class CommandCompleter(private val customCommand: MagicCommand) : TabCompleter {
 
         val results = LinkedList<String>()
         var current: MagicCommand = customCommand
+        current.context {
+            obj = MagicContext(sender)
+        }
 
         args.forEach { arg ->
-            current.context {
-                obj = MagicContext(sender)
-            }
             val nextCommand = current.registeredSubcommands().find {
                 it.commandName == arg
             }
@@ -30,11 +30,15 @@ class CommandCompleter(private val customCommand: MagicCommand) : TabCompleter {
             }
         }
 
+        current.presetSender = sender
+
         current.getTabCompleteOptions().forEach {
             if (it.contains(args.last())) {
                 results.add(it)
             }
         }
+
+        results.addAll(current.getArgumentOptions(args.last()))
 
         return results
     }

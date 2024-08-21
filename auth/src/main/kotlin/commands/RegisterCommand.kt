@@ -17,9 +17,10 @@ class RegisterCommand : MagicCommand() {
     private val password by argument()
     private val handler = AuthHandler()
 
-    override fun commandHelp(context: Context): String {
+    override fun help(context: Context): String {
         return "Password's length must be longer than 6.".translate(sender)
     }
+
     override fun run() {
         val player = checkSenderType<Player>()
         try {

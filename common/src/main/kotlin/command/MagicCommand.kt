@@ -10,21 +10,19 @@ import xyz.ldgame.corona.common.i18n.translate
 abstract class MagicCommand(
     var name: String? = null,
     val help: String = "",
-    invokeWithoutSubcommand: Boolean = false
 ) :
     CliktCommand(
         name = name,
-        help = help,
-        printHelpOnEmptyArgs = false,
-        invokeWithoutSubcommand = invokeWithoutSubcommand
     ) {
-    private val magicContext by requireObject<MagicContext>()
-    val sender: CommandSender? by lazy {
-        magicContext.sender
-    }
 
-    override fun commandHelp(context: Context): String {
-        return super.commandHelp(context).translate(sender)
+    override val printHelpOnEmptyArgs: Boolean = true
+    private val magicContext by requireObject<MagicContext>()
+    var presetSender: CommandSender? = null
+    val sender: CommandSender? get() = presetSender ?: magicContext.sender
+
+
+    override fun help(context: Context): String {
+        return help.translate(sender)
     }
 
     init {

@@ -5,7 +5,9 @@ import xyz.ldgame.corona.common.command.MagicCommand
 import xyz.ldgame.corona.friends.toggleState
 
 class ToggleCommand :
-    MagicCommand(invokeWithoutSubcommand = true, help = "Start making friends.") {
+    MagicCommand(help = "Start making friends.") {
+    override val invokeWithoutSubcommand: Boolean = true
+
     override fun run() {
         val subCommand = currentContext.invokedSubcommand
         if (subCommand == null) {

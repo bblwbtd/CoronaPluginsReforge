@@ -29,14 +29,15 @@ subprojects {
             }
         }
 
+        maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
+
     }
 
     dependencies {
+        runtimeOnly(kotlin("reflect"))
         testImplementation(kotlin("test"))
-        implementation(kotlin("stdlib-jdk8"))
         compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
-        testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
-        implementation("com.github.ajalt.clikt:clikt:4.4.0")
+        implementation("com.github.ajalt.clikt:clikt:4.4.0.9-SNAPSHOT")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.+")
     }
 
@@ -45,7 +46,9 @@ subprojects {
     }
 
     tasks.withType<ShadowJar> {
-        minimize()
+        minimize {
+            exclude(dependency("org.jetbrains.kotlin:kotlin-reflect:.*"))
+        }
     }
 }
 

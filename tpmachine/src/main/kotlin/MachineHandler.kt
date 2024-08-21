@@ -1,7 +1,7 @@
 package xyz.ldgame.corona.tpmachine
 
+import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
@@ -12,7 +12,6 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.send
 import xyz.ldgame.corona.common.i18n.translate
 import xyz.ldgame.corona.common.utils.getString
 import xyz.ldgame.corona.common.utils.removeValue
@@ -50,7 +49,7 @@ class MachineHandler(private val player: Player, private val plugin: JavaPlugin 
             addPotionEffect(PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 5))
             health = 20.0
 
-            customName = "TP Machine".translate(player).color(ChatColor.GREEN)
+            customName = "TP Machine".translate(player)
             player.setString(plugin, machineKey, machine.uniqueId.toString())
 
             setString(plugin, "machine", "true")

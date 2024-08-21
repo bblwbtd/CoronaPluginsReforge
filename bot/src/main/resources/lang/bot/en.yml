@@ -5,7 +5,11 @@ RemoveCommandHelp: Remove a bot from your control.
 BotNameHelp: The name of the bot.
 SummonCommandHelp: Summon a bot to your location.
 InvalidBotNameLength: The bot name must be between 1 and ${botNameMaxLength} characters long.
-BotExisted: "The bot already exists. Owner: ${owner}"
+BotExisted: "The bot already exists. Owner: $owner"
 BotRemoved: The bot has been removed.
 BotNotFound: The bot does not exist.
 TooManyBot: You can't summon more than ${maxLoginBotPerPlayer} bots.
+NoBot: You don't have any bots. Try to get one by using /bot add <bot name>.
+BotAdded: "The bot has been added. Name: $botName"
+BotList: "Your bot list:"
+BotCountExceeded: "You can't have more than $max bots."

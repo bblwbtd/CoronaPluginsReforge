@@ -5,16 +5,19 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import xyz.ldgame.corona.common.CommonMain
 import xyz.ldgame.corona.common.utils.mapper
-import java.nio.file.NoSuchFileException
+import java.io.FileNotFoundException
 import java.util.*
 
 data class BotRecord(val bots: MutableList<Bot> = LinkedList())
 
 val recordCache: MutableMap<String, BotRecord> by lazy {
+    val file = CommonMain.plugin.dataFolder.resolve("bots.json")
     try {
-        val file = CommonMain.plugin.dataFolder.resolve("bots.json")
         mapper.readValue(file, object : TypeReference<MutableMap<String, BotRecord>>() {})
-    } catch (e: NoSuchFileException) {
+    } catch (e: FileNotFoundException) {
+        file.createNewFile().also {
+            mapper.writeValue(file, mutableMapOf<String, BotRecord>())
+        }
         mutableMapOf()
     }
 }
@@ -22,6 +25,9 @@ val recordCache: MutableMap<String, BotRecord> by lazy {
 fun saveRecord() {
     Bukkit.getScheduler().runTaskAsynchronously(CommonMain.plugin, Runnable {
         val file = CommonMain.plugin.dataFolder.resolve("bots.json")
+        if (!file.exists()) {
+            file.createNewFile()
+        }
         mapper.writeValue(file, recordCache)
     })
 }

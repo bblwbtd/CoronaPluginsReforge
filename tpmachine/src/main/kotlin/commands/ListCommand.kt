@@ -3,8 +3,8 @@ package xyz.ldgame.corona.tpmachine.commands
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.default
 import com.github.ajalt.clikt.parameters.types.int
+import net.md_5.bungee.api.ChatColor
 import net.md_5.bungee.api.chat.ClickEvent
-import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import xyz.ldgame.corona.common.command.MagicCommand
 import xyz.ldgame.corona.common.i18n.color

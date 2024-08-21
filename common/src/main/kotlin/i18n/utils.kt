@@ -6,6 +6,10 @@ import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 
+fun String.color(color: org.bukkit.ChatColor): MagicString {
+    return MagicString(this).color(color.asBungee())
+}
+
 fun String.color(color: ChatColor): MagicString {
     return MagicString(this).color(color)
 }

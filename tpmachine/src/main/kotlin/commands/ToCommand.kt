@@ -1,11 +1,10 @@
 package xyz.ldgame.corona.tpmachine.commands
 
 import com.github.ajalt.clikt.parameters.arguments.argument
-import org.bukkit.ChatColor
+import net.md_5.bungee.api.ChatColor
 import org.bukkit.entity.Player
 import xyz.ldgame.corona.common.command.MagicCommand
 import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.send
 import xyz.ldgame.corona.common.i18n.translate
 import xyz.ldgame.corona.tpmachine.AddressHandler
 import xyz.ldgame.corona.tpmachine.MachineHandler
@@ -26,8 +25,10 @@ class ToCommand : MagicCommand(help = "Teleport to an address.") {
             it.name == addressName
         }
         if (address == null) {
-            "Can't find address with name:".translate(sender).plus(" ").plus(addressName).color(ChatColor.RED)
-                .send(sender)
+            sender?.let {
+                "Can't find address with name:".translate(sender).plus(" ").plus(addressName).color(ChatColor.RED)
+                    .send(it)
+            }
             return
         }
 

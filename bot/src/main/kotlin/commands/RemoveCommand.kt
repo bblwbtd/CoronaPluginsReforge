@@ -24,4 +24,6 @@ class RemoveCommand : MagicCommand(help = "RemoveCommandHelp") {
 
         "BotRemoved".send(player)
     }
+
+
 }

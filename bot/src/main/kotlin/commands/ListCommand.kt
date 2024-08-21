@@ -5,7 +5,7 @@ import xyz.ldgame.corona.bot.listBot
 import xyz.ldgame.corona.common.command.MagicCommand
 import xyz.ldgame.corona.common.i18n.send
 
-class ListCommand: MagicCommand(help = "ListCommandHelp") {
+class ListCommand : MagicCommand(help = "ListCommandHelp") {
     override fun run() {
         val player = checkSenderType<Player>()
 
@@ -18,8 +18,8 @@ class ListCommand: MagicCommand(help = "ListCommandHelp") {
 
         "BotList".send(player)
 
-        bots.joinToString {
-            " - " + it.name + "\n"
+        bots.joinToString("\n") {
+            " - " + it.name
         }.send(player)
     }
 }

@@ -6,7 +6,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.send
 import xyz.ldgame.corona.common.i18n.translate
 
 class RelationListener : Listener {

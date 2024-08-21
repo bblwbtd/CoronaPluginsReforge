@@ -8,7 +8,6 @@ import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import xyz.ldgame.corona.common.command.MagicCommand
 import xyz.ldgame.corona.common.i18n.color
-import xyz.ldgame.corona.common.i18n.onClick
 import xyz.ldgame.corona.common.i18n.send
 import xyz.ldgame.corona.common.i18n.translate
 import xyz.ldgame.corona.friends.TPHandler
@@ -36,13 +35,12 @@ class TPCommand : MagicCommand(help = "Send teleport request to your friend.") {
         val handler = TPHandler(player)
         val requestText = handler.getAllRequests().map {
             "${it.from.name} ${
-                "[Accept]".translate(player).color(ChatColor.GREEN).onClick {
-                    return@onClick ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend tp -a ${it.from.name}")
-                }
+                "[Accept]".translate(player).color(ChatColor.GREEN)
+                    .onClick(ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend tp -a ${it.from.name}"))
+
             } ${
-                "[Decline]".translate(player).color(ChatColor.RED).onClick {
-                    return@onClick ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend tp -d ${it.from.name}")
-                }
+                "[Decline]".translate(player).color(ChatColor.RED)
+                    .onClick(ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend tp -d ${it.from.name}"))
             }"
         }.joinToString { "\n" }
 
