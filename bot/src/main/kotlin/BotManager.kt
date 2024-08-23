@@ -52,7 +52,7 @@ fun removeBot(player: Player, botName: String) {
     }
 
     Bukkit.getScheduler().runTaskAsynchronously(CommonMain.plugin, Runnable {
-        val uid = UUID.fromString("OfflinePlayer:$botName").toString()
+        val uid = UUID.nameUUIDFromBytes("OfflinePlayer:$botName".toByteArray())
         Bukkit.getPlayer(botName)?.kickPlayer("Bye")
         Bukkit.getWorlds().forEach {
             it.worldFolder.resolve("playerdata").resolve("$uid.dat").delete()
